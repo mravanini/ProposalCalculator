@@ -1,4 +1,4 @@
-package com.amazon.sample.bean;
+package com.amazon.proposalcalculator.bean;
 
 import java.util.Date;
 

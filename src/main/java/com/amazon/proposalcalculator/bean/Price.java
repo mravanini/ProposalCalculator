@@ -1,7 +1,6 @@
-package com.amazon.sample.bean;
+package com.amazon.proposalcalculator.bean;
 
-import com.amazon.sample.utils.MemoryConverter;
-import com.ebay.xcelite.annotations.Column;
+import com.amazon.proposalcalculator.utils.MemoryConverter;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
 

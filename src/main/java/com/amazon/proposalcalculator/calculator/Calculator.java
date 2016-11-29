@@ -1,10 +1,8 @@
-package com.amazon.sample.calculator;
+package com.amazon.proposalcalculator.calculator;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,30 +13,43 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import com.amazon.sample.bean.DefaultInput;
-import com.amazon.sample.bean.DefaultOutput;
-import com.amazon.sample.bean.Price;
-import com.amazon.sample.reader.ConfigReader;
-import com.amazon.sample.reader.DefaultExcelReader;
-import com.amazon.sample.reader.EC2PriceListReader;
-import com.amazon.sample.utils.Constants;
-import com.amazon.sample.writer.DefaultExcelWriter;
+import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.bean.DefaultInput;
+import com.amazon.proposalcalculator.bean.DefaultOutput;
+import com.amazon.proposalcalculator.reader.ConfigReader;
+import com.amazon.proposalcalculator.reader.DefaultExcelReader;
+import com.amazon.proposalcalculator.reader.EC2PriceListReader;
+import com.amazon.proposalcalculator.reader.ParseMainArguments;
+import com.amazon.proposalcalculator.utils.Constants;
+import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
+import org.apache.commons.cli.*;
 
 public class Calculator {
 
 	private final static Logger LOGGER = Logger.getLogger(DefaultExcelReader.class.getName());
 
-	public static void main(String[] args) throws FileNotFoundException, IOException {
+	public static void main(String[] args) throws IOException {
 		System.setProperty("java.util.logging.SimpleFormatter.format", 
 	            "%4$s: %5$s [%1$tc]%n");
+
+		Boolean forceDownload;
+		try {
+			forceDownload = ParseMainArguments.isForceDownload(args);
+		} catch (ParseException e) {
+			System.exit(1);
+			return;
+		}
+
+
 		Calculator calculator = new Calculator();
-		calculator.init();
+		calculator.init(forceDownload);
 		calculator.calculate();
 		LOGGER.info("Done!");
 	}
 
-	private void init() throws FileNotFoundException, IOException {
-		new EC2PriceListReader().read();
+
+	private void init(Boolean forceDownload) throws IOException {
+		new EC2PriceListReader().read(forceDownload);
 		new DefaultExcelReader().read();
 		new ConfigReader().read();
 	}
@@ -110,7 +121,7 @@ public class Calculator {
 			Date beginningDate = format.parse(beginning);
 			Date endDate = format.parse(end);
 			return diffInDays(beginningDate, endDate);
-		} catch (ParseException e) {
+		} catch (java.text.ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;

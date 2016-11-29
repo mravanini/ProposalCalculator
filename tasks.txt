@@ -2,11 +2,11 @@
 2) Data inicial/final: inclusive;
 3) Se data nao informada, usar 30.5 dias;
 4) Considerar aba config;
-5) Fazer download da price list se o arquivo nao existir ou usuario forçar;
+5) Fazer download da price list se o arquivo nao existir ou usuario forçar; - implementado
 6) Considerar EBS e Snapshot;
 7) Adicionar coluna tipo de pagamento (ondemand, reserved, etc...) e combo;
 8) No output, gerar varias abas, para varios meios pagamento, mesmo os nao escolhidos pelo usuario;
 9) Gerar pagina de resumo, com tipo de pagamento, valor total para o periodo, e percentual de desconto obtido;
 10) Fazer manual do usuario, explicando cada coluna do input e do output...
 11) Fazer interface user friendly (.bat?)...
-12) Bug: Corrigir tolerancias: Corrigido
+12) Bug: Corrigir tolerancias - Corrigido

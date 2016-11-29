@@ -1,4 +1,4 @@
-package com.amazon.sample.utils;
+package com.amazon.proposalcalculator.utils;
 
 import com.ebay.xcelite.converters.ColumnValueConverter;
 

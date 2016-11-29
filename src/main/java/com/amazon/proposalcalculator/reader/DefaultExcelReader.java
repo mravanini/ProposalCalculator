@@ -1,12 +1,12 @@
-package com.amazon.sample.reader;
+package com.amazon.proposalcalculator.reader;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import com.amazon.sample.bean.Config;
-import com.amazon.sample.bean.DefaultInput;
-import com.amazon.sample.utils.Constants;
+import com.amazon.proposalcalculator.bean.Config;
+import com.amazon.proposalcalculator.bean.DefaultInput;
+import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;

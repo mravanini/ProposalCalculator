@@ -1,12 +1,12 @@
-package com.amazon.sample.utils;
+package com.amazon.proposalcalculator.utils;
 
 import java.util.Collection;
 import java.util.List;
 
-import com.amazon.sample.bean.Config;
-import com.amazon.sample.bean.DefaultInput;
-import com.amazon.sample.bean.DefaultOutput;
-import com.amazon.sample.bean.Price;
+import com.amazon.proposalcalculator.bean.Config;
+import com.amazon.proposalcalculator.bean.DefaultInput;
+import com.amazon.proposalcalculator.bean.DefaultOutput;
+import com.amazon.proposalcalculator.bean.Price;
 
 public class Constants {
 	

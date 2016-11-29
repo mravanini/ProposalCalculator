@@ -1,4 +1,4 @@
-package com.amazon.sample.test;
+package com.amazon.proposalcalculator.test;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.amazon.sample.bean.User;
+import com.amazon.proposalcalculator.bean.User;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;

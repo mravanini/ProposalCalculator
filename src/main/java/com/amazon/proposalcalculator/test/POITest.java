@@ -1,4 +1,4 @@
-package com.amazon.sample.test;
+package com.amazon.proposalcalculator.test;
 
 import java.io.File;
 import java.io.FileInputStream;

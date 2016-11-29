@@ -1,15 +1,10 @@
-package com.amazon.sample.writer;
+package com.amazon.proposalcalculator.writer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.logging.Logger;
 
-import com.amazon.sample.bean.DefaultOutput;
-import com.amazon.sample.bean.User;
-import com.amazon.sample.reader.EC2PriceListReader;
-import com.amazon.sample.utils.Constants;
+import com.amazon.proposalcalculator.bean.DefaultOutput;
+import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;

@@ -1,15 +1,14 @@
-package com.amazon.sample.test;
+package com.amazon.proposalcalculator.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.amazon.sample.bean.Price;
-import com.amazon.sample.utils.Constants;
+import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.utils.Constants;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;

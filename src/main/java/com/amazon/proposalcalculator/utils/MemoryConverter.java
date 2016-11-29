@@ -1,4 +1,4 @@
-package com.amazon.sample.utils;
+package com.amazon.proposalcalculator.utils;
 
 import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.exceptions.CsvConstraintViolationException;
