@@ -49,17 +49,16 @@ public class EC2PriceListReader {
 
 	private CSVReader createReader(Boolean forceDownload) throws IOException {
 
-        FileReader fileReader = null;
+        FileReader fileReader;
 	    File file = new File(CSV_EC2_NAME);
-
-	    if(forceDownload || !file.isFile()){
+        if (forceDownload || !file.isFile()) {//forceDownload or file does not exist
             fileReader = PriceListDownloader.download(CSV_EC2_NAME, ProductName.AmazonEC2);
-        }else {
-            fileReader = new FileReader(CSV_EC2_NAME);
+        } else {
+            fileReader = new FileReader(file);
             LOGGER.fine("EC2 Price List already in folder. No need to download it");
         }
 
-		CSVReader csvReader = new CSVReader(fileReader, ',', '\"', 5);
+        CSVReader csvReader = new CSVReader(fileReader, ',', '\"', 5);
 		// CSVReader csvReader = new CSVReader(new FileReader(csvFilename));
 		return csvReader;
 	}

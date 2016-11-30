@@ -22,6 +22,6 @@ public class EC2PriceListReaderTest {
         EC2PriceListReader ec2PriceListReader = new EC2PriceListReader();
         List<Price> prices = ec2PriceListReader.read(false);
         Assert.assertNotNull(prices);
-        //Assert.assertEquals(91799, prices.size());
+        Assert.assertTrue(prices.size() > 90000);
     }
 }

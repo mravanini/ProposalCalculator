@@ -2,34 +2,16 @@ target/**
 
 .classpath
 
-/.idea/
+**/.idea/
 
-/.idea/**/**
+**/.idea/**/**
 
 .settings/**
-
 
 .settings/org.eclipse.jdt.core.prefs
 
 .project
 
-index.csv.old.csv
-
 indexEC2.csv
-
-index.csv
-
-.idea/libraries/Maven__commons_cli_commons_cli_1_3.xml
-
-.idea/libraries/Maven__commons_io_commons_io_2_4.xml
-
-.idea/libraries/Maven__junit_junit_4_12.xml
-
-.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
-
-
-index.csv
-
-
 
 *.iml

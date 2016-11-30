@@ -10,3 +10,7 @@
 10) Fazer manual do usuario, explicando cada coluna do input e do output...
 11) Fazer interface user friendly (.bat?)...
 12) Bug: Corrigir tolerancias - Corrigido
+13) Criar folder com data/hora para cada output.csv
+14) Tratar exceção no método principal (main do Calculator)
+15) Criar um arquivo de saída para o logger
+16) Receber o nome do arquivo de input como parâmetro
