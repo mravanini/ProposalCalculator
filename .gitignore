@@ -17,3 +17,5 @@ indexEC2.csv
 *.iml
 
 *.log
+
+output.xlsx
