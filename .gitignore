@@ -15,3 +15,5 @@ target/**
 indexEC2.csv
 
 *.iml
+
+*.log

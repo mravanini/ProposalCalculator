@@ -1,64 +1,29 @@
 package com.amazon.proposalcalculator.calculator;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.DefaultInput;
 import com.amazon.proposalcalculator.bean.DefaultOutput;
-import com.amazon.proposalcalculator.reader.ConfigReader;
-import com.amazon.proposalcalculator.reader.DefaultExcelReader;
-import com.amazon.proposalcalculator.reader.EC2PriceListReader;
-import com.amazon.proposalcalculator.reader.ParseMainArguments;
+import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
-import org.apache.commons.cli.*;
+import org.apache.log4j.Logger;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
 
-	private final static Logger LOGGER = Logger.getLogger(DefaultExcelReader.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(Calculator.class);
 
-	public static void main(String[] args) throws IOException {
-		System.setProperty("java.util.logging.SimpleFormatter.format", 
-	            "%4$s: %5$s [%1$tc]%n");
-
-		Boolean forceDownload;
-		try {
-			forceDownload = ParseMainArguments.isForceDownload(args);
-		} catch (ParseException e) {
-			System.exit(1);
-			return;
-		}
-
-
-		Calculator calculator = new Calculator();
-		calculator.init(forceDownload);
-		calculator.calculate();
-		LOGGER.info("Done!");
-	}
-
-
-	private void init(Boolean forceDownload) throws IOException {
-		new EC2PriceListReader().read(forceDownload);
-		new DefaultExcelReader().read();
-		new ConfigReader().read();
-	}
-
-	private void calculate() {
+	public static void calculate() {
 		Constants.output = new ArrayList<DefaultOutput>();
+        LOGGER.info("Calculating prices...");
 
 		for (DefaultInput server : Constants.servers) {
-			LOGGER.info("Calculating instance: " + server.getDescription());
+			LOGGER.debug("Calculating instance: " + server.getDescription());
 
 			List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(p -> p.getLocation() != null
 					&& p.getLocation().startsWith(server.getRegion())
@@ -105,7 +70,7 @@ public class Calculator {
 		DefaultExcelWriter.write();
 	}
 	
-	private Price getBestPrice(List<Price> prices) {
+	private static Price getBestPrice(List<Price> prices) {
 		Price bestPrice = new Price();
 		for (Price price : prices) {
 			if (bestPrice.getPricePerUnit() == 0 || price.getPricePerUnit() < bestPrice.getPricePerUnit()) {
@@ -115,7 +80,7 @@ public class Calculator {
 		return bestPrice;
 	}
 
-	private long diffInDays(String beginning, String end) {
+	private static long diffInDays(String beginning, String end) {
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			Date beginningDate = format.parse(beginning);
@@ -128,7 +93,7 @@ public class Calculator {
 		}
 	}
 
-	private long diffInDays(Date beginning, Date end) {
+	private static long diffInDays(Date beginning, Date end) {
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(beginning);

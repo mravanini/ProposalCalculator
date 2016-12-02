@@ -11,29 +11,24 @@ import com.amazon.proposalcalculator.utils.Constants;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import org.apache.log4j.Logger;
 
-import java.util.logging.Logger;
 
 public class EC2PriceListReader {
-	
-	private final static Logger LOGGER = Logger.getLogger(EC2PriceListReader.class.getName());
-	private static final String CLASS_NAME = EC2PriceListReader.class.getName();
+
+    private final static Logger LOGGER = Logger.getLogger(EC2PriceListReader.class);
 	public static final String CSV_EC2_NAME = "indexEC2.csv";
 
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		long now = System.currentTimeMillis();
-		try {
-			new EC2PriceListReader().read(false);
-		}catch (IOException ioe){
-			LOGGER.throwing(CLASS_NAME, "main", ioe);
-		}
+        read(false);
 		LOGGER.info("Time to read: " + (System.currentTimeMillis() - now) + " miliseconds");
 
 	}
 
-	public List<Price> read(Boolean forceDownload) throws IOException {
+	public static List<Price> read(Boolean forceDownload) throws IOException {
 		HeaderColumnNameMappingStrategy<Price> strategy = new HeaderColumnNameMappingStrategy<Price>();
 		strategy.setType(Price.class);
 		CsvToBean<Price> csvToBean = new CsvToBean<Price>();
@@ -47,7 +42,7 @@ public class EC2PriceListReader {
 		return beanList;
 	}
 
-	private CSVReader createReader(Boolean forceDownload) throws IOException {
+	private static CSVReader createReader(Boolean forceDownload) throws IOException {
 
         FileReader fileReader;
 	    File file = new File(CSV_EC2_NAME);
@@ -55,7 +50,7 @@ public class EC2PriceListReader {
             fileReader = PriceListDownloader.download(CSV_EC2_NAME, ProductName.AmazonEC2);
         } else {
             fileReader = new FileReader(file);
-            LOGGER.fine("EC2 Price List already in folder. No need to download it");
+            LOGGER.debug("EC2 Price List already in folder. No need to download it");
         }
 
         CSVReader csvReader = new CSVReader(fileReader, ',', '\"', 5);

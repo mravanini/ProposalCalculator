@@ -1,19 +1,19 @@
 package com.amazon.proposalcalculator.reader;
 
 import org.apache.commons.cli.*;
+import org.apache.log4j.Logger;
 
-import java.util.logging.Logger;
 
 /**
  * Created by ravanini on 29/11/16.
  */
 public class ParseMainArguments {
 
-    private final static Logger LOGGER = Logger.getLogger(ParseMainArguments.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ParseMainArguments.class);
 
     private static CommandLine parse(String[] args) throws ParseException {
 
-        LOGGER.fine("Parsing main arguments");
+        LOGGER.debug("Parsing main arguments");
         Options options = new Options();
 
         Option forceDownload = new Option("f", "force-download", false, "force download price list");
