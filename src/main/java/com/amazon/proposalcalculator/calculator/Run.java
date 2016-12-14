@@ -5,7 +5,8 @@ import com.amazon.proposalcalculator.reader.DefaultExcelReader;
 import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.reader.ParseMainArguments;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -14,14 +15,11 @@ import java.io.IOException;
  */
 public class Run {
 
-    private final static Logger LOGGER = Logger.getLogger(Run.class);
-
+    private final static Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
 
         try {
-//            System.setProperty("java.util.logging.SimpleFormatter.format",
-//                    "%4$s: %5$s [%1$tc]%n");
 
             Boolean forceDownload;
             forceDownload = ParseMainArguments.isForceDownload(args);

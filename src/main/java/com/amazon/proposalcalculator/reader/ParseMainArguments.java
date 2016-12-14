@@ -1,7 +1,8 @@
 package com.amazon.proposalcalculator.reader;
 
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -9,7 +10,7 @@ import org.apache.log4j.Logger;
  */
 public class ParseMainArguments {
 
-    private final static Logger LOGGER = Logger.getLogger(ParseMainArguments.class);
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private static CommandLine parse(String[] args) throws ParseException {
 

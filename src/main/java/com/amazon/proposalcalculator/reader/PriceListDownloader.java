@@ -2,7 +2,8 @@ package com.amazon.proposalcalculator.reader;
 
 import com.amazon.proposalcalculator.enums.ProductName;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,7 +15,7 @@ import java.net.URL;
  */
 public class PriceListDownloader {
 
-    private final static Logger LOGGER = Logger.getLogger(PriceListDownloader.class);
+    private final static Logger LOGGER = LogManager.getLogger();
     private static final String URL_PRICE_LIST = "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/%s/current/index.csv";
     private static final int READ_TIMEOUT = 5 * 60 * 1000;
     private static final int CONNECTION_TIMEOUT = 1 * 60 * 1000;

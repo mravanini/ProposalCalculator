@@ -5,14 +5,15 @@ import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Collection;
 
 public class ConfigReader {
 
-    private final static Logger LOGGER = Logger.getLogger(ConfigReader.class);
+	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void main(String[] args) {
 		new ConfigReader().read();

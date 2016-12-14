@@ -5,7 +5,8 @@ import com.amazon.proposalcalculator.bean.DefaultOutput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
 
-    private final static Logger LOGGER = Logger.getLogger(Calculator.class);
+	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void calculate() {
 		Constants.output = new ArrayList<DefaultOutput>();

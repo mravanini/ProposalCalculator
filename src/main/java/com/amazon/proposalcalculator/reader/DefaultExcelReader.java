@@ -9,11 +9,12 @@ import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DefaultExcelReader {
 
-    private final static Logger LOGGER = Logger.getLogger(DefaultExcelReader.class);
+	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void main(String[] args) {
 		new DefaultExcelReader().read();

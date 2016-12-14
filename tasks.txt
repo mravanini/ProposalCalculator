@@ -2,15 +2,15 @@
 2) Data inicial/final: inclusive;
 3) Se data nao informada, usar 30.5 dias;
 4) Considerar aba config;
-5) Fazer download da price list se o arquivo nao existir ou usuario forçar; - implementado
+x   5) Fazer download da price list se o arquivo nao existir ou usuario forçar;
 6) Considerar EBS e Snapshot;
 7) Adicionar coluna tipo de pagamento (ondemand, reserved, etc...) e combo;
 8) No output, gerar varias abas, para varios meios pagamento, mesmo os nao escolhidos pelo usuario;
 9) Gerar pagina de resumo, com tipo de pagamento, valor total para o periodo, e percentual de desconto obtido;
 10) Fazer manual do usuario, explicando cada coluna do input e do output...
 11) Fazer interface user friendly (.bat?)...
-12) Bug: Corrigir tolerancias - Corrigido
-13) Criar folder com data/hora para cada output.csv
-14) Tratar exceção no método principal (main do Calculator)
-15) Criar um arquivo de saída para o logger
+x   12) Bug: Corrigir tolerancias
+13) Criar folder com data/hora ou nome do arquivo de imput para cada output.csv
+x   14) Tratar exceção no método principal (main do Calculator) - precisa ver se ficou bom
+x   15) Criar um arquivo de saída para o logger
 16) Receber o nome do arquivo de input como parâmetro

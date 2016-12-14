@@ -11,12 +11,13 @@ import com.amazon.proposalcalculator.utils.Constants;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class EC2PriceListReader {
 
-    private final static Logger LOGGER = Logger.getLogger(EC2PriceListReader.class);
+	private final static Logger LOGGER = LogManager.getLogger();
 	public static final String CSV_EC2_NAME = "indexEC2.csv";
 
 
