@@ -28,16 +28,16 @@ public class CalculatorPredicates {
         return p -> p.getTermType() != null && p.getTermType().equals(server.getTermType());
     }
 
-    public static Predicate<Price> offeringClass(DefaultInput server){
-        return p -> p.getOfferingClass() != null && p.getOfferingClass().equals(server.getOfferingClass());
+    public static Predicate<Price> offeringClass(DefaultInput server) {
+        return p -> (p.getOfferingClass() == null && server.getOfferingClass() == null) ||  (p.getOfferingClass() != null && p.getOfferingClass().equals(server.getOfferingClass()));
     }
 
     public static Predicate<Price> leaseContractLength(DefaultInput server){
-        return p -> p.getLeaseContractLength() != null && p.getLeaseContractLength().equals(server.getLeaseContractLength());
+        return p -> (p.getLeaseContractLength() == null && server.getLeaseContractLength() == null) ||  (p.getLeaseContractLength() != null && p.getLeaseContractLength().equals(server.getLeaseContractLength()));
     }
 
     public static Predicate<Price> purchaseOption(DefaultInput server){
-        return p -> p.getPurchaseOption() != null && p.getPurchaseOption().equals(server.getPurchaseOption());
+        return p -> (p.getPurchaseOption() == null && server.getPurchaseOption() == null) ||  (p.getPurchaseOption() != null && p.getPurchaseOption().equals(server.getPurchaseOption()));
     }
 
     public static Predicate<Price> operatingSystem(DefaultInput server){

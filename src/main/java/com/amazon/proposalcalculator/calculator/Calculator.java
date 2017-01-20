@@ -33,9 +33,11 @@ public class Calculator {
 				.and(cpuTolerance(server))
 				.and(memory(server))
 				.and(termType(server))
-//				.and(offeringClass(server))
-//				.and(leaseContractLength(server))
-//				.and(purchaseOption(server))
+				
+				.and(offeringClass(server))
+				.and(leaseContractLength(server))
+				.and(purchaseOption(server))
+				
 				.and(operatingSystem(server))
 				.and(tenancy(server))
 			).collect(Collectors.toList());
