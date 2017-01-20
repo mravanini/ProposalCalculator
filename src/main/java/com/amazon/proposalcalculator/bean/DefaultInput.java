@@ -31,9 +31,12 @@ public class DefaultInput {
 	@Column(name = "Memory")
 	private float memory;
 
-	@Column(name = "Disk")
-	private int disk;
-	
+	@Column(name = "Storage(GB)")
+	private int storage;
+
+	@Column(name = "Snapshot(GB)")
+	private Integer snapshot;
+
 	@Column(name = "Usage")
 	private int usage;
 	
@@ -73,12 +76,14 @@ public class DefaultInput {
 		this.memory = memory;
 	}
 
-	public int getDisk() {
-		return disk;
-	}
+	public int getStorage() { return storage; }
 
-	public void setDisk(int disk) {
-		this.disk = disk;
+	public Integer getSnapshot() { return snapshot; }
+
+	public void setSnapshot(Integer snapshot) { this.snapshot = snapshot; }
+
+	public void setStorage(int storage) {
+		this.storage = storage;
 	}
 
 	public int getUsage() {

@@ -4,7 +4,7 @@ import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
 //@Row(colsOrder = {"Description", "Instance Type", "Instance vCPU", "Instance Memory", "Unit Price", "Monthly Price"})
-@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "Memory", "Disk", "Usage", "Term Type", "Lease Contract Length", "Purchase Option", 	"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type", "Instance vCPU", "Instance Memory", "Compute Unit Price", "Compute Monthly Price", "Compute Total Price"})
+@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "Memory", "Storage(GB)", "Snapshot(GB)","Usage", "Term Type", "Lease Contract Length", "Purchase Option", 	"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type", "Instance vCPU", "Instance Memory", "Compute Unit Price", "Compute Monthly Price", "Compute Total Price"})
 
 public class DefaultOutput extends DefaultInput {
 	

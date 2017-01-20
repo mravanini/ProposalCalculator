@@ -1,5 +1,5 @@
-1) Adicionar Regiao no input, e combo - falta usar region no calculo
-2) Data inicial/final: inclusive;
+x 1) Adicionar Regiao no input, e combo
+x 2) Data inicial/final: inclusive;
 3) Se data nao informada, usar 30.5 dias;
 4) Considerar campo match da aba config;
 x   5) Fazer download da price list se o arquivo nao existir ou usuario forçar;

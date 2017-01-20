@@ -1,5 +1,6 @@
 package com.amazon.proposalcalculator.calculator;
 
+import com.amazon.proposalcalculator.assemblies.DefaultOutputAssembly;
 import com.amazon.proposalcalculator.bean.DefaultInput;
 import com.amazon.proposalcalculator.bean.DefaultOutput;
 import com.amazon.proposalcalculator.bean.Price;
@@ -40,23 +41,7 @@ public class Calculator {
 			).collect(Collectors.toList());
 			
 			Price price = getBestPrice(possibleMatches); 
-			DefaultOutput output = new DefaultOutput();
-			output.setDescription(server.getDescription());
-			output.setInstances(server.getInstances());
-			output.setRegion(server.getRegion());
-			output.setCpu(server.getCpu());
-			output.setMemory(server.getMemory());
-			output.setDisk(server.getDisk());
-			output.setUsage(server.getUsage());
-			output.setTermType(server.getTermType());
-			output.setOfferingClass(server.getOfferingClass());
-			output.setLeaseContractLength(server.getLeaseContractLength());
-			output.setPurchaseOption(server.getPurchaseOption());
-			
-			output.setTenancy(server.getTenancy());
-			output.setOperatingSystem(server.getOperatingSystem());
-			output.setBeginning(server.getBeginning());
-			output.setEnd(server.getEnd());
+			DefaultOutput output = DefaultOutputAssembly.from(server);
 			output.setInstanceType(price.getInstanceType());
 			output.setInstanceMemory(price.getMemory());
 			output.setInstanceVCPU(price.getvCPU());
@@ -65,6 +50,7 @@ public class Calculator {
 					price.getPricePerUnit() * Constants.hoursInAMonth * server.getUsage() / 100 * server.getInstances());
 			long days = diffInDays(server.getBeginning(), server.getEnd());
 			output.setComputeTotalPrice(price.getPricePerUnit() * days * 24 * server.getUsage() / 100 * server.getInstances());
+
 			Constants.output.add(output);
 
 		}
@@ -80,7 +66,6 @@ public class Calculator {
 		}
 		return bestPrice;
 	}
-
 	private static long diffInDays(String beginning, String end) {
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -103,7 +88,8 @@ public class Calculator {
 		calendar.setTime(end);
 		LocalDate localEnd = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
 				calendar.get(Calendar.DAY_OF_MONTH));
-		return DAYS.between(localBeginning, localEnd);
+		return DAYS.between(localBeginning, localEnd.plusDays(1));//last day inclusive
 	}
+
 
 }
