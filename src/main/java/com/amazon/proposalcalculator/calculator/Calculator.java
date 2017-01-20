@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.amazon.proposalcalculator.calculator.CalculatorPredicates.*;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
@@ -26,18 +27,17 @@ public class Calculator {
 		for (DefaultInput server : Constants.servers) {
 			LOGGER.debug("Calculating instance: " + server.getDescription());
 
-			List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(p -> p.getLocation() != null
-					&& p.getLocation().startsWith(server.getRegion())
-					&& p.getvCPU() >= server.getCpu() * ((100 - Constants.config.getCpuTolerance()) / 100)
-					&& p.getMemory() >= server.getMemory() * ((100 - Constants.config.getMemoryTolerance()) / 100)
-					&& p.getTermType() != null && p.getTermType().equals(server.getTermType())
-					//&& p.getOfferingClass() != null && p.getOfferingClass().equals(server.getOfferingClass())
-					//&& p.getLeaseContractLength() != null && p.getLeaseContractLength().equals(server.getLeaseContractLength())
-					//&& p.getPurchaseOption() != null && p.getPurchaseOption().equals(server.getPurchaseOption())
-					&& p.getTermType() != null && p.getTermType().equals(server.getTermType())
-					&& p.getOperatingSystem() != null && p.getOperatingSystem().equals(server.getOperatingSystem())
-					&& p.getTenancy() != null && p.getTenancy().equals(server.getTenancy()))
-					.collect(Collectors.toList());
+			List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
+					 region(server)
+				.and(cpuTolerance(server))
+				.and(memory(server))
+				.and(termType(server))
+//				.and(offeringClass(server))
+//				.and(leaseContractLength(server))
+//				.and(purchaseOption(server))
+				.and(operatingSystem(server))
+				.and(tenancy(server))
+			).collect(Collectors.toList());
 			
 			Price price = getBestPrice(possibleMatches); 
 			DefaultOutput output = new DefaultOutput();
