@@ -3,14 +3,46 @@ package com.amazon.proposalcalculator.bean;
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
-//@Row(colsOrder = {"Description", "Instance Type", "Instance vCPU", "Instance Memory", "Unit Price", "Monthly Price"})
-@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "Memory", "Storage(GB)", "Snapshot(GB)","Usage", "Term Type", "Lease Contract Length", "Purchase Option", 	"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type", "Instance vCPU", "Instance Memory", "Compute Unit Price", "Compute Monthly Price", "Compute Total Price"})
+@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "CPU Usage", "Memory", "Storage(GB)", "Volume Type",
+		"IOPS", "Snapshot(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
+		"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type",
+		"Instance vCPU", "Instance Memory", "Compute Unit Price", "Compute Monthly Price",
+		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Error Message"})
 
 public class DefaultOutput extends DefaultInput {
 	
 	public DefaultOutput() {
 		
 	}
+
+
+	@Column(name = "Instance Type")
+	private String instanceType;
+
+	@Column(name = "Instance vCPU")
+	private int instanceVCPU;
+
+	@Column(name = "Instance Memory")
+	private float instanceMemory;
+
+	@Column(name = "Compute Unit Price")
+	private float computeUnitPrice;
+	
+	@Column(name = "Compute Monthly Price")
+	private float computeMonthlyPrice;
+	
+	@Column(name = "Compute Total Price")
+	private float computeTotalPrice;
+
+	@Column(name = "Storage Monthly Price")
+	private float storageMonthlyPrice;
+
+	@Column(name = "Snapshot Monthly Price")
+	private float snapshotMonthlyPrice;
+
+	@Column(name = "Error Message")
+	private String errorMessage;
+
 
 	public String getInstanceType() {
 		return instanceType;
@@ -60,22 +92,27 @@ public class DefaultOutput extends DefaultInput {
 		this.computeTotalPrice = computeTotalPrice;
 	}
 
-	@Column(name = "Instance Type")
-	private String instanceType;
+	public float getStorageMonthlyPrice() {
+		return storageMonthlyPrice;
+	}
 
-	@Column(name = "Instance vCPU")
-	private int instanceVCPU;
+	public void setStorageMonthlyPrice(float storageMonthlyPrice) {
+		this.storageMonthlyPrice = storageMonthlyPrice;
+	}
 
-	@Column(name = "Instance Memory")
-	private float instanceMemory;
+	public float getSnapshotMonthlyPrice() {
+		return snapshotMonthlyPrice;
+	}
 
-	@Column(name = "Compute Unit Price")
-	private float computeUnitPrice;
-	
-	@Column(name = "Compute Monthly Price")
-	private float computeMonthlyPrice;
-	
-	@Column(name = "Compute Total Price")
-	private float computeTotalPrice;
-	
+	public void setSnapshotMonthlyPrice(float snapshotMonthlyPrice) {
+		this.snapshotMonthlyPrice = snapshotMonthlyPrice;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 }

@@ -4,6 +4,7 @@ import com.amazon.proposalcalculator.assemblies.DefaultOutputAssembly;
 import com.amazon.proposalcalculator.bean.DefaultInput;
 import com.amazon.proposalcalculator.bean.DefaultOutput;
 import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
 import org.apache.logging.log4j.LogManager;
@@ -25,40 +26,53 @@ public class Calculator {
 		Constants.output = new ArrayList<DefaultOutput>();
         LOGGER.info("Calculating prices...");
 
-		for (DefaultInput server : Constants.servers) {
-			LOGGER.debug("Calculating instance: " + server.getDescription());
+		for (DefaultInput input
+				: Constants.servers) {
 
-			List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
-					 region(server)
-				.and(cpuTolerance(server))
-				.and(memory(server))
-				.and(termType(server))
-				
-				.and(offeringClass(server))
-				.and(leaseContractLength(server))
-				.and(purchaseOption(server))
-				
-				.and(operatingSystem(server))
-				.and(tenancy(server))
-			).collect(Collectors.toList());
-			
-			Price price = getBestPrice(possibleMatches); 
-			DefaultOutput output = DefaultOutputAssembly.from(server);
-			output.setInstanceType(price.getInstanceType());
-			output.setInstanceMemory(price.getMemory());
-			output.setInstanceVCPU(price.getvCPU());
-			output.setComputeUnitPrice(price.getPricePerUnit());
-			output.setComputeMonthlyPrice(
-					price.getPricePerUnit() * Constants.hoursInAMonth * server.getUsage() / 100 * server.getInstances());
-			long days = diffInDays(server.getBeginning(), server.getEnd());
-			output.setComputeTotalPrice(price.getPricePerUnit() * days * 24 * server.getUsage() / 100 * server.getInstances());
+			LOGGER.debug("Calculating instance: " + input.getDescription());
+			DefaultOutput output = DefaultOutputAssembly.from(input);
 
+			try {
+
+				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
+						region(input)
+								.and(cpuTolerance(input))
+								.and(memory(input))
+								.and(termType(input))
+
+								.and(offeringClass(input))
+								.and(leaseContractLength(input))
+								.and(purchaseOption(input))
+
+								.and(operatingSystem(input))
+								.and(tenancy(input))
+				).collect(Collectors.toList());
+
+				Price price = getBestPrice(possibleMatches);
+				output.setInstanceType(price.getInstanceType());
+				output.setInstanceMemory(price.getMemory());
+				output.setInstanceVCPU(price.getvCPU());
+				output.setComputeUnitPrice(price.getPricePerUnit());
+				output.setComputeMonthlyPrice(
+						price.getPricePerUnit() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
+				long days = diffInDays(input.getBeginning(), input.getEnd());
+				output.setComputeTotalPrice(price.getPricePerUnit() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
+
+				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
+				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+
+			} catch (PricingCalculatorException pce){
+				output.setErrorMessage(pce.getMessage());
+			}
 			Constants.output.add(output);
 
 		}
 		DefaultExcelWriter.write();
 	}
-	
+
+
+
+
 	private static Price getBestPrice(List<Price> prices) {
 		Price bestPrice = new Price();
 		for (Price price : prices) {

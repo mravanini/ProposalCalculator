@@ -2,6 +2,7 @@ package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.bean.DefaultInput;
 import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.utils.Constants;
 
 import java.util.function.Predicate;
@@ -13,7 +14,7 @@ public class CalculatorPredicates {
 
 
     public static Predicate<Price> region(DefaultInput server){
-        return p -> p.getLocation() != null && p.getLocation().startsWith(server.getRegion());
+        return p -> p.getLocation() != null && p.getLocation().toLowerCase().startsWith(server.getRegion().toLowerCase());
     }
 
     public static Predicate<Price> cpuTolerance(DefaultInput server){
@@ -29,22 +30,36 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> offeringClass(DefaultInput server) {
-        return p -> (p.getOfferingClass() == null && server.getOfferingClass() == null) ||  (p.getOfferingClass() != null && p.getOfferingClass().equals(server.getOfferingClass()));
+        return p -> (p.getOfferingClass() == null && server.getOfferingClass() == null) ||  (p.getOfferingClass() != null && p.getOfferingClass().equalsIgnoreCase(server.getOfferingClass()));
     }
 
     public static Predicate<Price> leaseContractLength(DefaultInput server){
-        return p -> (p.getLeaseContractLength() == null && server.getLeaseContractLength() == null) ||  (p.getLeaseContractLength() != null && p.getLeaseContractLength().equals(server.getLeaseContractLength()));
+        return p -> (p.getLeaseContractLength() == null && server.getLeaseContractLength() == null) ||  (p.getLeaseContractLength() != null && p.getLeaseContractLength().equalsIgnoreCase(server.getLeaseContractLength()));
     }
 
     public static Predicate<Price> purchaseOption(DefaultInput server){
-        return p -> (p.getPurchaseOption() == null && server.getPurchaseOption() == null) ||  (p.getPurchaseOption() != null && p.getPurchaseOption().equals(server.getPurchaseOption()));
+        return p -> (p.getPurchaseOption() == null && server.getPurchaseOption() == null) ||  (p.getPurchaseOption() != null && p.getPurchaseOption().equalsIgnoreCase(server.getPurchaseOption()));
     }
 
     public static Predicate<Price> operatingSystem(DefaultInput server){
-        return p -> p.getOperatingSystem() != null && p.getOperatingSystem().equals(server.getOperatingSystem());
+        return p -> p.getOperatingSystem() != null && p.getOperatingSystem().equalsIgnoreCase(server.getOperatingSystem());
     }
 
     public static Predicate<Price> tenancy(DefaultInput server){
-        return p -> p.getTenancy() != null && p.getTenancy().equals(server.getTenancy());
+        return p -> p.getTenancy() != null && p.getTenancy().equalsIgnoreCase(server.getTenancy());
     }
+
+    public static Predicate<Price> volumeType(DefaultInput input){
+        return p -> p.getVolumeType() != null && p.getVolumeType().equalsIgnoreCase(input.getVolumeType());
+    }
+
+    public static Predicate<Price> group(String group){
+        return p -> p.getGroup() != null && p.getGroup().equalsIgnoreCase(group);
+    }
+
+    public static Predicate<Price> snapshot(){
+        return p -> p.getProductFamily() != null && p.getProductFamily().equalsIgnoreCase("Storage Snapshot");
+    }
+
+
 }

@@ -9,7 +9,31 @@ public class DefaultInput {
 	
 	@Column(name = "Region")
 	private String region;
-	
+
+	@Column(name = "Instances")
+	private int instances;
+
+	@Column(name = "CPU")
+	private float cpu;
+
+	@Column(name = "CPU Usage")
+	private int cpuUsage;
+
+	@Column(name = "Memory")
+	private float memory;
+
+	@Column(name = "Storage(GB)")
+	private Integer storage;
+
+	@Column(name = "Volume Type")
+	private String volumeType;
+
+	@Column(name = "IOPS")
+	private Integer iops;
+
+	@Column(name = "Snapshot(GB)")
+	private Integer snapshot;
+
 	@Column(name = "Term Type")
 	private String termType;
 	
@@ -21,28 +45,10 @@ public class DefaultInput {
 	
 	@Column(name = "Offering Class")
 	private String offeringClass;
-	
-	@Column(name = "Instances")
-	private int instances;
 
-	@Column(name = "CPU")
-	private float cpu;
-
-	@Column(name = "Memory")
-	private float memory;
-
-	@Column(name = "Storage(GB)")
-	private int storage;
-
-	@Column(name = "Snapshot(GB)")
-	private Integer snapshot;
-
-	@Column(name = "Usage")
-	private int usage;
-	
 	@Column(name = "Tenancy")
 	private String tenancy;
-	
+
 	@Column(name = "Operating System")
 	private String operatingSystem;
 	
@@ -76,22 +82,30 @@ public class DefaultInput {
 		this.memory = memory;
 	}
 
-	public int getStorage() { return storage; }
+	public Integer getStorage() { return storage; }
+
+	public void setStorage(Integer storage) {
+		this.storage = storage;
+	}
+
+	public String getVolumeType() {
+		return volumeType;
+	}
+
+	public void setVolumeType(String volumeType) {
+		this.volumeType = volumeType;
+	}
 
 	public Integer getSnapshot() { return snapshot; }
 
 	public void setSnapshot(Integer snapshot) { this.snapshot = snapshot; }
 
-	public void setStorage(int storage) {
-		this.storage = storage;
+	public int getCpuUsage() {
+		return cpuUsage;
 	}
 
-	public int getUsage() {
-		return usage;
-	}
-
-	public void setUsage(int usage) {
-		this.usage = usage;
+	public void setCpuUsage(int cpuUsage) {
+		this.cpuUsage = cpuUsage;
 	}
 
 	public String getBeginning() {
@@ -173,5 +187,13 @@ public class DefaultInput {
 	public void setOfferingClass(String offeringClass) {
 		this.offeringClass = offeringClass;
 	}
-	
+
+	public Integer getIops() {
+		return iops;
+	}
+
+	public void setIops(Integer iops) {
+		this.iops = iops;
+	}
+
 }

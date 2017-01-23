@@ -44,7 +44,7 @@ public class ParseMainArgumentsTest {
 
         String[] args = new String[]{"-xpto"};
 
-        Boolean isForceDownload = ParseMainArguments.isForceDownload(args);
+        ParseMainArguments.isForceDownload(args);
 
     }
 }

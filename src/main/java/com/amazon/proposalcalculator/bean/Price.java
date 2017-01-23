@@ -6,6 +6,88 @@ import com.opencsv.bean.CsvCustomBindByName;
 
 public class Price {
 	
+	//Compute Instance
+	
+	@CsvBindByName(column="Product Family")
+	private String productFamily;
+	
+	@CsvBindByName(column="Instance Type")
+	private String instanceType;
+	
+	@CsvBindByName(column="vCPU")
+	private int vCPU;
+	
+	//2 GiB
+	@CsvCustomBindByName(column="Memory", converter=MemoryConverter.class)
+	private float memory;
+	
+	@CsvBindByName(column="PricePerUnit")
+	private float pricePerUnit;
+	
+	// South America (Sao Paulo) / US East (N. Virginia)
+	@CsvBindByName(column="Location")
+	private String location;
+	
+	//Yes / No
+	@CsvBindByName(column="Current Generation")
+	private boolean currentGeneration;
+	
+	//Reserve OnDemand
+	@CsvBindByName(column="TermType")
+	private String termType;
+	
+	//RHEL Windows SUSE Linux
+	@CsvBindByName(column="Operating System")
+	private String operatingSystem;
+	
+	//standard convertible
+	@CsvBindByName(column="OfferingClass")
+	private String offeringClass;
+	
+	//All Upfront / Partial Upfront / No Upfront
+	@CsvBindByName(column="PurchaseOption")
+	private String purchaseOption;
+	
+	//Shared
+	@CsvBindByName(column="Tenancy")
+	private String tenancy;
+	
+	@CsvBindByName(column = "LeaseContractLength")
+	private String leaseContractLength;
+
+	@CsvBindByName(column = "Volume Type")
+	private String volumeType;
+
+	@CsvBindByName(column = "Group")
+	private String group;
+
+
+	@Override
+	public String toString() {
+		return "Price [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
+				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
+				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
+				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption
+				+ ", volumeType=" + volumeType + ", group=" + group
+				+ "]";
+	}
+
+	public String getTenancy() {
+		return tenancy;
+	}
+
+	public void setTenancy(String tenancy) {
+		this.tenancy = tenancy;
+	}
+
+	public String getLeaseContractLength() {
+		return leaseContractLength;
+	}
+
+	public void setLeaseContractLength(String leaseContractLength) {
+		this.leaseContractLength = leaseContractLength;
+	}
+
 	public String getProductFamily() {
 		return productFamily;
 	}
@@ -94,78 +176,19 @@ public class Price {
 		this.purchaseOption = purchaseOption;
 	}
 
-	//Compute Instance
-	
-	@CsvBindByName(column="Product Family")
-	private String productFamily;
-	
-	@CsvBindByName(column="Instance Type")
-	private String instanceType;
-	
-	@CsvBindByName(column="vCPU")
-	private int vCPU;
-	
-	//2 GiB
-	@CsvCustomBindByName(column="Memory", converter=MemoryConverter.class)
-	private float memory;
-	
-	@CsvBindByName(column="PricePerUnit")
-	private float pricePerUnit;
-	
-	// South America (Sao Paulo) / US East (N. Virginia)
-	@CsvBindByName(column="Location")
-	private String location;
-	
-	//Yes / No
-	@CsvBindByName(column="Current Generation")
-	private boolean currentGeneration;
-	
-	//Reserve OnDemand
-	@CsvBindByName(column="TermType")
-	private String termType;
-	
-	//RHEL Windows SUSE Linux
-	@CsvBindByName(column="Operating System")
-	private String operatingSystem;
-	
-	//standard convertible
-	@CsvBindByName(column="OfferingClass")
-	private String offeringClass;
-	
-	//All Upfront / Partial Upfront / No Upfront
-	@CsvBindByName(column="PurchaseOption")
-	private String purchaseOption;
-	
-	//Shared
-	@CsvBindByName(column="Tenancy")
-	private String tenancy;
-	
-	@CsvBindByName(column = "LeaseContractLength")
-	private String leaseContractLength;
-	
-	@Override
-	public String toString() {
-		return "Price [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
-				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
-				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
-				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption + "]";
+	public String getVolumeType() {
+		return volumeType;
 	}
 
-	public String getTenancy() {
-		return tenancy;
+	public void setVolumeType(String volumeType) {
+		this.volumeType = volumeType;
 	}
 
-	public void setTenancy(String tenancy) {
-		this.tenancy = tenancy;
+	public String getGroup() {
+		return group;
 	}
 
-	public String getLeaseContractLength() {
-		return leaseContractLength;
+	public void setGroup(String group) {
+		this.group = group;
 	}
-
-	public void setLeaseContractLength(String leaseContractLength) {
-		this.leaseContractLength = leaseContractLength;
-	}
-
-
 }
