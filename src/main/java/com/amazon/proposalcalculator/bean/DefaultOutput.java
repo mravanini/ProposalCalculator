@@ -6,7 +6,7 @@ import com.ebay.xcelite.annotations.Row;
 @Row(colsOrder = {"Description", "Region", "Instances", "CPU", "CPU Usage", "Memory", "Storage(GB)", "Volume Type",
 		"IOPS", "Snapshot(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
 		"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type",
-		"Instance vCPU", "Instance Memory", "Compute Unit Price", "Compute Monthly Price",
+		"Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
 		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Error Message"})
 
 public class DefaultOutput extends DefaultInput {
@@ -14,7 +14,6 @@ public class DefaultOutput extends DefaultInput {
 	public DefaultOutput() {
 		
 	}
-
 
 	@Column(name = "Instance Type")
 	private String instanceType;
@@ -24,6 +23,9 @@ public class DefaultOutput extends DefaultInput {
 
 	@Column(name = "Instance Memory")
 	private float instanceMemory;
+	
+	@Column(name = "Upfront Fee")
+	private float upfrontFee;
 
 	@Column(name = "Compute Unit Price")
 	private float computeUnitPrice;
@@ -119,5 +121,13 @@ public class DefaultOutput extends DefaultInput {
 		}else{
 			this.errorMessage = errorMessage;
 		}
+	}
+
+	public float getUpfrontFee() {
+		return upfrontFee;
+	}
+
+	public void setUpfrontFee(float upfrontFee) {
+		this.upfrontFee = upfrontFee;
 	}
 }

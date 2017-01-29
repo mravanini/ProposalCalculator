@@ -49,17 +49,21 @@ public class Calculator {
 				).collect(Collectors.toList());
 
 				Price price = getBestPrice(possibleMatches);
+				
 				output.setInstanceType(price.getInstanceType());
 				output.setInstanceMemory(price.getMemory());
 				output.setInstanceVCPU(price.getvCPU());
-				output.setComputeUnitPrice(price.getPricePerUnit());
+				output.setComputeUnitPrice(price.getInstanceHourPrice());
 				output.setComputeMonthlyPrice(
-						price.getPricePerUnit() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
+						price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
+				
 				long days = diffInDays(input.getBeginning(), input.getEnd());
-				output.setComputeTotalPrice(price.getPricePerUnit() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
+				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
 
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+				
+				output.setUpfrontFee(price.getUpfrontFee());
 
 			} catch (PricingCalculatorException pce){
 				output.setErrorMessage(pce.getMessage());
@@ -69,19 +73,63 @@ public class Calculator {
 		}
 		DefaultExcelWriter.write();
 	}
-
-
-
+	
+	private static void setEfectivePrice(List<Price> priceList) {
+		for (Price somePrice : priceList) {
+			if (somePrice.getTermType().equals("OnDemand") || somePrice.getPurchaseOption().equals("No Upfront")) {
+				somePrice.setEfectivePrice(somePrice.getPricePerUnit());
+				somePrice.setInstanceHourPrice(somePrice.getPricePerUnit());
+			} else if (somePrice.getPurchaseOption().equals("Partial Upfront")
+					|| somePrice.getPurchaseOption().equals("All Upfront")) {
+				if (somePrice.getPriceDescription().equals("Upfront Fee")) {
+					Price hourFee = getInstanceHourFee(priceList, somePrice);
+					somePrice.setEfectivePrice(somePrice.getPricePerUnit()/(12*Integer.valueOf(somePrice.getLeaseContractLength().substring(0, 1))) + hourFee.getPricePerUnit());
+					somePrice.setUpfrontFee(somePrice.getPricePerUnit());
+					somePrice.setInstanceHourPrice(hourFee.getPricePerUnit());
+				} else {
+					Price upfrontFee = getUpfrontFee(priceList, somePrice);
+					somePrice.setEfectivePrice(upfrontFee.getPricePerUnit()/(12*Integer.valueOf(somePrice.getLeaseContractLength().substring(0, 1))) + somePrice.getPricePerUnit());
+					somePrice.setUpfrontFee(upfrontFee.getPricePerUnit());
+					somePrice.setInstanceHourPrice(somePrice.getPricePerUnit());
+				}
+			}
+		}
+	}
+	
+	private static Price getUpfrontFee(List<Price> priceList, Price price) {
+		for (Price somePrice : priceList) {
+			if (somePrice.getSku().equals(price.getSku()) && somePrice.getPriceDescription().equals("Upfront Fee")) {
+				return somePrice;
+			}
+		}
+		return null;
+	}
+	
+	private static Price getInstanceHourFee(List<Price> priceList, Price price) {
+		for (Price somePrice : priceList) {
+			if (somePrice.getSku().equals(price.getSku()) && !somePrice.getPriceDescription().equals("Upfront Fee")) {
+				return somePrice;
+			}
+		}
+		return null;
+	}
 
 	private static Price getBestPrice(List<Price> prices) {
+		
+		setEfectivePrice(prices);
+		
 		Price bestPrice = new Price();
+		bestPrice.setEfectivePrice(1000000);
+		
 		for (Price price : prices) {
-			if (bestPrice.getPricePerUnit() == 0 || price.getPricePerUnit() < bestPrice.getPricePerUnit()) {
+			if (price.getEfectivePrice() < bestPrice.getEfectivePrice()) {
 				bestPrice = price;
 			}
 		}
+		
 		return bestPrice;
 	}
+	
 	private static long diffInDays(String beginning, String end) {
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -89,7 +137,6 @@ public class Calculator {
 			Date endDate = format.parse(end);
 			return diffInDays(beginningDate, endDate);
 		} catch (java.text.ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}

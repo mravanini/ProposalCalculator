@@ -60,7 +60,18 @@ public class Price {
 
 	@CsvBindByName(column = "Group")
 	private String group;
-
+	
+	@CsvBindByName(column = "PriceDescription")
+	private String priceDescription;
+	
+	@CsvBindByName(column = "SKU")
+	private String sku;
+	
+	private float upfrontFee;
+	
+	private float efectivePrice;
+	
+	private float instanceHourPrice;
 
 	@Override
 	public String toString() {
@@ -190,5 +201,45 @@ public class Price {
 
 	public void setGroup(String group) {
 		this.group = group;
+	}
+
+	public float getUpfrontFee() {
+		return upfrontFee;
+	}
+
+	public void setUpfrontFee(float upfrontFee) {
+		this.upfrontFee = upfrontFee;
+	}
+
+	public String getPriceDescription() {
+		return priceDescription;
+	}
+
+	public void setPriceDescription(String priceDescription) {
+		this.priceDescription = priceDescription;
+	}
+
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+
+	public float getEfectivePrice() {
+		return efectivePrice;
+	}
+
+	public void setEfectivePrice(float efectivePrice) {
+		this.efectivePrice = efectivePrice;
+	}
+
+	public float getInstanceHourPrice() {
+		return instanceHourPrice;
+	}
+
+	public void setInstanceHourPrice(float instanceHourPrice) {
+		this.instanceHourPrice = instanceHourPrice;
 	}
 }
