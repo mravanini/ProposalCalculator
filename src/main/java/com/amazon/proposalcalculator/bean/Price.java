@@ -1,6 +1,7 @@
 package com.amazon.proposalcalculator.bean;
 
 import com.amazon.proposalcalculator.utils.MemoryConverter;
+import com.ebay.xcelite.annotations.Column;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
 
@@ -67,11 +68,16 @@ public class Price {
 	@CsvBindByName(column = "SKU")
 	private String sku;
 	
+	@CsvBindByName(column = "Pre Installed S/W")
+	private String preInstalledSw;
+	
 	private float upfrontFee;
 	
 	private float efectivePrice;
 	
 	private float instanceHourPrice;
+
+	
 
 	@Override
 	public String toString() {
@@ -79,8 +85,10 @@ public class Price {
 				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
 				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
 				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption
-				+ ", volumeType=" + volumeType + ", group=" + group
-				+ "]";
+				+ ", tenancy=" + tenancy + ", leaseContractLength=" + leaseContractLength + ", volumeType=" + volumeType
+				+ ", group=" + group + ", priceDescription=" + priceDescription + ", sku=" + sku + ", preInstalledSw="
+				+ preInstalledSw + ", upfrontFee=" + upfrontFee + ", efectivePrice=" + efectivePrice
+				+ ", instanceHourPrice=" + instanceHourPrice + "]";
 	}
 
 	public String getTenancy() {
@@ -241,5 +249,13 @@ public class Price {
 
 	public void setInstanceHourPrice(float instanceHourPrice) {
 		this.instanceHourPrice = instanceHourPrice;
+	}
+
+	public String getPreInstalledSw() {
+		return preInstalledSw;
+	}
+
+	public void setPreInstalledSw(String preInstalledSw) {
+		this.preInstalledSw = preInstalledSw;
 	}
 }

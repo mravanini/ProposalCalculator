@@ -16,8 +16,8 @@ public class DefaultInput {
 	@Column(name = "CPU")
 	private float cpu;
 
-	@Column(name = "CPU Usage")
-	private int cpuUsage;
+	@Column(name = "Monthly Utilization")
+	private float monthlyUtilization;
 
 	@Column(name = "Memory")
 	private float memory;
@@ -57,6 +57,9 @@ public class DefaultInput {
 	
 	@Column(name = "End")
 	private String end;	
+	
+	@Column(name = "Pre Installed S/W")
+	private String preInstalledSw;
 
 	public String getDescription() {
 		return description;
@@ -99,14 +102,6 @@ public class DefaultInput {
 	public Integer getSnapshot() { return snapshot; }
 
 	public void setSnapshot(Integer snapshot) { this.snapshot = snapshot; }
-
-	public int getCpuUsage() {
-		return cpuUsage;
-	}
-
-	public void setCpuUsage(int cpuUsage) {
-		this.cpuUsage = cpuUsage;
-	}
 
 	public String getBeginning() {
 		return beginning;
@@ -194,6 +189,22 @@ public class DefaultInput {
 
 	public void setIops(Integer iops) {
 		this.iops = iops;
+	}
+
+	public float getMonthlyUtilization() {
+		return monthlyUtilization;
+	}
+
+	public void setMonthlyUtilization(float monthlyUtilization) {
+		this.monthlyUtilization = monthlyUtilization;
+	}
+
+	public String getPreInstalledSw() {
+		return preInstalledSw;
+	}
+
+	public void setPreInstalledSw(String preInstalledSw) {
+		this.preInstalledSw = preInstalledSw;
 	}
 
 }

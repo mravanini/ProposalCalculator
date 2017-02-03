@@ -34,18 +34,17 @@ public class Calculator {
 
 			try {
 
-				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
-						region(input)
-								.and(cpuTolerance(input))
-								.and(memory(input))
-								.and(termType(input))
+				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(region(input)
+						.and(tenancy(input))
+						.and(operatingSystem(input))
+						.and(preInstalledSw(input))
+						.and(termType(input))
+						.and(offeringClass(input))
+						.and(leaseContractLength(input))
+						.and(purchaseOption(input))
+						.and(cpuTolerance(input))
+						.and(memory(input))
 
-								.and(offeringClass(input))
-								.and(leaseContractLength(input))
-								.and(purchaseOption(input))
-
-								.and(operatingSystem(input))
-								.and(tenancy(input))
 				).collect(Collectors.toList());
 
 				Price price = getBestPrice(possibleMatches);
@@ -54,11 +53,17 @@ public class Calculator {
 				output.setInstanceMemory(price.getMemory());
 				output.setInstanceVCPU(price.getvCPU());
 				output.setComputeUnitPrice(price.getInstanceHourPrice());
-				output.setComputeMonthlyPrice(
-						price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
+				
+				//output.setComputeMonthlyPrice(
+				//		price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
+				
+				output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+				//LOGGER.info("Calculo:" + input.getDescription() + " " +  (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1) );
 				
 				long days = diffInDays(input.getBeginning(), input.getEnd());
-				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
+				//output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
+				
+				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
 
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));

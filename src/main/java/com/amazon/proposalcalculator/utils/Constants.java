@@ -15,7 +15,7 @@ public class Constants {
 	public static Collection<DefaultOutput> output;
 	public static Collection<Config> configs;
 	//public static float hoursInAMonth = 730.5f;
-	public static float hoursInAMonth = 744;
+	public static float hoursInAMonth = 732;
 	//public static float cpuTolerance = 10;
 	//public static float memoryTolerance = 10;
 	public static Config config;

@@ -3,9 +3,9 @@ package com.amazon.proposalcalculator.bean;
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
-@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "CPU Usage", "Memory", "Storage(GB)", "Volume Type",
+@Row(colsOrder = {"Description", "Region", "Instances", "CPU", "Monthly Utilization", "Memory", "Storage(GB)", "Volume Type",
 		"IOPS", "Snapshot(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
-		"Offering Class", "Tenancy", "Operating System", "Beginning", "End", "Instance Type",
+		"Offering Class", "Tenancy", "Operating System", "Pre Installed S/W", "Beginning", "End", "Instance Type",
 		"Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
 		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Error Message"})
 

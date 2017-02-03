@@ -12,7 +12,6 @@ import java.util.function.Predicate;
  */
 public class CalculatorPredicates {
 
-
     public static Predicate<Price> region(DefaultInput server){
         return p -> p.getLocation() != null && p.getLocation().toLowerCase().startsWith(server.getRegion().toLowerCase());
     }
@@ -27,6 +26,10 @@ public class CalculatorPredicates {
 
     public static Predicate<Price> termType(DefaultInput server){
         return p -> p.getTermType() != null && p.getTermType().equals(server.getTermType());
+    }
+    
+    public static Predicate<Price> preInstalledSw(DefaultInput server){
+        return p -> (((p.getPreInstalledSw().equals("NA") || p.getPreInstalledSw() == null) && server.getPreInstalledSw() == null)) ||  (p.getPreInstalledSw() != null && p.getPreInstalledSw().equalsIgnoreCase(server.getPreInstalledSw()));
     }
 
     public static Predicate<Price> offeringClass(DefaultInput server) {

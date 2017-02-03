@@ -21,7 +21,7 @@ public class DefaultOutputAssembly {
         output.setVolumeType(input.getVolumeType());
         output.setIops(input.getIops());
         output.setSnapshot(input.getSnapshot());
-        output.setCpuUsage(input.getCpuUsage());
+        output.setMonthlyUtilization(input.getMonthlyUtilization());
         output.setTermType(input.getTermType());
         output.setOfferingClass(input.getOfferingClass());
         output.setLeaseContractLength(input.getLeaseContractLength());
