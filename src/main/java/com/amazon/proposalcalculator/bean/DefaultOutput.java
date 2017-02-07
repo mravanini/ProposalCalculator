@@ -22,25 +22,25 @@ public class DefaultOutput extends DefaultInput {
 	private int instanceVCPU;
 
 	@Column(name = "Instance Memory")
-	private float instanceMemory;
+	private double instanceMemory;
 	
 	@Column(name = "Upfront Fee")
-	private float upfrontFee;
+	private double upfrontFee;
 
 	@Column(name = "Compute Unit Price")
-	private float computeUnitPrice;
+	private double computeUnitPrice;
 	
 	@Column(name = "Compute Monthly Price")
-	private float computeMonthlyPrice;
+	private double computeMonthlyPrice;
 	
 	@Column(name = "Compute Total Price")
-	private float computeTotalPrice;
+	private double computeTotalPrice;
 
 	@Column(name = "Storage Monthly Price")
-	private float storageMonthlyPrice;
+	private double storageMonthlyPrice;
 
 	@Column(name = "Snapshot Monthly Price")
-	private float snapshotMonthlyPrice;
+	private double snapshotMonthlyPrice;
 
 	@Column(name = "Error Message")
 	private String errorMessage;
@@ -62,51 +62,51 @@ public class DefaultOutput extends DefaultInput {
 		this.instanceVCPU = instanceVCPU;
 	}
 
-	public float getInstanceMemory() {
+	public double getInstanceMemory() {
 		return instanceMemory;
 	}
 
-	public void setInstanceMemory(float instanceMemory) {
+	public void setInstanceMemory(double instanceMemory) {
 		this.instanceMemory = instanceMemory;
 	}
 
-	public float getComputeUnitPrice() {
+	public double getComputeUnitPrice() {
 		return computeUnitPrice;
 	}
 
-	public void setComputeUnitPrice(float computeUnitPrice) {
+	public void setComputeUnitPrice(double computeUnitPrice) {
 		this.computeUnitPrice = computeUnitPrice;
 	}
 
-	public float getComputeMonthlyPrice() {
+	public double getComputeMonthlyPrice() {
 		return computeMonthlyPrice;
 	}
 
-	public void setComputeMonthlyPrice(float computeMonthlyPrice) {
+	public void setComputeMonthlyPrice(double computeMonthlyPrice) {
 		this.computeMonthlyPrice = computeMonthlyPrice;
 	}
 
-	public float getComputeTotalPrice() {
+	public double getComputeTotalPrice() {
 		return computeTotalPrice;
 	}
 
-	public void setComputeTotalPrice(float computeTotalPrice) {
+	public void setComputeTotalPrice(double computeTotalPrice) {
 		this.computeTotalPrice = computeTotalPrice;
 	}
 
-	public float getStorageMonthlyPrice() {
+	public double getStorageMonthlyPrice() {
 		return storageMonthlyPrice;
 	}
 
-	public void setStorageMonthlyPrice(float storageMonthlyPrice) {
+	public void setStorageMonthlyPrice(double storageMonthlyPrice) {
 		this.storageMonthlyPrice = storageMonthlyPrice;
 	}
 
-	public float getSnapshotMonthlyPrice() {
+	public double getSnapshotMonthlyPrice() {
 		return snapshotMonthlyPrice;
 	}
 
-	public void setSnapshotMonthlyPrice(float snapshotMonthlyPrice) {
+	public void setSnapshotMonthlyPrice(double snapshotMonthlyPrice) {
 		this.snapshotMonthlyPrice = snapshotMonthlyPrice;
 	}
 
@@ -123,11 +123,11 @@ public class DefaultOutput extends DefaultInput {
 		}
 	}
 
-	public float getUpfrontFee() {
+	public double getUpfrontFee() {
 		return upfrontFee;
 	}
 
-	public void setUpfrontFee(float upfrontFee) {
+	public void setUpfrontFee(double upfrontFee) {
 		this.upfrontFee = upfrontFee;
 	}
 }

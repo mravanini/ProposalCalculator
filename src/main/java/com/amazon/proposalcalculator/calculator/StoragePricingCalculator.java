@@ -21,17 +21,17 @@ public class StoragePricingCalculator {
     public static final String EBS_IO_REQUESTS = "EBS I/O Requests";
 
 
-    public static float getSnapshotMonthlyPrice(DefaultInput input){
+    public static double getSnapshotMonthlyPrice(DefaultInput input){
         if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
             return 0;
         }
 
-        float price = getPricePerUnit(region(input).and(snapshot()));
+        double price = getPricePerUnit(region(input).and(snapshot()));
         return price * input.getSnapshot();
 
     }
 
-    public static float getStorageMonthlyPrice(DefaultInput input) {
+    public static double getStorageMonthlyPrice(DefaultInput input) {
 
         if (input.getStorage() == null || input.getStorage().intValue() == 0){
 
@@ -45,41 +45,41 @@ public class StoragePricingCalculator {
         return getPricePerUnit(input);
     }
 
-    private static float getPricePerUnit(DefaultInput input){
+    private static double getPricePerUnit(DefaultInput input){
         switch (VolumeType.getVolumeType(input.getVolumeType())){
             case General_Purpose: {
-                float price = getPricePerUnit(region(input).and(volumeType(input)));
+                double price = getPricePerUnit(region(input).and(volumeType(input)));
                 return price * input.getStorage();
 
             }
             case Throughput_Optimized_HDD:{
-                float price = getPricePerUnit(region(input).and(volumeType(input)));
+                double price = getPricePerUnit(region(input).and(volumeType(input)));
                 return price * input.getStorage();
 
             }
             case Cold_HDD:{
-                float price = getPricePerUnit(region(input).and(volumeType(input)));
+                double price = getPricePerUnit(region(input).and(volumeType(input)));
                 return price * input.getStorage();
 
             }
 
             case Provisioned_IOPS:{
-                float price = getPricePerUnit(region(input).and(volumeType(input)));
-                float storagePrice = price * input.getStorage();
+                double price = getPricePerUnit(region(input).and(volumeType(input)));
+                double storagePrice = price * input.getStorage();
 
-                float piopsPerUnit = getPricePerUnit(region(input).and(group(EBS_IOPS_GROUP)));
+                double piopsPerUnit = getPricePerUnit(region(input).and(group(EBS_IOPS_GROUP)));
 
                 return storagePrice + piopsPerUnit * input.getIops();
             }
 
             case Magnetic:{
-                float price = getPricePerUnit(region(input).and(volumeType(input)));
-                float storagePrice = price * input.getStorage();
+                double price = getPricePerUnit(region(input).and(volumeType(input)));
+                double storagePrice = price * input.getStorage();
 
-                float piopsPerUnit = getPricePerUnit(region(input).and(group(EBS_IO_REQUESTS)));
+                double piopsPerUnit = getPricePerUnit(region(input).and(group(EBS_IO_REQUESTS)));
 
                 // * 60 seg * 60 min * 24 h * 30 dias = (IOPs que ele usou / 1 milhão de IO ) x price
-                float totalPiops = (input.getIops() * 60 * 60 * 24 * 30) /* / 1000000 the ammount in the CSV already divides by million*/;
+                double totalPiops = (input.getIops() * 60 * 60 * 24 * 30) /* / 1000000 the ammount in the CSV already divides by million*/;
 
                 return storagePrice + (totalPiops * piopsPerUnit) ;
             }
@@ -89,7 +89,7 @@ public class StoragePricingCalculator {
         }
     }
 
-    private static float getPricePerUnit(Predicate<Price> p){
+    private static double getPricePerUnit(Predicate<Price> p){
         List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
                 p
         ).collect(Collectors.toList());

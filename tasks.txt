@@ -1,12 +1,12 @@
 x 1) Adicionar Regiao no input
 x 2) Data inicial/final: inclusive;
-3) Se data nao informada, usar 30.5 dias;
+x 3) Se data nao informada, usar 30.5 dias;
 4) Considerar campo match da aba config;
-x   5) Fazer download da price list se o arquivo nao existir ou usuario forçar;
-x   6) Considerar EBS
-7) Adicionar coluna tipo de pagamento (ondemand, reserved, etc...) e combo;
-8) No output, gerar varias abas, para varios meios pagamento, mesmo os nao escolhidos pelo usuario;
-9) Gerar pagina de resumo, com tipo de pagamento, valor total para o periodo, e percentual de desconto obtido;
+x 5) Fazer download da price list se o arquivo nao existir ou usuario forçar;
+x 6) Considerar EBS
+x 7) Adicionar coluna tipo de pagamento (ondemand, reserved, etc...)
+x 8) No output, gerar varias abas, para varios meios pagamento, mesmo os nao escolhidos pelo usuario;
+x 9) Gerar pagina de resumo, com tipo de pagamento, valor total para o periodo, e percentual de desconto obtido;
 10) Fazer manual do usuario, explicando cada coluna do input e do output...
 11) Fazer interface user friendly (.bat?)...
 x   12) Bug: Corrigir tolerancias
@@ -18,3 +18,8 @@ x   15) Criar um arquivo de saída para o logger
 18) Criar combo na planilha de input para os campos texto
 x   19) Considerar Snapshot;
 20) Mudar todos os float para BigDecimal
+21) Tenancy shared como default. Hoje é obrigatório.
+22) Colocar na aba help os valore default quando nao preenchidos
+23) Criar um help para o config
+24) Explicar o que aceita nada na aba help
+25) Criar uma aba de serviços adicionais: elb, s3, data transfer out.

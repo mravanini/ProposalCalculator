@@ -14,13 +14,13 @@ public class DefaultInput {
 	private int instances;
 
 	@Column(name = "CPU")
-	private float cpu;
+	private double cpu;
 
 	@Column(name = "Monthly Utilization")
-	private float monthlyUtilization;
+	private double monthlyUtilization;
 
 	@Column(name = "Memory")
-	private float memory;
+	private double memory;
 
 	@Column(name = "Storage(GB)")
 	private Integer storage;
@@ -69,19 +69,19 @@ public class DefaultInput {
 		this.description = description;
 	}
 
-	public float getCpu() {
+	public double getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(float cpu) {
+	public void setCpu(double cpu) {
 		this.cpu = cpu;
 	}
 
-	public float getMemory() {
+	public double getMemory() {
 		return memory;
 	}
 
-	public void setMemory(float memory) {
+	public void setMemory(double memory) {
 		this.memory = memory;
 	}
 
@@ -191,11 +191,11 @@ public class DefaultInput {
 		this.iops = iops;
 	}
 
-	public float getMonthlyUtilization() {
+	public double getMonthlyUtilization() {
 		return monthlyUtilization;
 	}
 
-	public void setMonthlyUtilization(float monthlyUtilization) {
+	public void setMonthlyUtilization(double monthlyUtilization) {
 		this.monthlyUtilization = monthlyUtilization;
 	}
 

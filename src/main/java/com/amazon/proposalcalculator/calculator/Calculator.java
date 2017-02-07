@@ -4,9 +4,15 @@ import com.amazon.proposalcalculator.assemblies.DefaultOutputAssembly;
 import com.amazon.proposalcalculator.bean.DefaultInput;
 import com.amazon.proposalcalculator.bean.DefaultOutput;
 import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.bean.Quote;
+import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 import com.amazon.proposalcalculator.utils.Constants;
+import com.amazon.proposalcalculator.utils.SomeMath;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
+import com.ebay.xcelite.sheet.XceliteSheet;
+import com.ebay.xcelite.writer.SheetWriter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,11 +29,63 @@ public class Calculator {
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void calculate() {
-		Constants.output = new ArrayList<DefaultOutput>();
         LOGGER.info("Calculating prices...");
+        
+        Quote quote = new Quote(QuoteName.YOUR_INPUT.getName());
+		calculatePrice(quote);
+		
+        quote = new Quote("OnDemand", null, null, null);
+		calculatePrice(quote);
+		
+        quote = new Quote("Reserved", "1yr", "No Upfront", "standard");
+		calculatePrice(quote);
+		
+		quote = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
+		calculatePrice(quote);
+		
+		quote = new Quote("Reserved", "1yr", "All Upfront", "standard");
+		calculatePrice(quote);	
+		
+		quote = new Quote("Reserved", "3yr", "Partial Upfront", "standard");
+		calculatePrice(quote);
+		
+		quote = new Quote("Reserved", "3yr", "All Upfront", "standard");
+		calculatePrice(quote);	
+		
+        quote = new Quote("Reserved", "3yr", "No Upfront", "convertible");
+		calculatePrice(quote);
+		
+		quote = new Quote("Reserved", "3yr", "Partial Upfront", "convertible");
+		calculatePrice(quote);
+		
+		quote = new Quote("Reserved", "3yr", "All Upfront", "convertible");
+		calculatePrice(quote);
+		
+		calculateDiscount();
+		
+		DefaultExcelWriter.write();
+	}
 
+	private static void calculateDiscount() {
+		Collections.sort(Constants.quotes);
+		double higherValue = Constants.quotes.get(0).getValue();
+		for (Quote q : Constants.quotes) {
+			q.setDiscount((1-(q.getValue()/higherValue))*100);
+		}
+	}
+
+	private static void calculatePrice(Quote quote) {
+		//LOGGER.info("Calculating " + quote.getName());
+		
 		for (DefaultInput input
 				: Constants.servers) {
+			
+			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
+				input.setTermType(quote.getTermType());
+				input.setLeaseContractLength(quote.getLeaseContractLength());
+				input.setPurchaseOption(quote.getPurchaseOption());
+				input.setOfferingClass(quote.getOfferingClass());
+			}
 
 			LOGGER.debug("Calculating instance: " + input.getDescription());
 			DefaultOutput output = DefaultOutputAssembly.from(input);
@@ -36,6 +94,7 @@ public class Calculator {
 
 				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(region(input)
 						.and(tenancy(input))
+						.and(licenceModel(input))
 						.and(operatingSystem(input))
 						.and(preInstalledSw(input))
 						.and(termType(input))
@@ -53,15 +112,14 @@ public class Calculator {
 				output.setInstanceMemory(price.getMemory());
 				output.setInstanceVCPU(price.getvCPU());
 				output.setComputeUnitPrice(price.getInstanceHourPrice());
-				
-				//output.setComputeMonthlyPrice(
-				//		price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getCpuUsage() / 100 * input.getInstances());
-				
 				output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
-				//LOGGER.info("Calculo:" + input.getDescription() + " " +  (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1) );
 				
-				long days = diffInDays(input.getBeginning(), input.getEnd());
-				//output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getCpuUsage() / 100 * input.getInstances());
+				double days = 0;
+				if (input.getBeginning() != null && input.getEnd() != null) {
+					days = diffInDays(input.getBeginning(), input.getEnd());
+				} else {
+					days = Constants.hoursInAMonth / 24;
+				}
 				
 				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
 
@@ -73,10 +131,19 @@ public class Calculator {
 			} catch (PricingCalculatorException pce){
 				output.setErrorMessage(pce.getMessage());
 			}
-			Constants.output.add(output);
-
+			//Constants.output.add(output);
+			quote.addOutput(output);
+			
+			double months = "3yr".equals(output.getLeaseContractLength()) ? 36 : 12;
+			double monthlyUpfront = output.getUpfrontFee() / months;
+			double sum = quote.getValue() + SomeMath.round(monthlyUpfront, 2)
+					+ output.getComputeMonthlyPrice()
+					+ output.getStorageMonthlyPrice()
+					+ output.getSnapshotMonthlyPrice();
+			quote.setValue(sum);
 		}
-		DefaultExcelWriter.write();
+		Constants.quotes.add(quote);
+		LOGGER.info(quote.getName() + ":" + quote.getValue());
 	}
 	
 	private static void setEfectivePrice(List<Price> priceList) {
@@ -120,18 +187,17 @@ public class Calculator {
 	}
 
 	private static Price getBestPrice(List<Price> prices) {
-		
 		setEfectivePrice(prices);
 		
 		Price bestPrice = new Price();
-		bestPrice.setEfectivePrice(1000000);
+		bestPrice.setEfectivePrice(1_000_000);
 		
 		for (Price price : prices) {
+			//LOGGER.info(price.getOperatingSystem());
 			if (price.getEfectivePrice() < bestPrice.getEfectivePrice()) {
 				bestPrice = price;
 			}
 		}
-		
 		return bestPrice;
 	}
 	

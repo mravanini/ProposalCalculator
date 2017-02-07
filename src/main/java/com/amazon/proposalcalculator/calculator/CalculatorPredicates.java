@@ -47,6 +47,10 @@ public class CalculatorPredicates {
     public static Predicate<Price> operatingSystem(DefaultInput server){
         return p -> p.getOperatingSystem() != null && p.getOperatingSystem().equalsIgnoreCase(server.getOperatingSystem());
     }
+    
+    public static Predicate<Price> licenceModel(DefaultInput server){
+        return p -> p.getLicenseModel() != null && p.getLicenseModel().equalsIgnoreCase("Windows".equals(server.getOperatingSystem()) ? "License Included" : "No License required");
+    }
 
     public static Predicate<Price> tenancy(DefaultInput server){
         return p -> p.getTenancy() != null && p.getTenancy().equalsIgnoreCase(server.getTenancy());

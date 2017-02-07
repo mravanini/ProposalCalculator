@@ -4,6 +4,8 @@ import com.amazon.proposalcalculator.reader.ConfigReader;
 import com.amazon.proposalcalculator.reader.DefaultExcelReader;
 import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.reader.ParseMainArguments;
+import com.amazon.proposalcalculator.utils.Constants;
+
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,16 +20,14 @@ public class Run {
     private final static Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
-
         try {
-
+        	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;
             forceDownload = ParseMainArguments.isForceDownload(args);
-
             init(forceDownload);
-
             Calculator.calculate();
-            LOGGER.info("Done!");
+            Constants.endTime = System.currentTimeMillis();
+            LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
         } catch (ParseException pe) {
             System.exit(1);
         } catch (Exception e){

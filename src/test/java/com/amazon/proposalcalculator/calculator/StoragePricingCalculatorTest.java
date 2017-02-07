@@ -35,7 +35,7 @@ public class StoragePricingCalculatorTest {
         DefaultInput input = new DefaultInput();
         input.setStorage(null);
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(0, price, 0);
 
@@ -70,7 +70,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("US East (N. Virginia)");
         input.setVolumeType("General Purpose");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(10, price, 0);
     }
@@ -83,7 +83,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("Asia Pacific (Tokyo)");
         input.setVolumeType("Throughput Optimized HDD");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(27, price, 0);
     }
@@ -96,7 +96,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("US East (N. Virginia)");
         input.setVolumeType("Throughput Optimized HDD");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(45, price, 0);
     }
@@ -109,7 +109,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("AWS GovCloud (US)");
         input.setVolumeType("Cold HDD");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(21, price, 0);
     }
@@ -123,7 +123,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("EU (London)");
         input.setVolumeType("Provisioned IOPS");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(22.45, price, 1);
     }
@@ -137,7 +137,7 @@ public class StoragePricingCalculatorTest {
         input.setRegion("EU (Frankfurt)");
         input.setVolumeType("Magnetic");
 
-        float price = StoragePricingCalculator.getStorageMonthlyPrice(input);
+        double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
         assertEquals(23.38, price, 1);
     }
@@ -147,7 +147,7 @@ public class StoragePricingCalculatorTest {
         DefaultInput input = new DefaultInput();
         input.setSnapshot(null);
 
-        float price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
+        double price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
 
         Assert.assertEquals(0, price, 0);
 
@@ -165,7 +165,7 @@ public class StoragePricingCalculatorTest {
         input.setSnapshot(100);
         input.setRegion("South America (Sao Paulo)");
 
-        float price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
+        double price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
 
         Assert.assertEquals(6.8, price, 1);
 
@@ -177,7 +177,7 @@ public class StoragePricingCalculatorTest {
         input.setSnapshot(500);
         input.setRegion("US East (N. Virginia)");
 
-        float price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
+        double price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
 
         Assert.assertEquals(25, price, 1);
 
@@ -234,7 +234,7 @@ public class StoragePricingCalculatorTest {
         Constants.ec2PriceList = priceList;
     }
 
-    private static Price getPrice(String region, float pricePerUnit, String group) {
+    private static Price getPrice(String region, double pricePerUnit, String group) {
         Price p1 = new Price();
         p1.setLocation(region);
         p1.setPricePerUnit(pricePerUnit);
@@ -243,7 +243,7 @@ public class StoragePricingCalculatorTest {
 
     }
 
-    private static Price getPrice(String region, String volumeType, float pricePerUnit) {
+    private static Price getPrice(String region, String volumeType, double pricePerUnit) {
 
         Price p1 = new Price();
         p1.setLocation(region);
@@ -252,7 +252,7 @@ public class StoragePricingCalculatorTest {
         return p1;
     }
 
-    private static Price getPrice(String region, float pricePerUnit) {
+    private static Price getPrice(String region, double pricePerUnit) {
         Price p1 = new Price();
         p1.setLocation(region);
         p1.setPricePerUnit(pricePerUnit);

@@ -31,6 +31,8 @@ public class DefaultOutputAssembly {
         output.setOperatingSystem(input.getOperatingSystem());
         output.setBeginning(input.getBeginning());
         output.setEnd(input.getEnd());
+        output.setPreInstalledSw(input.getPreInstalledSw());
+        
         return output;
     }
 

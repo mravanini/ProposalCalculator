@@ -20,10 +20,10 @@ public class Price {
 	
 	//2 GiB
 	@CsvCustomBindByName(column="Memory", converter=MemoryConverter.class)
-	private float memory;
+	private double memory;
 	
 	@CsvBindByName(column="PricePerUnit")
-	private float pricePerUnit;
+	private double pricePerUnit;
 	
 	// South America (Sao Paulo) / US East (N. Virginia)
 	@CsvBindByName(column="Location")
@@ -71,13 +71,14 @@ public class Price {
 	@CsvBindByName(column = "Pre Installed S/W")
 	private String preInstalledSw;
 	
-	private float upfrontFee;
+	@CsvBindByName(column = "License Model")
+	private String licenseModel;
 	
-	private float efectivePrice;
+	private double upfrontFee;
 	
-	private float instanceHourPrice;
-
+	private double efectivePrice;
 	
+	private double instanceHourPrice;
 
 	@Override
 	public String toString() {
@@ -131,19 +132,19 @@ public class Price {
 		this.vCPU = vCPU;
 	}
 
-	public float getMemory() {
+	public double getMemory() {
 		return memory;
 	}
 
-	public void setMemory(float memory) {
+	public void setMemory(double memory) {
 		this.memory = memory;
 	}
 
-	public float getPricePerUnit() {
+	public double getPricePerUnit() {
 		return pricePerUnit;
 	}
 
-	public void setPricePerUnit(float pricePerUnit) {
+	public void setPricePerUnit(double pricePerUnit) {
 		this.pricePerUnit = pricePerUnit;
 	}
 
@@ -211,11 +212,11 @@ public class Price {
 		this.group = group;
 	}
 
-	public float getUpfrontFee() {
+	public double getUpfrontFee() {
 		return upfrontFee;
 	}
 
-	public void setUpfrontFee(float upfrontFee) {
+	public void setUpfrontFee(double upfrontFee) {
 		this.upfrontFee = upfrontFee;
 	}
 
@@ -235,19 +236,19 @@ public class Price {
 		this.sku = sku;
 	}
 
-	public float getEfectivePrice() {
+	public double getEfectivePrice() {
 		return efectivePrice;
 	}
 
-	public void setEfectivePrice(float efectivePrice) {
+	public void setEfectivePrice(double efectivePrice) {
 		this.efectivePrice = efectivePrice;
 	}
 
-	public float getInstanceHourPrice() {
+	public double getInstanceHourPrice() {
 		return instanceHourPrice;
 	}
 
-	public void setInstanceHourPrice(float instanceHourPrice) {
+	public void setInstanceHourPrice(double instanceHourPrice) {
 		this.instanceHourPrice = instanceHourPrice;
 	}
 
@@ -257,5 +258,13 @@ public class Price {
 
 	public void setPreInstalledSw(String preInstalledSw) {
 		this.preInstalledSw = preInstalledSw;
+	}
+
+	public String getLicenseModel() {
+		return licenseModel;
+	}
+
+	public void setLicenseModel(String licenseModel) {
+		this.licenseModel = licenseModel;
 	}
 }
