@@ -27,7 +27,6 @@ public class ParseMainArguments {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("proposal-calculator [OPTIONS]", options);
             throw e;

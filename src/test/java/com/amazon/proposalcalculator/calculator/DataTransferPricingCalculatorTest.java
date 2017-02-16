@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by ravanini on 22/01/17.
  */
-public class StoragePricingCalculatorTest {
+public class DataTransferPricingCalculatorTest {
 
     @Test(expected = PricingCalculatorException.class)
     public void notValidEBSStorageTypeTest(){

@@ -30,9 +30,11 @@ public class Quote implements Comparable<Quote> {
 	private String leaseContractLength;
 	private String purchaseOption;
 	private String offeringClass;
-	private double value;
+	private double monthly;
+	private double upfront;
+	private double threeYearTotal;
 	private double discount;
-	private Collection<DefaultOutput> output = new ArrayList<DefaultOutput>();
+	private Collection<InstanceOutput> output = new ArrayList<InstanceOutput>();
 	
 	private String justFirstLetters(String words) {
 		StringBuilder result = new StringBuilder();
@@ -49,19 +51,13 @@ public class Quote implements Comparable<Quote> {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getValue() {
-		return value;
-	}
-	public void setValue(double value) {
-		this.value = value;
-	}
-	public Collection<DefaultOutput> getOutput() {
+	public Collection<InstanceOutput> getOutput() {
 		return output;
 	}
-	public void setOutput(Collection<DefaultOutput> output) {
+	public void setOutput(Collection<InstanceOutput> output) {
 		this.output = output;
 	}
-	public void addOutput(DefaultOutput output) {
+	public void addOutput(InstanceOutput output) {
 		this.output.add(output);
 	}
 	public String getTermType() {
@@ -91,7 +87,7 @@ public class Quote implements Comparable<Quote> {
 
 	@Override
 	public int compareTo(Quote q) {
-		return (int) Math.round(q.getValue() - this.getValue());
+		return (int) Math.round(q.getThreeYearTotal() - this.getThreeYearTotal());
 	}
 
 	public double getDiscount() {
@@ -100,6 +96,30 @@ public class Quote implements Comparable<Quote> {
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
+	}
+
+	public double getMonthly() {
+		return monthly;
+	}
+
+	public void setMonthly(double monthly) {
+		this.monthly = monthly;
+	}
+
+	public double getUpfront() {
+		return upfront;
+	}
+
+	public void setUpfront(double upfront) {
+		this.upfront = upfront;
+	}
+
+	public double getThreeYearTotal() {
+		return threeYearTotal;
+	}
+
+	public void setThreeYearTotal(double threeYearTotal) {
+		this.threeYearTotal = threeYearTotal;
 	}
 
 }

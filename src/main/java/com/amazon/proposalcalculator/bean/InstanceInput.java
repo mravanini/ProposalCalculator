@@ -1,8 +1,9 @@
 package com.amazon.proposalcalculator.bean;
 
+import com.amazon.proposalcalculator.utils.NumbersConverter;
 import com.ebay.xcelite.annotations.Column;
 
-public class DefaultInput {
+public class InstanceInput {
 	
 	@Column(name = "Description")
 	private String description;
@@ -14,13 +15,19 @@ public class DefaultInput {
 	private int instances;
 
 	@Column(name = "CPU")
-	private double cpu;
+	private Double cpu;
+	
+	@Column(name = "SAPS")
+	private Integer saps;
+	
+	@Column(name = "Use SAP Certified Instances")
+	private String useSAPCertifiedInstances;
 
 	@Column(name = "Monthly Utilization")
 	private double monthlyUtilization;
 
 	@Column(name = "Memory")
-	private double memory;
+	private Double memory;
 
 	@Column(name = "Storage(GB)")
 	private Integer storage;
@@ -60,6 +67,9 @@ public class DefaultInput {
 	
 	@Column(name = "Pre Installed S/W")
 	private String preInstalledSw;
+	
+	@Column(name = "Only Current Generation Instances")
+	private String onlyCurrentGenerationInstances;
 
 	public String getDescription() {
 		return description;
@@ -69,19 +79,19 @@ public class DefaultInput {
 		this.description = description;
 	}
 
-	public double getCpu() {
+	public Double getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(double cpu) {
+	public void setCpu(Double cpu) {
 		this.cpu = cpu;
 	}
 
-	public double getMemory() {
+	public Double getMemory() {
 		return memory;
 	}
 
-	public void setMemory(double memory) {
+	public void setMemory(Double memory) {
 		this.memory = memory;
 	}
 
@@ -205,6 +215,30 @@ public class DefaultInput {
 
 	public void setPreInstalledSw(String preInstalledSw) {
 		this.preInstalledSw = preInstalledSw;
+	}
+
+	public String getUseSAPCertifiedInstances() {
+		return useSAPCertifiedInstances;
+	}
+
+	public void setUseSAPCertifiedInstances(String useSAPCertifiedInstances) {
+		this.useSAPCertifiedInstances = useSAPCertifiedInstances;
+	}
+
+	public Integer getSaps() {
+		return saps;
+	}
+
+	public void setSaps(Integer saps) {
+		this.saps = saps;
+	}
+
+	public String getOnlyCurrentGenerationInstances() {
+		return onlyCurrentGenerationInstances;
+	}
+
+	public void setOnlyCurrentGenerationInstances(String onlyCurrentGenerationInstances) {
+		this.onlyCurrentGenerationInstances = onlyCurrentGenerationInstances;
 	}
 
 }

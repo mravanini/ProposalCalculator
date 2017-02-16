@@ -27,22 +27,14 @@ public class OpenCSVTest {
 		List<Price> beanList = csvToBean.parse(strategy, createReader());
 		Constants.ec2PriceList = beanList;
 
-		System.out.println(beanList.size());
-
 		long now = System.currentTimeMillis();
-		System.out.println("Filtro:");
 		List<Price> nomesIniciadosE = beanList.stream()
-				.filter(p -> p.getLocation() != null && p.getLocation().startsWith("South") && p.isCurrentGeneration()
+				.filter(p -> p.getLocation() != null && p.getLocation().startsWith("South") && p.getCurrentGeneration().equals("Yes")
 						&& p.getvCPU() == 2 && p.getMemory() == 8 && p.getTermType().equals("OnDemand")
 						&& p.getTermType() != null && p.getOperatingSystem() != null && p.getOperatingSystem().equals("Linux")
 						&& p.getTenancy() != null && p.getTenancy().equals("Shared"))
 				.collect(Collectors.toList());
 		nomesIniciadosE.forEach(p -> System.out.println(p));
-		System.out.println(System.currentTimeMillis() - now);
-
-		/*
-		 * for (Price price : beanList) { System.out.println(price); }
-		 */
 
 		return beanList;
 	}

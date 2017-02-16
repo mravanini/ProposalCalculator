@@ -3,8 +3,8 @@ package com.amazon.proposalcalculator.reader;
 import java.io.File;
 import java.util.Collection;
 
-import com.amazon.proposalcalculator.bean.Config;
-import com.amazon.proposalcalculator.bean.DefaultInput;
+import com.amazon.proposalcalculator.bean.ConfigInput;
+import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
@@ -25,13 +25,13 @@ public class DefaultExcelReader {
 		Xcelite xcelite = new Xcelite(new File("input.xlsx"));
 		
 		XceliteSheet sheet = xcelite.getSheet("Servers");
-		SheetReader<DefaultInput> reader = sheet.getBeanReader(DefaultInput.class);
-		Collection<DefaultInput> servers = reader.read();
+		SheetReader<InstanceInput> reader = sheet.getBeanReader(InstanceInput.class);
+		Collection<InstanceInput> servers = reader.read();
 		Constants.servers = servers;
 		
 		sheet = xcelite.getSheet("Config");
-		SheetReader<Config> configReader = sheet.getBeanReader(Config.class);
-		Collection<Config> configs = configReader.read();
+		SheetReader<ConfigInput> configReader = sheet.getBeanReader(ConfigInput.class);
+		Collection<ConfigInput> configs = configReader.read();
 		Constants.config = configs.iterator().next();
 		
 	}

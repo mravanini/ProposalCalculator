@@ -2,7 +2,7 @@ package com.amazon.proposalcalculator.bean;
 
 import com.ebay.xcelite.annotations.Column;
 
-public class Config {
+public class ConfigInput {
 			
 	@Column(name = "CPU Tolerance")
 	private float cpuTolerance;

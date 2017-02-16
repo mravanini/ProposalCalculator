@@ -31,7 +31,7 @@ public class Price {
 	
 	//Yes / No
 	@CsvBindByName(column="Current Generation")
-	private boolean currentGeneration;
+	private String currentGeneration;
 	
 	//Reserve OnDemand
 	@CsvBindByName(column="TermType")
@@ -74,11 +74,25 @@ public class Price {
 	@CsvBindByName(column = "License Model")
 	private String licenseModel;
 	
+	@CsvBindByName(column = "Transfer Type")
+	private String transferType;
+	
+	@CsvBindByName(column = "StartingRange")
+	private String startingRange;
+	
+	@CsvBindByName(column = "EndingRange")
+	private String endingRange;
+	
+	@CsvBindByName(column = "From Location")
+	private String fromLocation;
+	
 	private double upfrontFee;
 	
 	private double efectivePrice;
 	
 	private double instanceHourPrice;
+	
+	private int saps;
 
 	@Override
 	public String toString() {
@@ -156,11 +170,11 @@ public class Price {
 		this.location = location;
 	}
 
-	public boolean isCurrentGeneration() {
+	public String getCurrentGeneration() {
 		return currentGeneration;
 	}
 
-	public void setCurrentGeneration(boolean currentGeneration) {
+	public void setCurrentGeneration(String currentGeneration) {
 		this.currentGeneration = currentGeneration;
 	}
 
@@ -266,5 +280,61 @@ public class Price {
 
 	public void setLicenseModel(String licenseModel) {
 		this.licenseModel = licenseModel;
+	}
+
+	public String getTransferType() {
+		return transferType;
+	}
+
+	public void setTransferType(String transferType) {
+		this.transferType = transferType;
+	}
+
+	public String getStartingRange() {
+		return startingRange;
+	}
+	
+	public long getStartingRangeAsLong() {
+		try {
+			return Long.valueOf(startingRange);
+		} catch (NumberFormatException e) {
+			return Long.MAX_VALUE;
+		}
+	}
+
+	public void setStartingRange(String startingRange) {
+		this.startingRange = startingRange;
+	}
+
+	public String getEndingRange() {
+		return endingRange;
+	}
+	
+	public long getEndingRangeAsLong() {
+		try {
+			return Long.valueOf(endingRange);
+		} catch (NumberFormatException e) {
+			return Long.MAX_VALUE;
+		}
+	}
+
+	public void setEndingRange(String endingRange) {
+		this.endingRange = endingRange;
+	}
+
+	public String getFromLocation() {
+		return fromLocation;
+	}
+
+	public void setFromLocation(String fromLocation) {
+		this.fromLocation = fromLocation;
+	}
+
+	public int getSaps() {
+		return saps;
+	}
+
+	public void setSaps(int saps) {
+		this.saps = saps;
 	}
 }

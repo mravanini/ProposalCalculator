@@ -1,6 +1,6 @@
 package com.amazon.proposalcalculator.calculator;
 
-import com.amazon.proposalcalculator.bean.DefaultInput;
+import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
@@ -21,7 +21,7 @@ public class StoragePricingCalculator {
     public static final String EBS_IO_REQUESTS = "EBS I/O Requests";
 
 
-    public static double getSnapshotMonthlyPrice(DefaultInput input){
+    public static double getSnapshotMonthlyPrice(InstanceInput input){
         if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
             return 0;
         }
@@ -31,7 +31,7 @@ public class StoragePricingCalculator {
 
     }
 
-    public static double getStorageMonthlyPrice(DefaultInput input) {
+    public static double getStorageMonthlyPrice(InstanceInput input) {
 
         if (input.getStorage() == null || input.getStorage().intValue() == 0){
 
@@ -45,7 +45,7 @@ public class StoragePricingCalculator {
         return getPricePerUnit(input);
     }
 
-    private static double getPricePerUnit(DefaultInput input){
+    private static double getPricePerUnit(InstanceInput input){
         switch (VolumeType.getVolumeType(input.getVolumeType())){
             case General_Purpose: {
                 double price = getPricePerUnit(region(input).and(volumeType(input)));

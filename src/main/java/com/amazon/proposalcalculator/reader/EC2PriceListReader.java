@@ -8,6 +8,7 @@ import java.util.List;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.enums.ProductName;
 import com.amazon.proposalcalculator.utils.Constants;
+import com.amazon.proposalcalculator.utils.SAPS;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
@@ -38,6 +39,12 @@ public class EC2PriceListReader {
 		LOGGER.info("Reading price list...");
 		List<Price> beanList = csvToBean.parse(strategy, csvReader);
 		Constants.ec2PriceList = beanList;
+		for (Price price : beanList) {
+			if (price.getInstanceType() != null) {
+				price.setSaps(SAPS.getInstance().getSAPS(price.getInstanceType()));
+			}
+		}
+		
 		LOGGER.info("EC2 Price List size: " + beanList.size() + " records");
 
 		return beanList;

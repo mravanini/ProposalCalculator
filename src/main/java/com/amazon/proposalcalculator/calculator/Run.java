@@ -1,6 +1,7 @@
 package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.reader.ConfigReader;
+import com.amazon.proposalcalculator.reader.DataTransferReader;
 import com.amazon.proposalcalculator.reader.DefaultExcelReader;
 import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.reader.ParseMainArguments;
@@ -37,11 +38,11 @@ public class Run {
         }
     }
 
-
     private static void init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
         DefaultExcelReader.read();
         ConfigReader.read();
+        DataTransferReader.read();
     }
 
 }

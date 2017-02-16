@@ -1,12 +1,14 @@
 package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.assemblies.DefaultOutputAssembly;
-import com.amazon.proposalcalculator.bean.DefaultInput;
-import com.amazon.proposalcalculator.bean.DefaultOutput;
+import com.amazon.proposalcalculator.bean.InstanceInput;
+import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
+import com.amazon.proposalcalculator.reader.DataTransferReader;
+import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.utils.SomeMath;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
@@ -68,16 +70,16 @@ public class Calculator {
 
 	private static void calculateDiscount() {
 		Collections.sort(Constants.quotes);
-		double higherValue = Constants.quotes.get(0).getValue();
+		double higherValue = Constants.quotes.get(0).getThreeYearTotal();
 		for (Quote q : Constants.quotes) {
-			q.setDiscount((1-(q.getValue()/higherValue))*100);
+			q.setDiscount((1-(q.getThreeYearTotal()/higherValue)));
 		}
 	}
 
 	private static void calculatePrice(Quote quote) {
 		//LOGGER.info("Calculating " + quote.getName());
 		
-		for (DefaultInput input
+		for (InstanceInput input
 				: Constants.servers) {
 			
 			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
@@ -88,11 +90,13 @@ public class Calculator {
 			}
 
 			LOGGER.debug("Calculating instance: " + input.getDescription());
-			DefaultOutput output = DefaultOutputAssembly.from(input);
+			InstanceOutput output = null;
 
 			try {
 
-				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(region(input)
+				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
+						region(input)
+						.and(ec2(input))
 						.and(tenancy(input))
 						.and(licenceModel(input))
 						.and(operatingSystem(input))
@@ -101,24 +105,24 @@ public class Calculator {
 						.and(offeringClass(input))
 						.and(leaseContractLength(input))
 						.and(purchaseOption(input))
-						.and(cpuTolerance(input))
+						.and(saps(input))
+						.and(cpu(input))
 						.and(memory(input))
+						.and(newGeneration(input))
+						.and(sapCertifiedInstances(input))
 
 				).collect(Collectors.toList());
 
 				Price price = getBestPrice(possibleMatches);
 				
-				output.setInstanceType(price.getInstanceType());
-				output.setInstanceMemory(price.getMemory());
-				output.setInstanceVCPU(price.getvCPU());
-				output.setComputeUnitPrice(price.getInstanceHourPrice());
-				output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.hoursInAMonth * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+				output = DefaultOutputAssembly.from(input, price);
+				
 				
 				double days = 0;
 				if (input.getBeginning() != null && input.getEnd() != null) {
 					days = diffInDays(input.getBeginning(), input.getEnd());
 				} else {
-					days = Constants.hoursInAMonth / 24;
+					days = Constants.HOURS_IN_A_MONTH / 24;
 				}
 				
 				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
@@ -136,14 +140,29 @@ public class Calculator {
 			
 			double months = "3yr".equals(output.getLeaseContractLength()) ? 36 : 12;
 			double monthlyUpfront = output.getUpfrontFee() / months;
-			double sum = quote.getValue() + SomeMath.round(monthlyUpfront, 2)
+			double threeYearTotal = quote.getThreeYearTotal() + monthlyUpfront
 					+ output.getComputeMonthlyPrice()
 					+ output.getStorageMonthlyPrice()
 					+ output.getSnapshotMonthlyPrice();
-			quote.setValue(sum);
+			quote.setThreeYearTotal(threeYearTotal);
+
+			double upfront = quote.getUpfront() + output.getUpfrontFee();
+			quote.setUpfront(upfront);
+			
+			DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
+			double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
+			
+			double monthly = quote.getMonthly() + 
+								output.getComputeMonthlyPrice() +
+								output.getStorageMonthlyPrice() +
+								output.getSnapshotMonthlyPrice() +
+								dataTransferOutMonthlyPrice;
+			
+			quote.setMonthly(monthly);
 		}
+		quote.setThreeYearTotal(quote.getThreeYearTotal()*36);
 		Constants.quotes.add(quote);
-		LOGGER.info(quote.getName() + ":" + quote.getValue());
+		LOGGER.info(quote.getName() + ":" + quote.getThreeYearTotal());
 	}
 	
 	private static void setEfectivePrice(List<Price> priceList) {
@@ -189,8 +208,9 @@ public class Calculator {
 	private static Price getBestPrice(List<Price> prices) {
 		setEfectivePrice(prices);
 		
-		Price bestPrice = new Price();
-		bestPrice.setEfectivePrice(1_000_000);
+		//Price bestPrice = new Price();
+		//bestPrice.setEfectivePrice(1_000_000);
+		Price bestPrice = prices.get(0);
 		
 		for (Price price : prices) {
 			//LOGGER.info(price.getOperatingSystem());

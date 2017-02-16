@@ -9,14 +9,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.amazon.proposalcalculator.bean.DefaultOutput;
+import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.utils.Constants;
+import com.amazon.proposalcalculator.utils.SomeMath;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.sl.usermodel.Sheet;
 
 public class DefaultExcelWriter {
 
@@ -33,35 +35,30 @@ public class DefaultExcelWriter {
 		
 		List<Object> list1 = new ArrayList<Object>();
 		list1.add("Payment");
-		list1.add("Value");
+		list1.add("Upfront");
+		list1.add("Monthly");
+		list1.add("3 Years Total");
 		list1.add("Discount");
 		data.add(list1);
 		
 		for (Quote quote : Constants.quotes) {
 			List<Object> list2 = new ArrayList<Object>();
 			list2.add(quote.getName());
-			list2.add(round(quote.getValue(), 2));
-			list2.add(round(quote.getDiscount(), 2) +"%");
+			list2.add(SomeMath.round(quote.getUpfront(), 2));
+			list2.add(SomeMath.round(quote.getMonthly(), 2));
+			list2.add(SomeMath.round(quote.getThreeYearTotal(), 2));
+			list2.add(SomeMath.round(quote.getDiscount(), 4));
 			data.add(list2);
 		}
 		simpleWriter.write(data);   
 		
 		for (Quote quote : Constants.quotes) {
 			XceliteSheet sheet = xcelite.createSheet(quote.getName());
-			SheetWriter<DefaultOutput> writer = sheet.getBeanWriter(DefaultOutput.class);
+			SheetWriter<InstanceOutput> writer = sheet.getBeanWriter(InstanceOutput.class);
 			writer.write(quote.getOutput());
-			LOGGER.info(quote.getName() + "-> Valor: " + quote.getValue() + "-> Desconto: " + quote.getDiscount());
+			LOGGER.info(quote.getName() + "-> Valor: " + quote.getThreeYearTotal() + "-> Desconto: " + quote.getDiscount());
 		}
-		
 		xcelite.write(new File("output.xlsx"));
 	}
 	
-	public static double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
-
-	    BigDecimal bd = new BigDecimal(value);
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
-	}
-
 }

@@ -1,6 +1,6 @@
 package com.amazon.proposalcalculator.reader;
 
-import com.amazon.proposalcalculator.bean.Config;
+import com.amazon.proposalcalculator.bean.ConfigInput;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
@@ -23,12 +23,9 @@ public class ConfigReader {
 		LOGGER.info("Reading input spreadsheet - tab Config...");
 		Xcelite xcelite = new Xcelite(new File("input.xlsx"));
 		XceliteSheet sheet = xcelite.getSheet("Config");
-		SheetReader<Config> reader = sheet.getBeanReader(Config.class);
-		Collection<Config> config = reader.read();
+		SheetReader<ConfigInput> reader = sheet.getBeanReader(ConfigInput.class);
+		Collection<ConfigInput> config = reader.read();
 		Constants.config = config.iterator().next();
-		//for (DefaultInput input : servers) {
-			//System.out.println(input.getDescription());
-		//}
 	}
 
 }
