@@ -22,17 +22,12 @@ public class DefaultExcelReader {
 
 	public static void read() {
 		LOGGER.info("Reading input spreadsheet - tab Servers...");
-		Xcelite xcelite = new Xcelite(new File("input.xlsx"));
+		Xcelite xcelite = new Xcelite(new File("input_sap.xlsx"));
 		
 		XceliteSheet sheet = xcelite.getSheet("Servers");
 		SheetReader<InstanceInput> reader = sheet.getBeanReader(InstanceInput.class);
 		Collection<InstanceInput> servers = reader.read();
 		Constants.servers = servers;
-		
-		sheet = xcelite.getSheet("Config");
-		SheetReader<ConfigInput> configReader = sheet.getBeanReader(ConfigInput.class);
-		Collection<ConfigInput> configs = configReader.read();
-		Constants.config = configs.iterator().next();
 		
 	}
 

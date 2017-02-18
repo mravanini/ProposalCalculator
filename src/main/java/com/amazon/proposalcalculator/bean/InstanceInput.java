@@ -12,10 +12,20 @@ public class InstanceInput {
 	private String region;
 
 	@Column(name = "Instances")
-	private int instances;
-
+	//TODO remove default value
+	private int instances = 1;
+	
+	@Column(name = "Environment")
+	private String environment;
+	
+	@Column(name = "SAP Instance Type")
+	private String sapInstanceType;
+	
 	@Column(name = "CPU")
 	private Double cpu;
+	
+	@Column(name = "CPU Tolerance")
+	private Double cpuTolerance = 10d;
 	
 	@Column(name = "SAPS")
 	private Integer saps;
@@ -28,6 +38,9 @@ public class InstanceInput {
 
 	@Column(name = "Memory")
 	private Double memory;
+	
+	@Column(name = "Memory Tolerance")
+	private Double memoryTolerance = 10d;
 
 	@Column(name = "Storage(GB)")
 	private Integer storage;
@@ -40,6 +53,12 @@ public class InstanceInput {
 
 	@Column(name = "Snapshot(GB)")
 	private Integer snapshot;
+	
+	@Column(name = "Archive Logs/Local Backup(GB)")
+	private Integer archiveLogsLocalBackup;
+	
+	@Column(name = "S3 Backup(GB)")
+	private Integer s3Backup;
 
 	@Column(name = "Term Type")
 	private String termType;
@@ -240,5 +259,55 @@ public class InstanceInput {
 	public void setOnlyCurrentGenerationInstances(String onlyCurrentGenerationInstances) {
 		this.onlyCurrentGenerationInstances = onlyCurrentGenerationInstances;
 	}
+
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
+	}
+
+	public String getSapInstanceType() {
+		return sapInstanceType;
+	}
+
+	public void setSapInstanceType(String sapInstanceType) {
+		this.sapInstanceType = sapInstanceType;
+	}
+
+	public Double getCpuTolerance() {
+		return cpuTolerance;
+	}
+
+	public void setCpuTolerance(Double cpuTolerance) {
+		this.cpuTolerance = cpuTolerance;
+	}
+
+	public Double getMemoryTolerance() {
+		return memoryTolerance;
+	}
+
+	public void setMemoryTolerance(Double memoryTolerance) {
+		this.memoryTolerance = memoryTolerance;
+	}
+
+	public Integer getArchiveLogsLocalBackup() {
+		return archiveLogsLocalBackup;
+	}
+
+	public void setArchiveLogsLocalBackup(Integer archiveLogsLocalBackup) {
+		this.archiveLogsLocalBackup = archiveLogsLocalBackup;
+	}
+
+	public Integer getS3Backup() {
+		return s3Backup;
+	}
+
+	public void setS3Backup(Integer s3Backup) {
+		this.s3Backup = s3Backup;
+	}
+	
+	
 
 }

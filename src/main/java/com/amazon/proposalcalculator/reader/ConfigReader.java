@@ -21,11 +21,19 @@ public class ConfigReader {
 
 	public static void read() {
 		LOGGER.info("Reading input spreadsheet - tab Config...");
-		Xcelite xcelite = new Xcelite(new File("input.xlsx"));
-		XceliteSheet sheet = xcelite.getSheet("Config");
-		SheetReader<ConfigInput> reader = sheet.getBeanReader(ConfigInput.class);
-		Collection<ConfigInput> config = reader.read();
-		Constants.config = config.iterator().next();
+		Xcelite xcelite = new Xcelite(new File("input_sap.xlsx"));
+		try {
+			XceliteSheet sheet = xcelite.getSheet("Config");
+			SheetReader<ConfigInput> reader = sheet.getBeanReader(ConfigInput.class);
+			Collection<ConfigInput> config = reader.read();
+			Constants.config = config.iterator().next();
+		} catch (Exception e) {
+			ConfigInput config = new ConfigInput();
+			config.setCpuTolerance(10);
+			config.setMemoryTolerance(10);
+			config.setMatch("CPU and Memory");
+			Constants.config = config;
+		}
 	}
 
 }

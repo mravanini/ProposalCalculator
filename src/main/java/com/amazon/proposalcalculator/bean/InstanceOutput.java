@@ -3,11 +3,11 @@ package com.amazon.proposalcalculator.bean;
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
-@Row(colsOrder = {"Description", "Region", "Instances", "SAPS", "CPU", "Memory", "Monthly Utilization", "Storage(GB)", "Volume Type",
-		"IOPS", "Snapshot(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
+@Row(colsOrder = {"Description", "Environment", "SAP Instance Type", "Region", "Instances", "SAPS", "CPU", "CPU Tolerance", "Memory", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
+		"IOPS", "Snapshot(GB)", "Archive Logs/Local Backup(GB)", "S3 Backup(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
 		"Offering Class", "Tenancy", "Operating System", "Pre Installed S/W", "Beginning", "End", "Instance Type",
 		"Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
-		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",  "Error Message"})
+		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",  "Error Message", "Test"})
 
 public class InstanceOutput extends InstanceInput {
 	
@@ -44,9 +44,18 @@ public class InstanceOutput extends InstanceInput {
 
 	@Column(name = "Snapshot Monthly Price")
 	private double snapshotMonthlyPrice;
+	
+	@Column(name = "Archive Logs/Local Backup Monthly Price")
+	private double archiveLogsLocalBackupMonthlyPrice;
+	
+	@Column(name = "S3 Backup Monthly Price")
+	private double s3BackupMonthlyPrice;
 
 	@Column(name = "Error Message")
 	private String errorMessage;
+	
+	@Column(name = "Test")
+	private String test = "=(1+2)";
 
 
 	public String getInstanceType() {
@@ -140,5 +149,29 @@ public class InstanceOutput extends InstanceInput {
 
 	public void setInstanceSAPS(int instanceSAPS) {
 		this.instanceSAPS = instanceSAPS;
+	}
+
+	public String getTest() {
+		return test;
+	}
+
+	public void setTest(String test) {
+		this.test = test;
+	}
+
+	public double getArchiveLogsLocalBackupMonthlyPrice() {
+		return archiveLogsLocalBackupMonthlyPrice;
+	}
+
+	public void setArchiveLogsLocalBackupMonthlyPrice(double archiveLogsLocalBackupMonthlyPrice) {
+		this.archiveLogsLocalBackupMonthlyPrice = archiveLogsLocalBackupMonthlyPrice;
+	}
+
+	public double getS3BackupMonthlyPrice() {
+		return s3BackupMonthlyPrice;
+	}
+
+	public void setS3BackupMonthlyPrice(double s3BackupMonthlyPrice) {
+		this.s3BackupMonthlyPrice = s3BackupMonthlyPrice;
 	}
 }

@@ -23,7 +23,7 @@ import org.apache.poi.sl.usermodel.Sheet;
 public class DefaultExcelWriter {
 
 	private final static Logger LOGGER = LogManager.getLogger();
-	
+
 	public static void write() {
 		LOGGER.info("Writing output spreadsheet...");
 		Xcelite xcelite = new Xcelite();
@@ -35,7 +35,8 @@ public class DefaultExcelWriter {
 		
 		List<Object> list1 = new ArrayList<Object>();
 		list1.add("Payment");
-		list1.add("Upfront");
+		list1.add("1yr Upfront");
+		list1.add("3yr Upfront");
 		list1.add("Monthly");
 		list1.add("3 Years Total");
 		list1.add("Discount");
@@ -44,7 +45,17 @@ public class DefaultExcelWriter {
 		for (Quote quote : Constants.quotes) {
 			List<Object> list2 = new ArrayList<Object>();
 			list2.add(quote.getName());
-			list2.add(SomeMath.round(quote.getUpfront(), 2));
+			
+			if ("1yr".equals(quote.getLeaseContractLength())) {
+				list2.add(SomeMath.round(quote.getUpfront(), 2));
+				list2.add(0);
+			} else if ("3yr".equals(quote.getLeaseContractLength())) {
+				list2.add(0);
+				list2.add(SomeMath.round(quote.getUpfront(), 2));
+			} else {
+				list2.add(0);
+				list2.add(0);
+			}
 			list2.add(SomeMath.round(quote.getMonthly(), 2));
 			list2.add(SomeMath.round(quote.getThreeYearTotal(), 2));
 			list2.add(SomeMath.round(quote.getDiscount(), 4));
@@ -60,5 +71,5 @@ public class DefaultExcelWriter {
 		}
 		xcelite.write(new File("output.xlsx"));
 	}
-	
+
 }

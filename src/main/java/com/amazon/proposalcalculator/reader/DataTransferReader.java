@@ -25,19 +25,26 @@ public class DataTransferReader {
 	}
 	
 	public static void read() {
-		Xcelite xcelite = new Xcelite(new File("input.xlsx"));
-		XceliteSheet sheet = xcelite.getSheet("Data Transfer");
-		SheetReader<Collection<Object>> simpleReader = sheet.getSimpleReader();
-		Collection<Collection<Object>> data = simpleReader.read();
-		
-		DataTransferInput dataTransferInput = new DataTransferInput();
-		
-		String region = (String) ((ArrayList)data.toArray()[0]).toArray()[1];
-		double dataTransferOut = (Double) ((ArrayList)data.toArray()[1]).toArray()[1];
-		
-		dataTransferInput.setDataTransferOut((long) dataTransferOut);
-		dataTransferInput.setRegion(region);
-		Constants.dataTransfer = dataTransferInput;
+		Xcelite xcelite = new Xcelite(new File("input_sap.xlsx"));
+		try {
+			XceliteSheet sheet = xcelite.getSheet("Data Transfer");
+			SheetReader<Collection<Object>> simpleReader = sheet.getSimpleReader();
+			Collection<Collection<Object>> data = simpleReader.read();
+			
+			DataTransferInput dataTransferInput = new DataTransferInput();
+			
+			String region = (String) ((ArrayList)data.toArray()[0]).toArray()[1];
+			double dataTransferOut = (Double) ((ArrayList)data.toArray()[1]).toArray()[1];
+			
+			dataTransferInput.setDataTransferOut((long) dataTransferOut);
+			dataTransferInput.setRegion(region);
+			Constants.dataTransfer = dataTransferInput;
+		} catch (Exception e) {
+			DataTransferInput dataTransferInput = new DataTransferInput();
+			dataTransferInput.setDataTransferOut(0);
+			dataTransferInput.setRegion("US East (N. Virginia)");
+			Constants.dataTransfer = dataTransferInput;
+		}
 		
 	}
 

@@ -130,6 +130,9 @@ public class Calculator {
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 				
+				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
+				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+				
 				output.setUpfrontFee(price.getUpfrontFee());
 
 			} catch (PricingCalculatorException pce){

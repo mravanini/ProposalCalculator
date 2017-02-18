@@ -19,6 +19,28 @@ public class StoragePricingCalculator {
 
     public static final String EBS_IOPS_GROUP = "EBS IOPS";
     public static final String EBS_IO_REQUESTS = "EBS I/O Requests";
+    
+    //TODO implement this method
+    public static double getArchiveLogsLocalBackupMonthlyPrice(InstanceInput input){
+        if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
+            return 0;
+        }
+
+        double price = getPricePerUnit(region(input).and(snapshot()));
+        return price * input.getSnapshot();
+
+    }
+    
+    //TODO implement this method
+    public static double getS3BackupMonthlyPrice(InstanceInput input){
+        if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
+            return 0;
+        }
+
+        double price = getPricePerUnit(region(input).and(snapshot()));
+        return price * input.getSnapshot();
+
+    }
 
 
     public static double getSnapshotMonthlyPrice(InstanceInput input){

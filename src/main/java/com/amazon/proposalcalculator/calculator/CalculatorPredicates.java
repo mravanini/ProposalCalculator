@@ -43,37 +43,21 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> cpu(InstanceInput server){
-        return p -> server.getCpu() == null || p.getvCPU() >= server.getCpu() * ((100 - Constants.config.getCpuTolerance()) / 100);
+        return p -> server.getCpu() == null || p.getvCPU() >= server.getCpu() * ((1 - server.getCpuTolerance()));
     }
     
     public static Predicate<Price> saps(InstanceInput server){
-        return p -> server.getSaps() == null || p.getSaps() >= server.getSaps() * ((100 - Constants.config.getCpuTolerance()) / 100);
+        return p -> server.getSaps() == null || p.getSaps() >= server.getSaps() * ((1 - server.getCpuTolerance()));
     }
 
     public static Predicate<Price> memory(InstanceInput server){
-        return p -> server.getMemory() == null || p.getMemory() >= server.getMemory() * ((100 - Constants.config.getMemoryTolerance()) / 100);
+        return p -> server.getMemory() == null || p.getMemory() >= server.getMemory() * ((1 - server.getMemoryTolerance()));
     }
 
     public static Predicate<Price> preInstalledSw(InstanceInput server){
         return p -> (((p.getPreInstalledSw().equals("NA") || p.getPreInstalledSw() == null) && server.getPreInstalledSw() == null)) ||  (p.getPreInstalledSw() != null && p.getPreInstalledSw().equalsIgnoreCase(server.getPreInstalledSw()));
     }
 
-    /*public static Predicate<Price> termType(InstanceInput server){
-        return p -> server.getTermType() == null || (p.getTermType() != null && p.getTermType().equals(server.getTermType()));
-    }
-    
-    public static Predicate<Price> leaseContractLength(InstanceInput server){
-        return p -> (p.getLeaseContractLength() == null && server.getLeaseContractLength() == null) ||  (p.getLeaseContractLength() != null && p.getLeaseContractLength().equalsIgnoreCase(server.getLeaseContractLength()));
-    }
-
-    public static Predicate<Price> purchaseOption(InstanceInput server){
-        return p -> (p.getPurchaseOption() == null && server.getPurchaseOption() == null) ||  (p.getPurchaseOption() != null && p.getPurchaseOption().equalsIgnoreCase(server.getPurchaseOption()));
-    }
-
-    public static Predicate<Price> offeringClass(InstanceInput server) {
-        return p -> (p.getOfferingClass() == null && server.getOfferingClass() == null) ||  (p.getOfferingClass() != null && p.getOfferingClass().equalsIgnoreCase(server.getOfferingClass()));
-    }*/
-    
     public static Predicate<Price> termType(InstanceInput server){
         return p -> (p.getTermType() != null && p.getTermType().equals(server.getTermType()));
     }

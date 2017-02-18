@@ -50,6 +50,13 @@ public class DefaultOutputAssembly {
 		output.setComputeUnitPrice(price.getInstanceHourPrice());
 		output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
 				* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+		
+		output.setEnvironment(input.getEnvironment());
+		output.setSapInstanceType(input.getSapInstanceType());
+		output.setCpuTolerance(input.getCpuTolerance());
+		output.setMemoryTolerance(input.getMemoryTolerance() );
+		output.setArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup() );
+		output.setS3Backup(input.getS3Backup());
 
 		return output;
 	}
