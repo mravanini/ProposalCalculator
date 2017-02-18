@@ -22,7 +22,7 @@ public class InstanceInput {
 	private String sapInstanceType;
 	
 	@Column(name = "CPU")
-	private Double cpu;
+	private Integer cpu;
 	
 	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance = 10d;
@@ -34,7 +34,7 @@ public class InstanceInput {
 	private String useSAPCertifiedInstances;
 
 	@Column(name = "Monthly Utilization")
-	private double monthlyUtilization;
+	private Integer monthlyUtilization;
 
 	@Column(name = "Memory")
 	private Double memory;
@@ -90,6 +90,20 @@ public class InstanceInput {
 	@Column(name = "Only Current Generation Instances")
 	private String onlyCurrentGenerationInstances;
 
+	private String errorMessage;
+
+	public String getErrorMessage() {
+		return this.errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public boolean hasErrors(){
+		return this.errorMessage != null;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -98,11 +112,11 @@ public class InstanceInput {
 		this.description = description;
 	}
 
-	public Double getCpu() {
+	public Integer getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(Double cpu) {
+	public void setCpu(Integer cpu) {
 		this.cpu = cpu;
 	}
 
@@ -220,11 +234,11 @@ public class InstanceInput {
 		this.iops = iops;
 	}
 
-	public double getMonthlyUtilization() {
+	public Integer getMonthlyUtilization() {
 		return monthlyUtilization;
 	}
 
-	public void setMonthlyUtilization(double monthlyUtilization) {
+	public void setMonthlyUtilization(Integer monthlyUtilization) {
 		this.monthlyUtilization = monthlyUtilization;
 	}
 

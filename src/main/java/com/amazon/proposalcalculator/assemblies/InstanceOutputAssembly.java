@@ -8,7 +8,7 @@ import com.amazon.proposalcalculator.utils.Constants;
 /**
  * Created by ravanini on 20/01/17.
  */
-public class DefaultOutputAssembly {
+public class InstanceOutputAssembly {
 
 	public static InstanceOutput from(InstanceInput input, Price price) {
 
@@ -17,7 +17,7 @@ public class DefaultOutputAssembly {
 		output.setDescription(input.getDescription());
 		output.setInstances(input.getInstances());
 
-		output.setRegion(price.getFromLocation());
+		output.setRegion(input.getRegion());
 
 		output.setCpu(input.getCpu());
 		output.setMemory(input.getMemory());

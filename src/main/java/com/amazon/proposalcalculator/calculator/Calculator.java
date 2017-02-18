@@ -1,19 +1,14 @@
 package com.amazon.proposalcalculator.calculator;
 
-import com.amazon.proposalcalculator.assemblies.DefaultOutputAssembly;
+import com.amazon.proposalcalculator.assemblies.InstanceOutputAssembly;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
-import com.amazon.proposalcalculator.reader.DataTransferReader;
-import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.utils.Constants;
-import com.amazon.proposalcalculator.utils.SomeMath;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
-import com.ebay.xcelite.sheet.XceliteSheet;
-import com.ebay.xcelite.writer.SheetWriter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +57,7 @@ public class Calculator {
 		
 		quote = new Quote("Reserved", "3yr", "All Upfront", "convertible");
 		calculatePrice(quote);
-		
+
 		calculateDiscount();
 		
 		DefaultExcelWriter.write();
@@ -81,7 +76,13 @@ public class Calculator {
 		
 		for (InstanceInput input
 				: Constants.servers) {
-			
+
+			if (input.hasErrors()){
+				throw new PricingCalculatorException(input.getErrorMessage());
+			}
+
+			ValidateRowInformation.validate(input);
+
 			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
 				input.setTermType(quote.getTermType());
 				input.setLeaseContractLength(quote.getLeaseContractLength());
@@ -115,7 +116,7 @@ public class Calculator {
 
 				Price price = getBestPrice(possibleMatches);
 				
-				output = DefaultOutputAssembly.from(input, price);
+				output = InstanceOutputAssembly.from(input, price);
 				
 				
 				double days = 0;
@@ -136,6 +137,8 @@ public class Calculator {
 				output.setUpfrontFee(price.getUpfrontFee());
 
 			} catch (PricingCalculatorException pce){
+
+				// TODO in case of error, set all prices to 0???
 				output.setErrorMessage(pce.getMessage());
 			}
 			//Constants.output.add(output);

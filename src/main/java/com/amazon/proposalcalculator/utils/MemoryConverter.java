@@ -13,7 +13,7 @@ public class MemoryConverter extends AbstractBeanField<Float> {
 		value = value.replaceAll("[^\\d.]", "");
 		if (value.length() == 0)
 			value = "0";
-		return Float.valueOf(value);
+		return Double.valueOf(value);
 	}
 
 }

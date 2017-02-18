@@ -1,0 +1,32 @@
+1) Insert combo-boxes in column with pre-defined values (see Help tab)
+2) Insert new column: SAP Instance Type
+3) Remove column for SAP excel: Instances. The code must be kept
+4) Insert new column: CPU Tolerance (%). Remove this info from Config Tab.
+5) Set default value for all the columns that have no values, clean that code from predicates
+6) Insert new column: Memory Tolerance (%). Remove this info from Config Tab.
+7) Insert new column: Archive Logs/Local Backup (GB)
+8) Insert new column: S3 Backup (GB)
+9) Remove column for SAP excel: Tenancy. Use default value: shared. The code must be kept.
+10) Change excel column Operating System: SAP excel must show only (Redhat, Suse, Windows). For General excel,this field
+    is not mandatory is it' default value is Linux.
+11) Remove column for SAP excel: Pre Installed S/W
+12) Create assemblies to populate default values and to ignore cases
+13) Create validators for mandatory fields and for wrong filled columns
+14) In Summary tab, sepparate UpFront collumn in two columns: 1-year upfront and 3-year upfront, so it is clear to the customer
+  that the 3-years Total is multipling the Upfront by 3 and the Monthly by 36.
+15) Return formulas in the output sheet instead of raw values
+16) Multi-thread. Until then, the tasks in the queue will be consumed 1 by 1
+17) Error message: all acceptable errors must extend PricingCalculatorException
+18) Develop a second output sheet: one for SAP Excel and one for General Excel
+19) When everything is done, remove Config Tab from input.xlsx
+20) Remove Data Transfer tab from SAP Excel. General Excel will still have it.
+21) Input file name is fixed as 'input.xlsx'. Receive this information from SQS (DefaultExcelReader.java).
+22) Remove Constants.java. All its content need to be moved to the Calculator.java. Except for the Pricing List, that will
+   need to be moved to the Run.java.
+23) Equalize GB and GiB
+
+
+-------- v 2.0 ---------
+1) Integrate beanstalk with CloudWatch Logs to output the server logs
+2) Start Date and End Date
+3) Inicial Capacity, Grow Percentage, Every X Months, Match fields for tolerance (CPU and/or Memory, etc)
