@@ -26,7 +26,10 @@ public class Calculator {
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void calculate() {
-        LOGGER.info("Calculating prices...");
+
+		FillDefaultValues.fill(Constants.servers);
+
+		LOGGER.info("Calculating prices...");
         
         Quote quote = new Quote(QuoteName.YOUR_INPUT.getName());
 		calculatePrice(quote);
@@ -80,8 +83,6 @@ public class Calculator {
 			if (input.hasErrors()){
 				throw new PricingCalculatorException(input.getErrorMessage());
 			}
-
-			ValidateRowInformation.validate(input);
 
 			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
 				input.setTermType(quote.getTermType());

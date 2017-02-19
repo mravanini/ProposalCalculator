@@ -2,24 +2,42 @@ package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.enums.Region;
+import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
+import com.amazon.proposalcalculator.utils.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Collection;
 
 /**
  * Created by ravanini on 18/02/17.
  */
-public class ValidateRowInformation {
+public class FillDefaultValues {
 
-    public static void validate(InstanceInput input) {
+    private final static Logger LOGGER = LogManager.getLogger();
 
-        if (isSAPInputSheet(input)){
-            validateSAPInput(input);
-        }else {
-            validateGeneralInput(input);
+    public static void fill(Collection<InstanceInput> servers) {
+
+        LOGGER.info("Filling in default values...");
+
+        for (InstanceInput input : servers) {
+
+            try {
+                fillCommonInputs(input);
+
+                if (isSAPInputSheet(input)){
+                    fillSpecificSAPInput(input);
+                }else {
+                    fillSpecificGeneralInput(input);
+                }
+            }catch (PricingCalculatorException pce){
+                input.setErrorMessage(pce.getMessage());
+            }
         }
     }
 
-    private static void validateSAPInput(InstanceInput input) {
-
+    private static void fillCommonInputs(InstanceInput input){
         validateDescription(input.getDescription());
 
         input.setRegion(validateRegion(input.getRegion()));
@@ -32,7 +50,22 @@ public class ValidateRowInformation {
 
         input.setStorage(validateStorage(input.getStorage()));
 
+        input.setVolumeType(fillVolumeType(input.getVolumeType()));
 
+
+
+
+    }
+
+    private static String fillVolumeType(String volumeType) {
+        return volumeType != null ? VolumeType.getVolumeType(volumeType).getColumnName() : VolumeType.General_Purpose.getColumnName();
+    }
+
+    private static void fillSpecificGeneralInput(InstanceInput input) {
+
+    }
+
+    private static void fillSpecificSAPInput(InstanceInput input) {
 
 
     }
@@ -67,19 +100,11 @@ public class ValidateRowInformation {
         return Region.getRegion(region).getColumnName();
     }
 
-    private static void validateGeneralInput(InstanceInput input) {
-
-    }
-
     private static boolean isSAPInputSheet(InstanceInput input){
 
         return input.getSaps() != null
-//                || input.getArchive Logs/Local Backup
-//                || input.getSAP Instance Type != null
-// TODO GET THESE NEW COLUMNS
+                || input.getArchiveLogsLocalBackup() != null
+                || input.getSapInstanceType() != null
         ;
-
     }
-
-
 }

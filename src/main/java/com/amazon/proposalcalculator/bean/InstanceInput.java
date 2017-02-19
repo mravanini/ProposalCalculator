@@ -97,7 +97,11 @@ public class InstanceInput {
 	}
 
 	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+		if (this.errorMessage != null) {
+			this.errorMessage = this.errorMessage +"\n" + errorMessage;
+		}else{
+			this.errorMessage = errorMessage;
+		}
 	}
 
 	public boolean hasErrors(){
