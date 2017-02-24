@@ -65,9 +65,11 @@ public class Calculator {
 
 	private static void calculateDiscount() {
 		Collections.sort(Constants.quotes);
+		
 		double higherValue = Constants.quotes.get(0).getThreeYearTotal();
 		for (Quote q : Constants.quotes) {
 			q.setDiscount((1-(q.getThreeYearTotal()/higherValue)));
+			System.out.println("Ordenado: " + q.getThreeYearTotal());
 		}
 	}
 
@@ -83,6 +85,7 @@ public class Calculator {
 
 			ValidateRowInformation.validate(input);
 
+			//TODO fix this 
 			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
 				input.setTermType(quote.getTermType());
 				input.setLeaseContractLength(quote.getLeaseContractLength());
@@ -132,7 +135,7 @@ public class Calculator {
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 				
 				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
-				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getS3BackupMonthlyPrice(input));
 				
 				output.setUpfrontFee(price.getUpfrontFee());
 

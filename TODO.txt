@@ -1,12 +1,12 @@
 1) Insert combo-boxes in column with pre-defined values (see Help tab)
 2) Insert new column: SAP Instance Type
 3) Remove column for SAP excel: Instances. The code must be kept
-4) Insert new column: CPU Tolerance (%). Remove this info from Config Tab.
+*4) Insert new column: CPU Tolerance (%). Remove this info from Config Tab.
 5) Set default value for all the columns that have no values, clean that code from predicates
-6) Insert new column: Memory Tolerance (%). Remove this info from Config Tab.
-7) Insert new column: Archive Logs/Local Backup (GB)
-8) Insert new column: S3 Backup (GB)
-9) Remove column for SAP excel: Tenancy. Use default value: shared. The code must be kept.
+*6) Insert new column: Memory Tolerance (%). Remove this info from Config Tab.
+*7) Insert new column: Archive Logs/Local Backup (GB)
+*8) Insert new column: S3 Backup (GB)
+*9) Remove column for SAP excel: Tenancy. Use default value: shared. The code must be kept.
 10) Change excel column Operating System: SAP excel must show only (Redhat, Suse, Windows). For General excel,this field
     is not mandatory is it' default value is Linux.
 11) Remove column for SAP excel: Pre Installed S/W

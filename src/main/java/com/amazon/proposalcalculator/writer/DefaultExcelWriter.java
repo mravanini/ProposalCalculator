@@ -69,7 +69,7 @@ public class DefaultExcelWriter {
 			writer.write(quote.getOutput());
 			LOGGER.info(quote.getName() + "-> Valor: " + quote.getThreeYearTotal() + "-> Desconto: " + quote.getDiscount());
 		}
-		xcelite.write(new File("output.xlsx"));
+		xcelite.write(new File(Constants.OUTPUT_FILE_NAME));
 	}
 
 }

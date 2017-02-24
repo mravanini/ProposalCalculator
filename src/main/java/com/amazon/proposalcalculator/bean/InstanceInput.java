@@ -1,6 +1,5 @@
 package com.amazon.proposalcalculator.bean;
 
-import com.amazon.proposalcalculator.utils.NumbersConverter;
 import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
@@ -25,7 +24,7 @@ public class InstanceInput {
 	private Integer cpu;
 	
 	@Column(name = "CPU Tolerance")
-	private Double cpuTolerance = 10d;
+	private Double cpuTolerance = 0.1d;
 	
 	@Column(name = "SAPS")
 	private Integer saps;
@@ -40,7 +39,7 @@ public class InstanceInput {
 	private Double memory;
 	
 	@Column(name = "Memory Tolerance")
-	private Double memoryTolerance = 10d;
+	private Double memoryTolerance = 0.1d;
 
 	@Column(name = "Storage(GB)")
 	private Integer storage;

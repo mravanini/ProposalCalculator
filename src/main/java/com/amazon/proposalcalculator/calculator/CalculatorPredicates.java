@@ -89,6 +89,10 @@ public class CalculatorPredicates {
     public static Predicate<Price> volumeType(InstanceInput input){
         return p -> p.getVolumeType() != null && p.getVolumeType().equalsIgnoreCase(input.getVolumeType());
     }
+    
+    public static Predicate<Price> st1(){
+        return p -> p.getVolumeType() != null && p.getVolumeType().equalsIgnoreCase(VolumeType.Throughput_Optimized_HDD.getColumnName());
+    }
 
     public static Predicate<Price> group(String group){
         return p -> p.getGroup() != null && p.getGroup().equalsIgnoreCase(group);

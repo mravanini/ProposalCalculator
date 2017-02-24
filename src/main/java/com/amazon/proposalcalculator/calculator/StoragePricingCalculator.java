@@ -20,28 +20,25 @@ public class StoragePricingCalculator {
     public static final String EBS_IOPS_GROUP = "EBS IOPS";
     public static final String EBS_IO_REQUESTS = "EBS I/O Requests";
     
-    //TODO implement this method
     public static double getArchiveLogsLocalBackupMonthlyPrice(InstanceInput input){
-        if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
+        if (input.getArchiveLogsLocalBackup() == null || input.getArchiveLogsLocalBackup().intValue() == 0) {
             return 0;
         }
 
-        double price = getPricePerUnit(region(input).and(snapshot()));
-        return price * input.getSnapshot();
+        return getST1PricePerUnit(input);
 
     }
     
-    //TODO implement this method
+    //TODO load s3 price from csv
     public static double getS3BackupMonthlyPrice(InstanceInput input){
-        if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
+        if (input.getS3Backup() == null || input.getS3Backup().intValue() == 0){
             return 0;
         }
 
-        double price = getPricePerUnit(region(input).and(snapshot()));
-        return price * input.getSnapshot();
-
+        //double price = getPricePerUnit(region(input).and(snapshot()));
+        double price = 0.03;
+        return price * input.getS3Backup();
     }
-
 
     public static double getSnapshotMonthlyPrice(InstanceInput input){
         if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
@@ -110,6 +107,11 @@ public class StoragePricingCalculator {
             }
         }
     }
+    
+	private static double getST1PricePerUnit(InstanceInput input) {
+		double price = getPricePerUnit(region(input).and(st1()));
+		return price * input.getArchiveLogsLocalBackup();
+	}
 
     private static double getPricePerUnit(Predicate<Price> p){
         List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
