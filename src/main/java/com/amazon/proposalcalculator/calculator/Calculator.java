@@ -26,7 +26,8 @@ public class Calculator {
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void calculate() {
-        LOGGER.info("Calculating prices...");
+
+		LOGGER.info("Calculating prices...");
         
         Quote quote = new Quote(QuoteName.YOUR_INPUT.getName());
 		calculatePrice(quote);
