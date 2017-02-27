@@ -72,7 +72,7 @@ public class StoragePricingCalculatorTest {
 
         double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
-        assertEquals(10, price, 0);
+        assertEquals(10, price, 1);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class StoragePricingCalculatorTest {
 
         double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
-        assertEquals(27, price, 0);
+        assertEquals(27, price, 1);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class StoragePricingCalculatorTest {
 
         double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
-        assertEquals(45, price, 0);
+        assertEquals(45, price, 1);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class StoragePricingCalculatorTest {
 
         double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
-        assertEquals(21, price, 0);
+        assertEquals(21, price, 1);
     }
 
     @Test

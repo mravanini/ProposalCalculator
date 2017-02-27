@@ -1,4 +1,4 @@
-package com.amazon.proposalcalculator.test;
+package com.amazon.proposalcalculator.reader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

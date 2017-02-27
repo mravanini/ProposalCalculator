@@ -1,6 +1,5 @@
 package com.amazon.proposalcalculator.bean;
 
-import com.amazon.proposalcalculator.utils.NumbersConverter;
 import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
@@ -25,7 +24,7 @@ public class InstanceInput {
 	private Integer cpu;
 	
 	@Column(name = "CPU Tolerance")
-	private Double cpuTolerance = 10d;
+	private Double cpuTolerance;
 	
 	@Column(name = "SAPS")
 	private Integer saps;
@@ -40,7 +39,7 @@ public class InstanceInput {
 	private Double memory;
 	
 	@Column(name = "Memory Tolerance")
-	private Double memoryTolerance = 10d;
+	private Double memoryTolerance;
 
 	@Column(name = "Storage(GB)")
 	private Integer storage;
@@ -90,22 +89,22 @@ public class InstanceInput {
 	@Column(name = "Only Current Generation Instances")
 	private String onlyCurrentGenerationInstances;
 
-	private String errorMessage;
+	private String errorMessageInput;
 
-	public String getErrorMessage() {
-		return this.errorMessage;
+	public String getErrorMessageInput() {
+		return this.errorMessageInput;
 	}
 
-	public void setErrorMessage(String errorMessage) {
-		if (this.errorMessage != null) {
-			this.errorMessage = this.errorMessage +"\n" + errorMessage;
+	public void setErrorMessageInput(String errorMessageInput) {
+		if (this.errorMessageInput != null) {
+			this.errorMessageInput = this.errorMessageInput +"\n" + errorMessageInput;
 		}else{
-			this.errorMessage = errorMessage;
+			this.errorMessageInput = errorMessageInput;
 		}
 	}
 
 	public boolean hasErrors(){
-		return this.errorMessage != null;
+		return this.errorMessageInput != null;
 	}
 
 	public String getDescription() {

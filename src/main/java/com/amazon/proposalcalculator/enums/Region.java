@@ -20,9 +20,12 @@ public enum Region {
     ASIA_PACIFIC_TOKIO("Asia Pacific (Tokyo)"),
     GOV_CLOUD("AWS GovCloud (US)"),
     CANADA_CENTRAL("Canada (Central)"),
+    CHINA_BEIJING("China (Beijing)"),
+    //CHINA_NINGXIA("China (Ningxia)"),
     EU_FRANKFURT("EU (Frankfurt)"),
     EU_IRELAND("EU (Ireland)"),
     EU_LONDON( "EU (London)"),
+    //EU_PARIS("EU (Paris)"),
     SOUTH_AMERICA_SAO_PAULO("South America (Sao Paulo)")
     ;
 
@@ -38,9 +41,9 @@ public enum Region {
 
     public static Region getRegion(String columnName){
 
-        for(Region type : Region.values()){
-            if (type.getColumnName().equalsIgnoreCase(columnName)){
-                return type;
+        for(Region region : Region.values()){
+            if (region.getColumnName().equalsIgnoreCase(columnName)){
+                return region;
             }
         }
         throw new PricingCalculatorException("Invalid Region. Found = " + columnName);

@@ -1,16 +1,13 @@
 package com.amazon.proposalcalculator.writer;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Quote;
+import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.utils.SomeMath;
 import com.ebay.xcelite.Xcelite;
@@ -18,7 +15,6 @@ import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.sl.usermodel.Sheet;
 
 public class DefaultExcelWriter {
 
@@ -67,6 +63,14 @@ public class DefaultExcelWriter {
 			XceliteSheet sheet = xcelite.createSheet(quote.getName());
 			SheetWriter<InstanceOutput> writer = sheet.getBeanWriter(InstanceOutput.class);
 			writer.write(quote.getOutput());
+
+			if (QuoteName.YOUR_INPUT.getName().equalsIgnoreCase(quote.getName())) {
+				for (InstanceOutput output : quote.getOutput()) {
+					if (output.getErrorMessage() != null) {
+						LOGGER.warn("Error message for " + output.getDescription() + ":" + output.getErrorMessage());
+					}
+				}
+			}
 			LOGGER.info(quote.getName() + "-> Valor: " + quote.getThreeYearTotal() + "-> Desconto: " + quote.getDiscount());
 		}
 		xcelite.write(new File("output.xlsx"));

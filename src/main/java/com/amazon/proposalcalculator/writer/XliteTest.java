@@ -30,7 +30,7 @@ public class XliteTest {
 		data.add(list1);
 		data.add(list2);
 		
-		// ...fill up data
+		// ...validate up data
 		simpleWriter.write(data);   
 		xcelite.write(new File("data.xlsx"));
 

@@ -3,11 +3,15 @@ package com.amazon.proposalcalculator.bean;
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
-@Row(colsOrder = {"Description", "Environment", "SAP Instance Type", "Region", "Instances", "SAPS", "CPU", "CPU Tolerance", "Memory", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
-		"IOPS", "Snapshot(GB)", "Archive Logs/Local Backup(GB)", "S3 Backup(GB)", "Term Type", "Lease Contract Length", "Purchase Option",
+@Row(colsOrder = {"Description", "Environment", "SAP Instance Type", "Region", "Instances", "SAPS", "CPU", "CPU Tolerance",
+		"Memory", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
+		"IOPS", "Snapshot(GB)", "Archive Logs/Local Backup(GB)", "S3 Backup(GB)", "Term Type", "Lease Contract Length",
+		"Purchase Option",
 		"Offering Class", "Tenancy", "Operating System", "Pre Installed S/W", "Beginning", "End", "Instance Type",
 		"Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
-		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Archive Logs/Local Backup Monthly Price",  "S3 Backup Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",  "Error Message", "Test"})
+		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Archive Logs/Local Backup Monthly Price",
+		"S3 Backup Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",
+		"Test", "Error Message"})
 
 public class InstanceOutput extends InstanceInput {
 	
@@ -25,7 +29,7 @@ public class InstanceOutput extends InstanceInput {
 	private int instanceSAPS;
 
 	@Column(name = "Instance Memory")
-	private double instanceMemory;
+	private Double instanceMemory;
 	
 	@Column(name = "Upfront Fee")
 	private double upfrontFee;
@@ -51,12 +55,23 @@ public class InstanceOutput extends InstanceInput {
 	@Column(name = "S3 Backup Monthly Price")
 	private double s3BackupMonthlyPrice;
 
-	@Column(name = "Error Message")
-	private String errorMessage;
-	
 	@Column(name = "Test")
 	private String test = "=(1+2)";
 
+	@Column(name = "Error Message")
+	private String errorMessage;
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		if(this.errorMessage == null) {
+			this.errorMessage = errorMessage;
+		}else{
+			this.errorMessage = this.errorMessage + " \n " + errorMessage;
+		}
+	}
 
 	public String getInstanceType() {
 		return instanceType;
@@ -74,11 +89,11 @@ public class InstanceOutput extends InstanceInput {
 		this.instanceVCPU = instanceVCPU;
 	}
 
-	public double getInstanceMemory() {
+	public Double getInstanceMemory() {
 		return instanceMemory;
 	}
 
-	public void setInstanceMemory(double instanceMemory) {
+	public void setInstanceMemory(Double instanceMemory) {
 		this.instanceMemory = instanceMemory;
 	}
 
@@ -120,19 +135,6 @@ public class InstanceOutput extends InstanceInput {
 
 	public void setSnapshotMonthlyPrice(double snapshotMonthlyPrice) {
 		this.snapshotMonthlyPrice = snapshotMonthlyPrice;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String errorMessage) {
-
-		if (this.errorMessage != null) {
-			this.errorMessage = this.errorMessage +"\n" + errorMessage;
-		}else{
-			this.errorMessage = errorMessage;
-		}
 	}
 
 	public double getUpfrontFee() {
