@@ -25,7 +25,9 @@ public class Constants {
 	public static DataTransferInput dataTransfer;
 	public static long beginTime;
 	public static long endTime;
-	public static String INPUT_FILE_NAME = "input_generico.xlsx";
-	public static String OUTPUT_FILE_NAME = "output_generico.xlsx";
+//	public static String INPUT_FILE_NAME = "input_generico.xlsx";
+//	public static String OUTPUT_FILE_NAME = "output_generico.xlsx";
+	public static String INPUT_FILE_NAME = "input_sap.xlsx";
+	public static String OUTPUT_FILE_NAME = "output_sap.xlsx";
 
 }

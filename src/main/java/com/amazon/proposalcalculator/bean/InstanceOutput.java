@@ -26,7 +26,7 @@ public class InstanceOutput extends InstanceInput {
 	private int instanceVCPU;
 	
 	@Column(name = "Instance SAPS")
-	private int instanceSAPS;
+	private Integer instanceSAPS;
 
 	@Column(name = "Instance Memory")
 	private Double instanceMemory;
@@ -145,11 +145,11 @@ public class InstanceOutput extends InstanceInput {
 		this.upfrontFee = upfrontFee;
 	}
 
-	public int getInstanceSAPS() {
+	public Integer getInstanceSAPS() {
 		return instanceSAPS;
 	}
 
-	public void setInstanceSAPS(int instanceSAPS) {
+	public void setInstanceSAPS(Integer instanceSAPS) {
 		this.instanceSAPS = instanceSAPS;
 	}
 
