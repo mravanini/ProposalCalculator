@@ -21,7 +21,7 @@ public class ConfigReader {
 
 	public static void read() {
 		LOGGER.info("Reading input spreadsheet - tab Config...");
-		Xcelite xcelite = new Xcelite(new File("input_sap.xlsx"));
+		Xcelite xcelite = new Xcelite(new File(Constants.INPUT_FILE_NAME));
 		try {
 			XceliteSheet sheet = xcelite.getSheet("Config");
 			SheetReader<ConfigInput> reader = sheet.getBeanReader(ConfigInput.class);

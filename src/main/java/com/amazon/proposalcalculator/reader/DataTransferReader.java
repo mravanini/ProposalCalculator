@@ -25,7 +25,7 @@ public class DataTransferReader {
 	}
 	
 	public static void read() {
-		Xcelite xcelite = new Xcelite(new File("input_sap.xlsx"));
+		Xcelite xcelite = new Xcelite(new File(Constants.INPUT_FILE_NAME));
 		try {
 			XceliteSheet sheet = xcelite.getSheet("Data Transfer");
 			SheetReader<Collection<Object>> simpleReader = sheet.getSimpleReader();

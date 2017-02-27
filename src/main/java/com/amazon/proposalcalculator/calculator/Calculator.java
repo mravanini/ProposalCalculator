@@ -66,10 +66,13 @@ public class Calculator {
 
 	private static void calculateDiscount() {
 		Collections.sort(Constants.quotes);
+		
 		double higherValue = Constants.quotes.get(0).getThreeYearTotal();
+
 		if (higherValue > 0) {
 			for (Quote q : Constants.quotes) {
 				q.setDiscount((1 - (q.getThreeYearTotal() / higherValue)));
+				System.out.println("Ordenado: " + q.getThreeYearTotal());
 			}
 		}
 	}
@@ -82,90 +85,96 @@ public class Calculator {
 
 			InstanceOutput output = InstanceOutputAssembly.from(input);
 
+			if (input.hasErrors()){
+				output.setErrorMessage(input.getErrorMessageInput());
+			}else{
 
-				if (input.hasErrors()){
-					output.setErrorMessage(input.getErrorMessageInput());
-				}else{
-
-					if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
-						input.setTermType(quote.getTermType());
-						input.setLeaseContractLength(quote.getLeaseContractLength());
-						input.setPurchaseOption(quote.getPurchaseOption());
-						input.setOfferingClass(quote.getOfferingClass());
-					}
-
-					LOGGER.debug("Calculating instance: " + input.getDescription());
-
-					List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
-							region(input)
-							.and(ec2(input))
-							.and(tenancy(input))
-							.and(licenceModel(input))
-							.and(operatingSystem(input))
-							.and(preInstalledSw(input))
-							.and(termType(input))
-							.and(offeringClass(input))
-							.and(leaseContractLength(input))
-							.and(purchaseOption(input))
-							.and(saps(input))
-							.and(cpu(input))
-							.and(memory(input))
-							.and(newGeneration(input))
-							.and(sapCertifiedInstances(input))
-
-					).collect(Collectors.toList());
-
-					Price price = getBestPrice(possibleMatches);
-
-					output.setInstanceType(price.getInstanceType());
-					output.setInstanceVCPU(price.getvCPU());
-					output.setComputeUnitPrice(price.getInstanceHourPrice());
-					output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
-							* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
-
-
-
-					double days = 0;
-					if (input.getBeginning() != null && input.getEnd() != null) {
-						days = diffInDays(input.getBeginning(), input.getEnd());
-					} else {
-						days = Constants.HOURS_IN_A_MONTH / 24;
-					}
-
-					output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
-
-					output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
-					output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
-
-					output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
-					output.setS3BackupMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
-
-					output.setUpfrontFee(price.getUpfrontFee());
-
-
-					double months = "3yr".equals(output.getLeaseContractLength()) ? 36 : 12;
-					double monthlyUpfront = output.getUpfrontFee() / months;
-					double threeYearTotal = quote.getThreeYearTotal() + monthlyUpfront
-							+ output.getComputeMonthlyPrice()
-							+ output.getStorageMonthlyPrice()
-							+ output.getSnapshotMonthlyPrice();
-					quote.setThreeYearTotal(threeYearTotal);
-
-					double upfront = quote.getUpfront() + output.getUpfrontFee();
-					quote.setUpfront(upfront);
-
-					DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
-					double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
-
-					double monthly = quote.getMonthly() +
-							output.getComputeMonthlyPrice() +
-							output.getStorageMonthlyPrice() +
-							output.getSnapshotMonthlyPrice() +
-							dataTransferOutMonthlyPrice;
-
-					quote.setMonthly(monthly);
-
+				//TODO fix this
+				if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
+					input.setTermType(quote.getTermType());
+					input.setLeaseContractLength(quote.getLeaseContractLength());
+					input.setPurchaseOption(quote.getPurchaseOption());
+					input.setOfferingClass(quote.getOfferingClass());
 				}
+
+				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
+				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+				
+				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
+				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getS3BackupMonthlyPrice(input));
+				
+
+				LOGGER.debug("Calculating instance: " + input.getDescription());
+
+				List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(
+						region(input)
+						.and(ec2(input))
+						.and(tenancy(input))
+						.and(licenceModel(input))
+						.and(operatingSystem(input))
+						.and(preInstalledSw(input))
+						.and(termType(input))
+						.and(offeringClass(input))
+						.and(leaseContractLength(input))
+						.and(purchaseOption(input))
+						.and(saps(input))
+						.and(cpu(input))
+						.and(memory(input))
+						.and(newGeneration(input))
+						.and(sapCertifiedInstances(input))
+
+				).collect(Collectors.toList());
+
+				Price price = getBestPrice(possibleMatches);
+
+				output.setInstanceType(price.getInstanceType());
+				output.setInstanceVCPU(price.getvCPU());
+				output.setComputeUnitPrice(price.getInstanceHourPrice());
+				output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
+						* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+
+
+
+				double days = 0;
+				if (input.getBeginning() != null && input.getEnd() != null) {
+					days = diffInDays(input.getBeginning(), input.getEnd());
+				} else {
+					days = Constants.HOURS_IN_A_MONTH / 24;
+				}
+
+				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+
+				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
+				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+
+				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
+				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+
+				output.setUpfrontFee(price.getUpfrontFee());
+
+				double months = "3yr".equals(output.getLeaseContractLength()) ? 36 : 12;
+				double monthlyUpfront = output.getUpfrontFee() / months;
+				double threeYearTotal = quote.getThreeYearTotal() + monthlyUpfront
+						+ output.getComputeMonthlyPrice()
+						+ output.getStorageMonthlyPrice()
+						+ output.getSnapshotMonthlyPrice();
+				quote.setThreeYearTotal(threeYearTotal);
+
+				double upfront = quote.getUpfront() + output.getUpfrontFee();
+				quote.setUpfront(upfront);
+
+				DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
+				double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
+
+				double monthly = quote.getMonthly() +
+						output.getComputeMonthlyPrice() +
+						output.getStorageMonthlyPrice() +
+						output.getSnapshotMonthlyPrice() +
+						dataTransferOutMonthlyPrice;
+
+				quote.setMonthly(monthly);
+
+			}
 			//Constants.output.add(output);
 			quote.addOutput(output);
 			

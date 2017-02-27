@@ -153,14 +153,6 @@ public class InstanceOutput extends InstanceInput {
 		this.instanceSAPS = instanceSAPS;
 	}
 
-	public String getTest() {
-		return test;
-	}
-
-	public void setTest(String test) {
-		this.test = test;
-	}
-
 	public double getArchiveLogsLocalBackupMonthlyPrice() {
 		return archiveLogsLocalBackupMonthlyPrice;
 	}

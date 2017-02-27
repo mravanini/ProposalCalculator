@@ -25,7 +25,7 @@ public class InstanceInput {
 	
 	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance;
-	
+
 	@Column(name = "SAPS")
 	private Integer saps;
 	
@@ -97,12 +97,11 @@ public class InstanceInput {
 
 	public void setErrorMessageInput(String errorMessageInput) {
 		if (this.errorMessageInput != null) {
-			this.errorMessageInput = this.errorMessageInput +"\n" + errorMessageInput;
-		}else{
+			this.errorMessageInput = this.errorMessageInput + "\n" + errorMessageInput;
+		} else {
 			this.errorMessageInput = errorMessageInput;
 		}
 	}
-
 	public boolean hasErrors(){
 		return this.errorMessageInput != null;
 	}
