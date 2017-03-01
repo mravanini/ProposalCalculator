@@ -106,15 +106,15 @@ public class ValidateCommonInputsTest {
     public void testValidateMontlyUtilizationNullValue(){
         InstanceInput input = buildInstanceInput();
         ValidateCommonInputs.validate(input);
-        assertEquals(100, input.getMonthlyUtilization().intValue());
+        assertEquals(1, input.getMonthlyUtilization().intValue());
     }
 
     @Test
     public void testValidateMontlyUtilizationValidValue(){
         InstanceInput input = buildInstanceInput();
-        input.setMonthlyUtilization(70);
+        input.setMonthlyUtilization(0.7);
         ValidateCommonInputs.validate(input);
-        assertEquals(70, input.getMonthlyUtilization().intValue());
+        assertEquals(Double.valueOf(0.7), input.getMonthlyUtilization());
     }
 
     @Test

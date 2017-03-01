@@ -11,7 +11,7 @@ import com.ebay.xcelite.annotations.Row;
 		"Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
 		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Archive Logs/Local Backup Monthly Price",
 		"S3 Backup Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",
-		"Test", "Error Message"})
+		"Error Message"})
 
 public class InstanceOutput extends InstanceInput {
 	
@@ -54,9 +54,6 @@ public class InstanceOutput extends InstanceInput {
 	
 	@Column(name = "S3 Backup Monthly Price")
 	private double s3BackupMonthlyPrice;
-
-	@Column(name = "Test")
-	private String test = "=(1+2)";
 
 	@Column(name = "Error Message")
 	private String errorMessage;

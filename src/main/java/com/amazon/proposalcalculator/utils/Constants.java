@@ -12,10 +12,12 @@ import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.Quote;
+import com.amazon.proposalcalculator.bean.S3Price;
 
 public class Constants {
 	
 	public static List<Price> ec2PriceList;
+	public static List<S3Price> s3PriceList;
 	public static Collection<InstanceInput> servers;
 	public static List<Quote> quotes = new ArrayList<Quote>();
 	public static Collection<ConfigInput> configs;

@@ -135,8 +135,8 @@ public class ValidateCommonInputs {
 //        return (storage == null) ? Integer.valueOf("0") : storage;
 //    }
 
-    private static Integer fillMonthlyUtilization(Integer monthlyUtilization) {
-        return (monthlyUtilization == null) ? Integer.valueOf("100") : monthlyUtilization;
+    private static Double fillMonthlyUtilization(Double monthlyUtilization) {
+        return (monthlyUtilization == null) ? Double.valueOf("1") : monthlyUtilization;
     }
 
 //    private static Double fillMemory(Double memory) {

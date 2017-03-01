@@ -33,7 +33,7 @@ public class InstanceInput {
 	private String useSAPCertifiedInstances;
 
 	@Column(name = "Monthly Utilization")
-	private Integer monthlyUtilization;
+	private Double monthlyUtilization;
 
 	@Column(name = "Memory")
 	private Double memory;
@@ -236,11 +236,11 @@ public class InstanceInput {
 		this.iops = iops;
 	}
 
-	public Integer getMonthlyUtilization() {
+	public Double getMonthlyUtilization() {
 		return monthlyUtilization;
 	}
 
-	public void setMonthlyUtilization(Integer monthlyUtilization) {
+	public void setMonthlyUtilization(Double monthlyUtilization) {
 		this.monthlyUtilization = monthlyUtilization;
 	}
 

@@ -5,6 +5,7 @@ import com.amazon.proposalcalculator.reader.DataTransferReader;
 import com.amazon.proposalcalculator.reader.DefaultExcelReader;
 import com.amazon.proposalcalculator.reader.EC2PriceListReader;
 import com.amazon.proposalcalculator.reader.ParseMainArguments;
+import com.amazon.proposalcalculator.reader.S3PriceListReader;
 import com.amazon.proposalcalculator.utils.Constants;
 
 import org.apache.commons.cli.ParseException;
@@ -40,6 +41,7 @@ public class Run {
 
     private static void init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
+        S3PriceListReader.read(forceDownload);
         DefaultExcelReader.read();
         ConfigReader.read();
         DataTransferReader.read();

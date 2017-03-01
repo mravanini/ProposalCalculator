@@ -1,7 +1,9 @@
 package com.amazon.proposalcalculator.calculator;
 
+import com.amazon.proposalcalculator.bean.DataTransferInput;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.bean.S3Price;
 import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 import com.amazon.proposalcalculator.utils.Constants;
@@ -31,14 +33,32 @@ public class StoragePricingCalculator {
     
     //TODO load s3 price from csv
     public static double getS3BackupMonthlyPrice(InstanceInput input){
-        if (input.getS3Backup() == null || input.getS3Backup().intValue() == 0){
+        if (input.getS3Backup() == null || input.getS3Backup().intValue() == 0) {
             return 0;
         }
 
         //double price = getPricePerUnit(region(input).and(snapshot()));
-        double price = 0.03;
+        double price = getS3MonthlyPrice(input);
         return price * input.getS3Backup();
     }
+    
+    public static double getS3MonthlyPrice(InstanceInput input) {
+		if (input.getS3Backup() == 0) {
+			return 0;
+		}
+		
+		List<S3Price> listPrice = getS3PricePerUnit(s3(input));
+		
+		if (listPrice.size() > 0) {
+			return listPrice.get(0).getPricePerUnit();
+		} else {
+			return 0;
+		}
+	}
+
+	private static List<S3Price> getS3PricePerUnit(Predicate<S3Price> p) {
+		return Constants.s3PriceList.stream().filter(p).collect(Collectors.toList());
+	}
 
     public static double getSnapshotMonthlyPrice(InstanceInput input){
         if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){

@@ -101,7 +101,8 @@ public class Calculator {
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 				
 				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
-				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getS3BackupMonthlyPrice(input));
+				double s3BackupMonthlyPrice = StoragePricingCalculator.getS3BackupMonthlyPrice(input);
+				output.setS3BackupMonthlyPrice(s3BackupMonthlyPrice);
 				
 
 				LOGGER.debug("Calculating instance: " + input.getDescription());
@@ -131,7 +132,7 @@ public class Calculator {
 				output.setInstanceVCPU(price.getvCPU());
 				output.setComputeUnitPrice(price.getInstanceHourPrice());
 				output.setComputeMonthlyPrice(price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
-						* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+						* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() : 1));
 
 
 
@@ -142,13 +143,12 @@ public class Calculator {
 					days = Constants.HOURS_IN_A_MONTH / 24;
 				}
 
-				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() / 100 : 1));
+				output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances() * (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() : 1));
 
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 
 				output.setArchiveLogsLocalBackupMonthlyPrice(StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
-				output.setS3BackupMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 
 				output.setUpfrontFee(price.getUpfrontFee());
 
