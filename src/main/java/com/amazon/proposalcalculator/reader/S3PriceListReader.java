@@ -51,7 +51,7 @@ public class S3PriceListReader {
         FileReader fileReader;
 	    File file = new File(CSV_S3_NAME);
         if (forceDownload || !file.isFile()) {//forceDownload or file does not exist
-            fileReader = PriceListDownloader.download(CSV_S3_NAME, ProductName.AmazonEC2);
+            fileReader = PriceListDownloader.download(CSV_S3_NAME, ProductName.AmazonS3);
         } else {
             fileReader = new FileReader(file);
             LOGGER.debug("S3 Price List already in folder. No need to download it");

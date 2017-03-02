@@ -4,6 +4,9 @@ import com.amazon.proposalcalculator.bean.DataTransferInput;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.S3Price;
+import com.amazon.proposalcalculator.enums.ProductFamily;
+import com.amazon.proposalcalculator.enums.ProductName;
+import com.amazon.proposalcalculator.enums.S3StorageClass;
 import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.utils.Constants;
 
@@ -42,10 +45,10 @@ public class CalculatorPredicates {
 	public static Predicate<S3Price> s3(InstanceInput input) {
 		return p -> p.getLocation() != null
 				&& p.getLocation().toLowerCase().startsWith(input.getRegion().toLowerCase())
-				&& p.getProductFamily().equals("Storage")
-				&& p.getServiceCode().equals("AmazonS3")
-				&& p.getStorageClass().equals("General Purpose")
-				&& p.getEndingRange().equals("51200");
+				&& p.getProductFamily().equals(ProductFamily.Storage.toString())
+				&& p.getServiceCode().equals(ProductName.AmazonS3.toString())
+				&& p.getStorageClass().equals(S3StorageClass.General_Purpose.getColumnName())
+				&& p.getEndingRange().equals(Constants.S3EndRange);
 	}
     
     public static Predicate<Price> region(DataTransferInput dataTransfer){

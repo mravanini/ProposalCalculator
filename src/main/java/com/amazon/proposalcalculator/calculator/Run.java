@@ -1,5 +1,6 @@
 package com.amazon.proposalcalculator.calculator;
 
+import com.amazon.proposalcalculator.enums.ProductName;
 import com.amazon.proposalcalculator.reader.ConfigReader;
 import com.amazon.proposalcalculator.reader.DataTransferReader;
 import com.amazon.proposalcalculator.reader.DefaultExcelReader;
@@ -23,6 +24,7 @@ public class Run {
 
     public static void main(String[] args) {
         try {
+        	System.out.println(ProductName.AmazonS3.toString());
         	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;
             forceDownload = ParseMainArguments.isForceDownload(args);
