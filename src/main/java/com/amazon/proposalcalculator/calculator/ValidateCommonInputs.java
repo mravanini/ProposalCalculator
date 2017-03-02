@@ -20,7 +20,7 @@ public class ValidateCommonInputs {
 
         validateDescription(input.getDescription());
 
-        validateRegion(input.getRegion());
+        input.setRegion(fillRegion(input.getRegion()));
 
         input.setOperatingSystem(fillOperatingSystem(input.getOperatingSystem()));
 
@@ -46,9 +46,9 @@ public class ValidateCommonInputs {
 
         input.setTermType(fillTermType(input.getTermType()));
 
-        validateLeaseContractLength(input.getLeaseContractLength(), input.getTermType());
+        input.setLeaseContractLength(fillLeaseContractLength(input.getLeaseContractLength(), input.getTermType()));
 
-        validatePurchaseOption(input.getPurchaseOption(), input.getTermType());
+        input.setPurchaseOption(fillPurchaseOption(input.getPurchaseOption(), input.getTermType()));
 
         input.setOfferingClass(fillOfferingClass(input.getOfferingClass(), input.getTermType()));
 
@@ -83,24 +83,24 @@ public class ValidateCommonInputs {
         return offeringClass;
     }
 
-    private static void validateLeaseContractLength(String leaseContractLength, String termType) {
+    private static String fillLeaseContractLength(String leaseContractLength, String termType) {
         if(TermType.valueOf(termType).equals(TermType.Reserved)){
             if (leaseContractLength == null){
                 throw new PricingCalculatorException(WHEN_RESERVED_LEASE_CONTRACT_LENGTH_IS_MANDATORY);
             }
-            LeaseContractLength.getLeaseContractLength(leaseContractLength).getColumnName();
+            return LeaseContractLength.getLeaseContractLength(leaseContractLength).getColumnName();
         }
-//        return "";
+        return null;
     }
 
-    private static void validatePurchaseOption(String purchaseOption, String termType) {
+    private static String fillPurchaseOption(String purchaseOption, String termType) {
         if(TermType.valueOf(termType).equals(TermType.Reserved)){
             if (purchaseOption == null){
                 throw new PricingCalculatorException(WHEN_RESERVED_PURCHASE_OPTION_IS_MANDATORY);
             }
-            PurchaseOption.getPurchaseOption(purchaseOption).getColumnName();
+            return PurchaseOption.getPurchaseOption(purchaseOption).getColumnName();
         }
-//        return "";
+        return null;
     }
 
     private static String fillTermType(String termType) {
@@ -153,11 +153,11 @@ public class ValidateCommonInputs {
         }
     }
 
-    private static void validateRegion(String region) {
+    private static String fillRegion(String region) {
         //TODO VALIDATE REGIONS reading FILE FROM S3 - GET IDEA FROM Singh, Harpreet <batrahs@amazon.com>
 
         if (region == null)
             throw new PricingCalculatorException(REGION_IS_A_MANDATORY_FIELD);
-        Region.getRegion(region).getColumnName();
+        return Region.getRegion(region).getColumnName();
     }
 }
