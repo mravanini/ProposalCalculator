@@ -20,7 +20,7 @@ public class DefaultExcelWriter {
 
 	private final static Logger LOGGER = LogManager.getLogger();
 
-	public static void write() {
+	public void write(String outputFileName) {
 		LOGGER.info("Writing output spreadsheet...");
 		Xcelite xcelite = new Xcelite();
 		
@@ -73,7 +73,7 @@ public class DefaultExcelWriter {
 			}
 			LOGGER.info(quote.getName() + "-> Valor: " + quote.getThreeYearTotal() + "-> Desconto: " + quote.getDiscount());
 		}
-		xcelite.write(new File(Constants.OUTPUT_FILE_NAME));
+		xcelite.write(new File(outputFileName));
 	}
 
 }

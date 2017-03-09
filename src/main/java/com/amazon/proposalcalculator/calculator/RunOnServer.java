@@ -1,9 +1,16 @@
 package com.amazon.proposalcalculator.calculator;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,134 +26,142 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.DeleteMessageRequest;
 import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by ravanini on 02/12/16.
  */
 public class RunOnServer {
 
-    private final static Logger LOGGER = LogManager.getLogger();
+	private static final String OUTPUT_FOLDER = "sap2_output/";
+	private static final String INPUT_QUEUE = "sapqin";
+	private static final int TIME_BETWEEN_READS = 2000;
+	private final static Logger LOGGER = LogManager.getLogger();
+	private static String METAKEY = "sap";
 
-    public static void main2(String[] args) {
-        try {
-        	System.out.println(ProductName.AmazonS3.toString());
-        	Constants.beginTime = System.currentTimeMillis();
-            Boolean forceDownload;
-            forceDownload = ParseMainArguments.isForceDownload(args);
-            init(forceDownload);
-            //Calculator.calculate();
-            Constants.endTime = System.currentTimeMillis();
-            LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
-        } catch (Exception e){
-            LOGGER.fatal("A fatal error has occured: " , e);
-            //System.err.println("An error has occured: " + e.getLocalizedMessage());
-            System.exit(1);
-        }
-    }
+	public static void run(String[] args) {
+		try {
+			LOGGER.info(ProductName.AmazonS3.toString());
+			Constants.beginTime = System.currentTimeMillis();
+			Boolean forceDownload;
+			forceDownload = ParseMainArguments.isForceDownload(args);
+			init(forceDownload);
+			Constants.endTime = System.currentTimeMillis();
+			LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime) / 1000 + " seconds!");
+		} catch (Exception e) {
+			LOGGER.fatal("A fatal error has occured: ", e.getLocalizedMessage());
+			System.exit(1);
+		}
+	}
 
-    private static void init(Boolean forceDownload) throws IOException {
-        EC2PriceListReader.read(forceDownload);
-        S3PriceListReader.read(forceDownload);
-        DefaultExcelReader.read();
-        ConfigReader.read();
-        DataTransferReader.read();
-    }
-    
-    public static void main(String[] args) throws Exception {
-    	main2(args);
+	private static void init(Boolean forceDownload) throws IOException {
+		EC2PriceListReader.read(forceDownload);
+		S3PriceListReader.read(forceDownload);
+	}
 
-        /*
-         * The ProfileCredentialsProvider will return your [default]
-         * credential profile by reading from the credentials file located at
-         * (/Users/carvaa/.aws/credentials).
-         */
-        AWSCredentials credentials = null;
-        try {
-            credentials = new ProfileCredentialsProvider("default").getCredentials();
-        } catch (Exception e) {
-            throw new AmazonClientException(
-                    "Cannot load the credentials from the credential profiles file. " +
-                    "Please make sure that your credentials file is at the correct " +
-                    "location (/Users/carvaa/.aws/credentials), and is in valid format.",
-                    e);
-        }
+	public static void main(String[] args) throws Exception {
 
-        AmazonSQS sqs = new AmazonSQSClient(credentials);
-        Region usWest2 = Region.getRegion(Regions.US_WEST_2);
-        sqs.setRegion(usWest2);
+		try {
+			// initialize
+			run(args);
+			AmazonSQS sqsClient = AmazonSQSClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
+			AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
 
-        System.out.println("===========================================");
-        System.out.println("Getting Started with Amazon SQS");
-        System.out.println("===========================================\n");
+			// get queue
+			String myQueueUrl = sqsClient.getQueueUrl(INPUT_QUEUE).getQueueUrl();
+			while (true) {
+				Thread.sleep(TIME_BETWEEN_READS);
+				try {
+					// Receive messages
+					LOGGER.info("Receiving messages from " + INPUT_QUEUE);
+					ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
+					List<Message> messages = sqsClient.receiveMessage(receiveMessageRequest).getMessages();
+					for (Message message : messages) {
+						logMessage(message);
+						processRecords(sqsClient, s3Client, myQueueUrl, message);
+					}
+				} catch (Exception e) {
+					LOGGER.info("Error Message: " + e.getMessage());
+				}
+			}
 
-        try {
-            // Create a queue
-            //System.out.println("Creating a new SQS queue called MyQueue.\n");
-            String myQueueUrl = sqs.getQueueUrl("MyQueue").getQueueUrl();
-            
-            // List queues
-            System.out.println("Listing all queues in your account.\n");
-            for (String queueUrl : sqs.listQueues().getQueueUrls()) {
-                System.out.println("  QueueUrl: " + queueUrl);
-            }
-            System.out.println();
+		} catch (Exception e) {
+			LOGGER.info("Error Message: " + e.getMessage());
+		}
+	}
 
-            
-            while (true) {
-            
-	            // Receive messages
-	            System.out.println("Receiving messages from MyQueue.\n");
-	            ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
-	            List<Message> messages = sqs.receiveMessage(receiveMessageRequest).getMessages();
-	            for (Message message : messages) {
-	                System.out.println("  Message");
-	                System.out.println("    MessageId:     " + message.getMessageId());
-	                System.out.println("    ReceiptHandle: " + message.getReceiptHandle());
-	                System.out.println("    MD5OfBody:     " + message.getMD5OfBody());
-	                System.out.println("    Body:          " + message.getBody());
-	                for (Entry<String, String> entry : message.getAttributes().entrySet()) {
-	                    System.out.println("  Attribute");
-	                    System.out.println("    Name:  " + entry.getKey());
-	                    System.out.println("    Value: " + entry.getValue());
-	                }
-	                String messageReceiptHandle = message.getReceiptHandle();
-	            	sqs.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
-	            	Calculator.calculate();
-	            }
-	            System.out.println();
-	
-	            // Delete a message
-	            /*if (messages.size() > 0) {
-		            System.out.println("Deleting a message.\n");
-	            	String messageReceiptHandle = messages.get(0).getReceiptHandle();
-	            	sqs.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
-	            }*/
-	            
-	            Thread.sleep(3000);
-            }
+	private static void processRecords(AmazonSQS sqsClient, AmazonS3 s3Client, String myQueueUrl, Message message)
+			throws IOException, JsonParseException, JsonMappingException {
+		String messageReceiptHandle = message.getReceiptHandle();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode rootNode = mapper.readValue(message.getBody(), JsonNode.class);
+		JsonNode records = rootNode.get("Records");
+		for (JsonNode record : records) {
+			long currentTimeMillis = System.currentTimeMillis();
 
-        } catch (AmazonServiceException ase) {
-            System.out.println("Caught an AmazonServiceException, which means your request made it " +
-                    "to Amazon SQS, but was rejected with an error response for some reason.");
-            System.out.println("Error Message:    " + ase.getMessage());
-            System.out.println("HTTP Status Code: " + ase.getStatusCode());
-            System.out.println("AWS Error Code:   " + ase.getErrorCode());
-            System.out.println("Error Type:       " + ase.getErrorType());
-            System.out.println("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            System.out.println("Caught an AmazonClientException, which means the client encountered " +
-                    "a serious internal problem while trying to communicate with SQS, such as not " +
-                    "being able to access the network.");
-            System.out.println("Error Message: " + ace.getMessage());
-        }
-    }
+			// get file from S3
+			String inputFileS3Key = record.get("s3").get("object").get("key").asText();
+			String bucketName = record.get("s3").get("bucket").get("name").asText();
+			LOGGER.info("S3 Key : " + inputFileS3Key);
+			LOGGER.info("Bucket : " + bucketName);
+			S3Object object = s3Client.getObject(new GetObjectRequest(bucketName, inputFileS3Key));
+			InputStream objectData = object.getObjectContent();
+
+			String meta = object.getObjectMetadata().getUserMetaDataOf(METAKEY);
+			if (meta == null) {
+				meta = "no metadata on original file";
+			}
+			String[] splitedKeyName = inputFileS3Key.split("/");
+			String inputFileName = splitedKeyName[splitedKeyName.length - 1];
+			File targetFile = new File(inputFileName);
+			Files.copy(objectData, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			IOUtils.closeQuietly(objectData);
+
+			// read spreadsheets
+			DefaultExcelReader.read();
+			ConfigReader.read();
+			DataTransferReader.read();
+
+			// calculate and delete message from SQS
+			String outputFileName = currentTimeMillis + "_" + Constants.OUTPUT_FILE_NAME;
+			Calculator.calculate(inputFileName, outputFileName);
+			sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
+
+			// put file back to S3
+			File outputFile = new File(outputFileName);
+			String outputFileS3Key = OUTPUT_FOLDER + outputFile.getName();
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.addUserMetadata(METAKEY, meta);
+			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, outputFileS3Key, outputFile);
+			putObjectRequest.setMetadata(metadata);
+			s3Client.putObject(putObjectRequest);
+		}
+	}
+
+	private static void logMessage(Message message) {
+		LOGGER.info("  Message");
+		LOGGER.info("    MessageId:     " + message.getMessageId());
+		LOGGER.info("    Body:          " + message.getBody());
+	}
 
 }

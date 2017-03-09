@@ -1,0 +1,36 @@
+{
+	"Records": {
+		"eventVersion": "2.0",
+		"eventSource": "aws:s3",
+		"awsRegion": "us-west-2",
+		"eventTime": "2017-03-06T14:49:06.963Z",
+		"eventName": "ObjectCreated:Put",
+		"userIdentity": {
+			"principalId": "A2F623YLF8VRQT"
+		},
+		"requestParameters": {
+			"sourceIPAddress": "189.102.33.182"
+		},
+		"responseElements": {
+			"x-amz-request-id": "043A09B23275DB07",
+			"x-amz-id-2": "Sb2ZChIui1ZYw4BPvIxfn5Ogm0GiH01/9kqTvxUT+Jq00X7gL20X4t0qVUshNFTS"
+		},
+		"s3": {
+			"s3SchemaVersion": "1.0",
+			"configurationId": "UploadSpreadsheet",
+			"bucket": {
+				"name": "carvaasaporegon",
+				"ownerIdentity": {
+					"principalId": "A2F623YLF8VRQT"
+				},
+				"arn": "arn:aws:s3:::carvaasaporegon"
+			},
+			"object": {
+				"key": "sap2/input_sap.xlsx",
+				"size": 14305,
+				"eTag": "bf87026b48c13a0d805c9113e7b4db64",
+				"sequencer": "0058BD76E2E409440B"
+			}
+		}
+	}
+}

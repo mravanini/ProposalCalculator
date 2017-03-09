@@ -23,7 +23,9 @@ public class Calculator {
 
 	private final static Logger LOGGER = LogManager.getLogger();
 
-	public static void calculate() {
+	public static void calculate(String inputFileName, String outputFileName) {
+		
+		Constants.quotes = new ArrayList<Quote>();
 
 		ValidateInputSheet.validate(Constants.servers);
 
@@ -35,7 +37,7 @@ public class Calculator {
         quote = new Quote("OnDemand", null, null, null);
 		calculatePrice(quote);
 		
-        /*quote = new Quote("Reserved", "1yr", "No Upfront", "standard");
+        quote = new Quote("Reserved", "1yr", "No Upfront", "standard");
 		calculatePrice(quote);
 		
 		quote = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
@@ -58,11 +60,10 @@ public class Calculator {
 		
 		quote = new Quote("Reserved", "3yr", "All Upfront", "convertible");
 		calculatePrice(quote);
-		*/
 
 		calculateDiscount();
 		
-		DefaultExcelWriter.write();
+		new DefaultExcelWriter().write(outputFileName);
 	}
 
 	private static void calculateDiscount() {

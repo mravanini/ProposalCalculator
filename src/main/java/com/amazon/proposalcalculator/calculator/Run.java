@@ -29,7 +29,7 @@ public class Run {
             Boolean forceDownload;
             forceDownload = ParseMainArguments.isForceDownload(args);
             init(forceDownload);
-            Calculator.calculate();
+            Calculator.calculate(Constants.INPUT_FILE_NAME, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
             LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
         } catch (ParseException pe) {
