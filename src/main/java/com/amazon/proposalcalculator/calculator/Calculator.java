@@ -31,35 +31,35 @@ public class Calculator {
 
 		LOGGER.info("Calculating prices...");
         
-        Quote quote = new Quote(QuoteName.YOUR_INPUT.getName());
-		calculatePrice(quote);
+        Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
+		calculatePrice(q1);
 		
-        quote = new Quote("OnDemand", null, null, null);
-		calculatePrice(quote);
+		Quote q2 = new Quote("OnDemand", null, null, null);
+		calculatePrice(q2);
 		
-        quote = new Quote("Reserved", "1yr", "No Upfront", "standard");
-		calculatePrice(quote);
+		Quote q3 = new Quote("Reserved", "1yr", "No Upfront", "standard");
+		calculatePrice(q3);
 		
-		quote = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
-		calculatePrice(quote);
+		Quote q4 = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
+		calculatePrice(q4);
 		
-		quote = new Quote("Reserved", "1yr", "All Upfront", "standard");
-		calculatePrice(quote);
+		Quote q5 = new Quote("Reserved", "1yr", "All Upfront", "standard");
+		calculatePrice(q5);
 		
-		quote = new Quote("Reserved", "3yr", "Partial Upfront", "standard");
-		calculatePrice(quote);
+		Quote q6 = new Quote("Reserved", "3yr", "Partial Upfront", "standard");
+		calculatePrice(q6);
 		
-		quote = new Quote("Reserved", "3yr", "All Upfront", "standard");
-		calculatePrice(quote);
+		Quote q7 = new Quote("Reserved", "3yr", "All Upfront", "standard");
+		calculatePrice(q7);
 		
-        quote = new Quote("Reserved", "3yr", "No Upfront", "convertible");
-		calculatePrice(quote);
+		Quote q8 = new Quote("Reserved", "3yr", "No Upfront", "convertible");
+		calculatePrice(q8);
 		
-		quote = new Quote("Reserved", "3yr", "Partial Upfront", "convertible");
-		calculatePrice(quote);
+		Quote q9 = new Quote("Reserved", "3yr", "Partial Upfront", "convertible");
+		calculatePrice(q9);
 		
-		quote = new Quote("Reserved", "3yr", "All Upfront", "convertible");
-		calculatePrice(quote);
+		Quote q10 = new Quote("Reserved", "3yr", "All Upfront", "convertible");
+		calculatePrice(q10);
 
 		calculateDiscount();
 		
@@ -74,7 +74,6 @@ public class Calculator {
 		if (higherValue > 0) {
 			for (Quote q : Constants.quotes) {
 				q.setDiscount((1 - (q.getThreeYearTotal() / higherValue)));
-				System.out.println("Ordenado: " + q.getThreeYearTotal());
 			}
 		}
 	}
@@ -84,21 +83,20 @@ public class Calculator {
 		
 		for (InstanceInput input
 				: Constants.servers) {
+			
+			//TODO fix this
+			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
+				input.setTermType(quote.getTermType());
+				input.setLeaseContractLength(quote.getLeaseContractLength());
+				input.setPurchaseOption(quote.getPurchaseOption());
+				input.setOfferingClass(quote.getOfferingClass());
+			}
 
 			InstanceOutput output = InstanceOutputAssembly.from(input);
 
 			if (input.hasErrors()){
 				output.setErrorMessage(input.getErrorMessageInput());
 			}else{
-
-				//TODO fix this
-				if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
-					input.setTermType(quote.getTermType());
-					input.setLeaseContractLength(quote.getLeaseContractLength());
-					input.setPurchaseOption(quote.getPurchaseOption());
-					input.setOfferingClass(quote.getOfferingClass());
-				}
-
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 				
@@ -172,6 +170,8 @@ public class Calculator {
 						output.getComputeMonthlyPrice() +
 						output.getStorageMonthlyPrice() +
 						output.getSnapshotMonthlyPrice() +
+						output.getS3BackupMonthlyPrice() +
+						output.getArchiveLogsLocalBackupMonthlyPrice() +
 						dataTransferOutMonthlyPrice;
 
 				quote.setMonthly(monthly);

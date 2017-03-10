@@ -28,18 +28,21 @@ public class CalculatorPredicates {
 				|| p.getInstanceType().toLowerCase().startsWith("x1")))));
 	}
 	
-    public static Predicate<Price> newGeneration(InstanceInput server){
-        return p -> (server.getOnlyCurrentGenerationInstances() == null || "No".equals(server.getOnlyCurrentGenerationInstances()) || server.getOnlyCurrentGenerationInstances() == null) ||
-        		("Yes".equals(server.getOnlyCurrentGenerationInstances()) && (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration())));
-        
-     }
+	public static Predicate<Price> newGeneration(InstanceInput server) {
+		return p -> (server.getOnlyCurrentGenerationInstances() == null
+				|| "No".equals(server.getOnlyCurrentGenerationInstances())
+				|| server.getOnlyCurrentGenerationInstances() == null)
+				|| ("Yes".equals(server.getOnlyCurrentGenerationInstances())
+						&& (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration())));
+
+	}
 	
     public static Predicate<Price> ec2(InstanceInput server){
        return p -> !p.getPriceDescription().contains("Dedicated Host") && p.getProductFamily().equals("Compute Instance");
     }
 
     public static Predicate<Price> region(InstanceInput server){
-        return p -> p.getLocation() != null && p.getLocation().toLowerCase().startsWith(server.getRegion().toLowerCase());
+        return p -> p.getLocation() != null && p.getLocation().equals(server.getRegion());
     }
     
 	public static Predicate<S3Price> s3(InstanceInput input) {
@@ -68,35 +71,41 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> preInstalledSw(InstanceInput server){
-        return p -> (((p.getPreInstalledSw().equals("NA") || p.getPreInstalledSw() == null) && server.getPreInstalledSw() == null)) ||  (p.getPreInstalledSw() != null && p.getPreInstalledSw().equalsIgnoreCase(server.getPreInstalledSw()));
+        return p -> p.getPreInstalledSw() != null && p.getPreInstalledSw().equals(server.getPreInstalledSw());
     }
 
     public static Predicate<Price> termType(InstanceInput server){
         return p -> (p.getTermType() != null && p.getTermType().equals(server.getTermType()));
     }
     
-    public static Predicate<Price> leaseContractLength(InstanceInput server){
-        return p -> (server.getTermType().equals("Reserved") && server.getLeaseContractLength() == null && p.getLeaseContractLength() != null) || (p.getLeaseContractLength() == null && server.getLeaseContractLength() == null) ||  (p.getLeaseContractLength() != null && p.getLeaseContractLength().equalsIgnoreCase(server.getLeaseContractLength()));
-    }
+	public static Predicate<Price> leaseContractLength(InstanceInput server) {
+		return p -> server.getTermType().equals("OnDemand")
+				|| (server.getTermType().equals("Reserved") && p.getLeaseContractLength() != null
+						&& p.getLeaseContractLength().equalsIgnoreCase(server.getLeaseContractLength()));
+	}
 
     public static Predicate<Price> purchaseOption(InstanceInput server){
-        return p -> (server.getTermType().equals("Reserved") && server.getPurchaseOption() == null && p.getPurchaseOption() != null) || (p.getPurchaseOption() == null && server.getPurchaseOption() == null) ||  (p.getPurchaseOption() != null && p.getPurchaseOption().equalsIgnoreCase(server.getPurchaseOption()));
+		return p -> server.getTermType().equals("OnDemand")
+				|| (server.getTermType().equals("Reserved") && p.getPurchaseOption() != null
+						&& p.getPurchaseOption().equalsIgnoreCase(server.getPurchaseOption()));
     }
 
     public static Predicate<Price> offeringClass(InstanceInput server) {
-        return p -> (server.getTermType().equals("Reserved") && server.getOfferingClass() == null && p.getOfferingClass() != null) || (p.getOfferingClass() == null && server.getOfferingClass() == null) ||  (p.getOfferingClass() != null && p.getOfferingClass().equalsIgnoreCase(server.getOfferingClass()));
+		return p -> server.getTermType().equals("OnDemand")
+				|| (server.getTermType().equals("Reserved") && p.getOfferingClass() != null
+						&& p.getOfferingClass().equalsIgnoreCase(server.getOfferingClass()));
     }
     
     public static Predicate<Price> operatingSystem(InstanceInput server){
-        return p -> server.getOperatingSystem() == null || (p.getOperatingSystem() != null && p.getOperatingSystem().equalsIgnoreCase(server.getOperatingSystem()));
+        return p -> p.getOperatingSystem() != null && p.getOperatingSystem().equals(server.getOperatingSystem());
     }
     
     public static Predicate<Price> licenceModel(InstanceInput server){
-        return p -> p.getLicenseModel() != null && p.getLicenseModel().equalsIgnoreCase("Windows".equals(server.getOperatingSystem()) ? "License Included" : "No License required");
+        return p -> p.getLicenseModel() != null && p.getLicenseModel().equals("Windows".equals(server.getOperatingSystem()) ? "License Included" : "No License required");
     }
 
-    public static Predicate<Price> tenancy(InstanceInput server){
-        return p -> server.getTenancy() == null || (p.getTenancy() != null && p.getTenancy().equalsIgnoreCase(server.getTenancy()));
+    public static Predicate<Price> tenancy(InstanceInput server) {
+        return p -> p.getTenancy() != null && p.getTenancy().equals(server.getTenancy());
     }
 
     public static Predicate<Price> volumeType(InstanceInput input){

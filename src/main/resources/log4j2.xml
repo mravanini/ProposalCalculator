@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%msg%n" />
-        </Console>
-        <RollingFile name="FileLog" fileName="logs/calculator.log"
-                     filePattern="logs/calculator-%d{yyyy-MM-dd}.log">
-        <PatternLayout>
-            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
-        </PatternLayout>
-        <Policies>
-            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        </Policies>
-    </RollingFile>
-    </Appenders>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</Console>
+		<RollingFile name="FileLog" fileName="logs/calculator.log"
+			filePattern="logs/calculator-%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+				<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+				</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
 
-    <Loggers>
-        <!--<Logger name="com.amazon" level="trace" additivity="false">-->
-            <!--<appender-ref ref="Console" level="info"/>-->
-            <!--<appender-ref ref="FileLog"/>-->
-        <!--</Logger>-->
-        <Root level="trace" >
-            <appender-ref ref="Console" level="info"/>
-            <appender-ref ref="FileLog"/>
-        </Root>
-    </Loggers>
+	<Loggers>
+		<!--<Logger name="com.amazon" level="trace" additivity="false"> -->
+		<!--<appender-ref ref="Console" level="info"/> -->
+		<!--<appender-ref ref="FileLog"/> -->
+		<!--</Logger> -->
+		<Root level="trace">
+			<appender-ref ref="Console" level="info" />
+			<appender-ref ref="FileLog" />
+		</Root>
+	</Loggers>
 
 </Configuration>
