@@ -27,13 +27,12 @@ public class Run {
         	System.out.println(ProductName.AmazonS3.toString());
         	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;
-            forceDownload = ParseMainArguments.isForceDownload(args);
+            //forceDownload = ParseMainArguments.isForceDownload(args);
+            forceDownload = false;
             init(forceDownload);
-            Calculator.calculate(Constants.INPUT_FILE_NAME, Constants.OUTPUT_FILE_NAME);
+            new Calculator().calculate(Constants.INPUT_FILE_NAME, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
             LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
-        } catch (ParseException pe) {
-            System.exit(1);
         } catch (Exception e){
             LOGGER.fatal("A fatal error has occured: " , e);
             //System.err.println("An error has occured: " + e.getLocalizedMessage());

@@ -64,7 +64,8 @@ public class RunOnServer {
 			LOGGER.info(ProductName.AmazonS3.toString());
 			Constants.beginTime = System.currentTimeMillis();
 			Boolean forceDownload;
-			forceDownload = ParseMainArguments.isForceDownload(args);
+			//forceDownload = ParseMainArguments.isForceDownload(args);
+            forceDownload = false;
 			init(forceDownload);
 			Constants.endTime = System.currentTimeMillis();
 			LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime) / 1000 + " seconds!");
@@ -89,11 +90,12 @@ public class RunOnServer {
 
 			// get queue
 			String myQueueUrl = sqsClient.getQueueUrl(INPUT_QUEUE).getQueueUrl();
+			LOGGER.info("Receiving messages from " + INPUT_QUEUE);
 			while (true) {
 				Thread.sleep(TIME_BETWEEN_READS);
 				try {
 					// Receive messages
-					LOGGER.info("Receiving messages from " + INPUT_QUEUE);
+					//LOGGER.info("Receiving messages from " + INPUT_QUEUE);
 					ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
 					List<Message> messages = sqsClient.receiveMessage(receiveMessageRequest).getMessages();
 					for (Message message : messages) {
@@ -144,7 +146,7 @@ public class RunOnServer {
 
 			// calculate and delete message from SQS
 			String outputFileName = currentTimeMillis + "_" + Constants.OUTPUT_FILE_NAME;
-			Calculator.calculate(inputFileName, outputFileName);
+			new Calculator().calculate(inputFileName, outputFileName);
 			sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
 
 			// put file back to S3

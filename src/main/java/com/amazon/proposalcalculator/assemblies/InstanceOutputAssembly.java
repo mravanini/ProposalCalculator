@@ -21,6 +21,7 @@ public class InstanceOutputAssembly {
 
 		output.setCpu(input.getCpu());
 		output.setMemory(input.getMemory());
+		output.setOriginalMemory(input.getOriginalMemory());
 		output.setStorage(input.getStorage());
 		output.setVolumeType(input.getVolumeType());
 		output.setIops(input.getIops());
@@ -42,9 +43,6 @@ public class InstanceOutputAssembly {
 		output.setUseSAPCertifiedInstances(input.getUseSAPCertifiedInstances());
 		output.setSaps(input.getSaps());
 		output.setOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances());
-
-		output.setInstanceMemory(input.getMemory());
-		output.setInstanceSAPS(input.getSaps());
 
 		output.setEnvironment(input.getEnvironment());
 		output.setSapInstanceType(input.getSapInstanceType());

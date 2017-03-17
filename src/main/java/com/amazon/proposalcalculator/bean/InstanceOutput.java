@@ -10,7 +10,7 @@ import com.ebay.xcelite.annotations.Row;
 		"Offering Class", "Tenancy", "Operating System", "Pre Installed S/W", "Beginning", "End", "Instance Type",
 		"Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price", "Compute Monthly Price",
 		"Compute Total Price", "Storage Monthly Price", "Snapshot Monthly Price", "Archive Logs/Local Backup Monthly Price",
-		"S3 Backup Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances",
+		"S3 Backup Monthly Price", "Use SAP Certified Instances", "Only Current Generation Instances", "Original Memory",
 		"Error Message"})
 
 public class InstanceOutput extends InstanceInput {

@@ -38,6 +38,9 @@ public class InstanceInput {
 	@Column(name = "Memory")
 	private Double memory;
 	
+	@Column(name = "Original Memory")
+	private Double originalMemory = 0d;
+	
 	@Column(name = "Memory Tolerance")
 	private Double memoryTolerance;
 
@@ -322,6 +325,14 @@ public class InstanceInput {
 
 	public void setS3Backup(Integer s3Backup) {
 		this.s3Backup = s3Backup;
+	}
+
+	public Double getOriginalMemory() {
+		return originalMemory;
+	}
+
+	public void setOriginalMemory(Double originalMemory) {
+		this.originalMemory = originalMemory;
 	}
 	
 	
