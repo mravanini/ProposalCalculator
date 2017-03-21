@@ -156,8 +156,7 @@ public class Calculator {
 		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
 				.and(operatingSystem(input)).and(preInstalledSw(input)).and(termType(input))
 				.and(offeringClass(input)).and(leaseContractLength(input)).and(purchaseOption(input))
-				.and(memory(input)).and(newGeneration(input))
-				.and(sapCertifiedInstances(input));
+				.and(memory(input)).and(newGeneration(input));
 		
 		//f CPU and SAPS are both provided. CPU is ignored.
 		if (input.getSaps() != null)
@@ -166,7 +165,7 @@ public class Calculator {
 			predicate = predicate.and(cpu(input));
 		
 		//only sap certified...
-		if (input.getSapInstanceType() != null) {
+		if (input.getSapInstanceType() != null && (input.getSapInstanceType().startsWith("APPS") || input.getSapInstanceType().startsWith("ANY_DB"))) {
 			predicate = predicate.and(sapCertifiedInstances(input));
 		}
 		
@@ -193,15 +192,25 @@ public class Calculator {
 	private void breakInManyInstances(InstanceInput input) {
 		if (input.getInstances() == 1) { 
 			input.setOriginalMemory(input.getMemory());
+			input.setOriginalCpu(input.getCpu());
+			input.setOriginalSaps(input.getSaps());
 			input.setInstances(3);
 		} else {
 			input.setInstances(input.getInstances()+1);
 		}
-		input.setMemory(input.getOriginalMemory()/input.getInstances());
+		if (input.getOriginalMemory() != null)
+			input.setMemory(input.getOriginalMemory()/input.getInstances());
+		
+		if (input.getOriginalSaps() != null)
+			input.setSaps(input.getOriginalSaps()/input.getInstances());
+		
+		if (input.getOriginalCpu() != null)
+			input.setCpu(input.getOriginalCpu()/input.getInstances());
 	}
 
 	private void findBestMatch(Quote quote, InstanceInput input, InstanceOutput output,
 			List<Price> possibleMatches) {
+			
 			Price price = getBestPrice(possibleMatches);
 
 			output.setInstanceType(price.getInstanceType());

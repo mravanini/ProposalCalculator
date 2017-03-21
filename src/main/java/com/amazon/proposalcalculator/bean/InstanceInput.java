@@ -20,14 +20,36 @@ public class InstanceInput {
 	@Column(name = "SAP Instance Type")
 	private String sapInstanceType;
 	
+	public Integer getOriginalCpu() {
+		return originalCpu;
+	}
+
+	public void setOriginalCpu(Integer originalCpu) {
+		this.originalCpu = originalCpu;
+	}
+
+	public Integer getOriginalSaps() {
+		return originalSaps;
+	}
+
+	public void setOriginalSaps(Integer originalSaps) {
+		this.originalSaps = originalSaps;
+	}
+
 	@Column(name = "CPU")
 	private Integer cpu;
+	
+	@Column(name = "Original CPU")
+	private Integer originalCpu;
 	
 	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance;
 
 	@Column(name = "SAPS")
 	private Integer saps;
+	
+	@Column(name = "Original SAPS")
+	private Integer originalSaps;
 	
 	@Column(name = "Use SAP Certified Instances")
 	private String useSAPCertifiedInstances;
