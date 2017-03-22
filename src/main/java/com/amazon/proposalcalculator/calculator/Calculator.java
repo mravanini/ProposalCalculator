@@ -5,7 +5,13 @@ import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.Quote;
+import com.amazon.proposalcalculator.enums.Environment;
+import com.amazon.proposalcalculator.enums.LeaseContractLength;
+import com.amazon.proposalcalculator.enums.OfferingClass;
+import com.amazon.proposalcalculator.enums.PurchaseOption;
 import com.amazon.proposalcalculator.enums.QuoteName;
+import com.amazon.proposalcalculator.enums.SAPInstanceType;
+import com.amazon.proposalcalculator.enums.TermType;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +28,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
 
+	private static final String DATE_FORMAT = "dd/MM/yyyy";
+	private static final String UPFRONT_FEE = "Upfront Fee";
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public void calculate(String inputFileName, String outputFileName) {
@@ -35,31 +43,39 @@ public class Calculator {
 		Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
 		calculatePrice(q1);
 
-		Quote q2 = new Quote("OnDemand", null, null, null);
+		Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
 		calculatePrice(q2);
 
-		Quote q3 = new Quote("Reserved", "1yr", "No Upfront", "standard");
+		Quote q3 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "No Upfront",
+				OfferingClass.Standard.name());
 		calculatePrice(q3);
 
-		Quote q4 = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
+		Quote q4 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "Partial Upfront",
+				OfferingClass.Standard.name());
 		calculatePrice(q4);
 
-		Quote q5 = new Quote("Reserved", "1yr", "All Upfront", "standard");
+		Quote q5 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "All Upfront",
+				OfferingClass.Standard.name());
 		calculatePrice(q5);
 
-		Quote q6 = new Quote("Reserved", "3yr", "Partial Upfront", "standard");
+		Quote q6 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				"Partial Upfront", OfferingClass.Standard.name());
 		calculatePrice(q6);
 
-		Quote q7 = new Quote("Reserved", "3yr", "All Upfront", "standard");
+		Quote q7 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
+				OfferingClass.Standard.name());
 		calculatePrice(q7);
 
-		Quote q8 = new Quote("Reserved", "3yr", "No Upfront", "convertible");
+		Quote q8 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "No Upfront",
+				OfferingClass.Convertible.name());
 		calculatePrice(q8);
 
-		Quote q9 = new Quote("Reserved", "3yr", "Partial Upfront", "convertible");
+		Quote q9 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				"Partial Upfront", OfferingClass.Convertible.name());
 		calculatePrice(q9);
 
-		Quote q10 = new Quote("Reserved", "3yr", "All Upfront", "convertible");
+		Quote q10 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
+				OfferingClass.Convertible.name());
 		calculatePrice(q10);
 
 		calculateDiscount();
@@ -126,7 +142,7 @@ public class Calculator {
 				+ output.getArchiveLogsLocalBackupMonthlyPrice() /*+ dataTransferOutMonthlyPrice*/ ;
 		quote.setMonthly(monthly);
 		
-		double months = "3yr".equals(output.getLeaseContractLength()) ? 36 : 12;
+		double months = LeaseContractLength.THREE_YEARS.getColumnName().equals(output.getLeaseContractLength()) ? 36 : 12;
 		double monthlyUpfront = output.getUpfrontFee() / months;
 		double threeYearTotal = quote.getThreeYearTotal() + monthlyUpfront + output.getComputeMonthlyPrice()
 				+ output.getStorageMonthlyPrice() + output.getSnapshotMonthlyPrice();
@@ -164,13 +180,17 @@ public class Calculator {
 		else	
 			predicate = predicate.and(cpu(input));
 		
-		//only sap certified...
-		if (input.getSapInstanceType() != null && (input.getSapInstanceType().startsWith("APPS") || input.getSapInstanceType().startsWith("ANY_DB"))) {
+		// only sap certified...
+		if (/*Environment.PROD.equals(input.getEnvironment()) &&*/ input.getSapInstanceType() != null
+				&& (input.getSapInstanceType().startsWith(SAPInstanceType.APPS.name())
+						|| input.getSapInstanceType().startsWith(SAPInstanceType.ANY_DB.name()))) {
 			predicate = predicate.and(sapCertifiedInstances(input));
 		}
 		
-		//only hana certified instances
-		if (input.getSapInstanceType() != null && input.getSapInstanceType().startsWith("HANA")) {
+		// only hana certified instances
+		if (Environment.PROD.equals(input.getEnvironment()) && input.getSapInstanceType() != null
+				&& (SAPInstanceType.HANA_OLTP.name().equals(input.getSapInstanceType())
+						|| SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType()))) {
 			predicate = predicate.and(hanaCertifiedInstances(input));
 		}
 
@@ -179,7 +199,7 @@ public class Calculator {
 
 		if (!forceBreakInstances && possibleMatches.size() > 0) {
 			return possibleMatches;
-		} else if ("HANA_OLAP".equals(input.getSapInstanceType())) {
+		} else if (SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())) {
 			breakInManyInstances(input);
 			output.setInstances(input.getInstances());
 			return findPossibleMatches(input, output, false);
@@ -221,7 +241,7 @@ public class Calculator {
 			output.setComputeUnitPrice(price.getInstanceHourPrice());
 			output.setComputeMonthlyPrice(
 					price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
-							* (price.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() : 1));
+							* (price.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
 
 			double days = 0;
 			if (input.getBeginning() != null && input.getEnd() != null) {
@@ -231,7 +251,7 @@ public class Calculator {
 			}
 
 			output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
-					* (input.getTermType().equals("OnDemand") ? input.getMonthlyUtilization() : 1));
+					* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
 
 			output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 			output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
@@ -243,20 +263,18 @@ public class Calculator {
 
 			DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
 			double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
-
-			
-
 		
 	}
 
 	private void setEfectivePrice(List<Price> priceList) {
 		for (Price somePrice : priceList) {
-			if (somePrice.getTermType().equals("OnDemand") || somePrice.getPurchaseOption().equals("No Upfront")) {
+			if (somePrice.getTermType().equals(TermType.OnDemand.name()) || 
+					somePrice.getPurchaseOption().equals(PurchaseOption.NO_UPFRONT.getColumnName())) {
 				somePrice.setEfectivePrice(somePrice.getPricePerUnit());
 				somePrice.setInstanceHourPrice(somePrice.getPricePerUnit());
-			} else if (somePrice.getPurchaseOption().equals("Partial Upfront")
-					|| somePrice.getPurchaseOption().equals("All Upfront")) {
-				if (somePrice.getPriceDescription().equals("Upfront Fee")) {
+			} else if (somePrice.getPurchaseOption().equals(PurchaseOption.PARTIAL_UPFRONT.getColumnName())
+					|| somePrice.getPurchaseOption().equals(PurchaseOption.ALL_UPFRONT.getColumnName())) {
+				if (somePrice.getPriceDescription().equals(UPFRONT_FEE)) {
 					Price hourFee = getInstanceHourFee(priceList, somePrice);
 					somePrice.setEfectivePrice(somePrice.getPricePerUnit()
 							/ (12 * Integer.valueOf(somePrice.getLeaseContractLength().substring(0, 1)))
@@ -277,7 +295,7 @@ public class Calculator {
 
 	private Price getUpfrontFee(List<Price> priceList, Price price) {
 		for (Price somePrice : priceList) {
-			if (somePrice.getSku().equals(price.getSku()) && somePrice.getPriceDescription().equals("Upfront Fee")) {
+			if (somePrice.getSku().equals(price.getSku()) && somePrice.getPriceDescription().equals(UPFRONT_FEE)) {
 				return somePrice;
 			}
 		}
@@ -286,7 +304,7 @@ public class Calculator {
 
 	private Price getInstanceHourFee(List<Price> priceList, Price price) {
 		for (Price somePrice : priceList) {
-			if (somePrice.getSku().equals(price.getSku()) && !somePrice.getPriceDescription().equals("Upfront Fee")) {
+			if (somePrice.getSku().equals(price.getSku()) && !somePrice.getPriceDescription().equals(UPFRONT_FEE)) {
 				return somePrice;
 			}
 		}
@@ -296,12 +314,9 @@ public class Calculator {
 	private Price getBestPrice(List<Price> prices) {
 		setEfectivePrice(prices);
 
-		// Price bestPrice = new Price();
-		// bestPrice.setEfectivePrice(1_000_000);
 		Price bestPrice = prices.get(0);
 
 		for (Price price : prices) {
-			// LOGGER.info(price.getOperatingSystem());
 			if (price.getEfectivePrice() < bestPrice.getEfectivePrice()) {
 				bestPrice = price;
 			}
@@ -311,7 +326,7 @@ public class Calculator {
 
 	private long diffInDays(String beginning, String end) {
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 			Date beginningDate = format.parse(beginning);
 			Date endDate = format.parse(end);
 			return diffInDays(beginningDate, endDate);
@@ -330,8 +345,7 @@ public class Calculator {
 		calendar.setTime(end);
 		LocalDate localEnd = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
 				calendar.get(Calendar.DAY_OF_MONTH));
-		return DAYS.between(localBeginning, localEnd.plusDays(1));// last day
-																	// inclusive
+		return DAYS.between(localBeginning, localEnd.plusDays(1));// last day // inclusive
 	}
 
 }

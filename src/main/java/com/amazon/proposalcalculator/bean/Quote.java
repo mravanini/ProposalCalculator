@@ -3,6 +3,7 @@ package com.amazon.proposalcalculator.bean;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.amazon.proposalcalculator.enums.OfferingClass;
 import com.ebay.xcelite.annotations.Column;
 
 public class Quote implements Comparable<Quote> {
@@ -21,7 +22,7 @@ public class Quote implements Comparable<Quote> {
 		sb.append(termType);
 		if (leaseContractLength != null) sb.append(" ").append(leaseContractLength.substring(0,2).toUpperCase());
 		if (purchaseOption != null) sb.append(justFirstLetters(purchaseOption));
-		if ("convertible".equals(offeringClass)) sb.append(" ").append(justFirstLetters(offeringClass));
+		if (OfferingClass.Convertible.name().equals(offeringClass)) sb.append(" ").append(justFirstLetters(offeringClass));
 		this.setName(sb.toString());
 	}
 

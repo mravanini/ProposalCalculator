@@ -27,8 +27,8 @@ public class CalculatorPredicates {
 	}
 	
 	public static Predicate<Price> hanaCertifiedInstances(InstanceInput server) {
-		return p -> (p.getInstanceType().toLowerCase().startsWith("cr1.8xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
+		return p -> (/*p.getInstanceType().toLowerCase().startsWith("cr1.8xlarge")
+				|| */p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
