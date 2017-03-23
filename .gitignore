@@ -30,3 +30,23 @@ output_sap.xlsx
 output_sap.xlsx
 
 output_sap.xlsx
+
+input_sap_correto.xlsx
+
+input_sap_harpreet.xlsx
+
+input_sap_old.xlsx
+
+input_sap_melissa.xlsx
+
+input_sap_spasaude.xlsx
+
+input_sap.xlsx
+
+out/artifacts/ProposalCalculator_jar/log4j-api-2.7.jar
+
+out/artifacts/ProposalCalculator_jar/ProposalCalculator.jar
+
+output_sap_colunas_para_remover.xlsx
+
+output_sap_old.xlsx
