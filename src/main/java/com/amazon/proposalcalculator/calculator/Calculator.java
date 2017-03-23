@@ -8,9 +8,11 @@ import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
+import com.amazon.proposalcalculator.writer.POIExcelWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -24,65 +26,71 @@ public class Calculator {
 
 	private final static Logger LOGGER = LogManager.getLogger();
 
-	public void calculate(String inputFileName, String outputFileName) {
+	public void calculate(String outputFileName) throws IOException {
 
-		Constants.quotes = new ArrayList<Quote>();
+		//Constants.quotes = new ArrayList<Quote>();
+		List quotes = new ArrayList<Quote>();
 
 		ValidateInputSheet.validate(Constants.servers);
 
 		LOGGER.info("Calculating prices...");
 
 		Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
-		calculatePrice(q1);
+		quotes.add(calculatePrice(q1));
 
 		Quote q2 = new Quote("OnDemand", null, null, null);
-		calculatePrice(q2);
+		quotes.add(calculatePrice(q2));
 
 		Quote q3 = new Quote("Reserved", "1yr", "No Upfront", "standard");
-		calculatePrice(q3);
+		quotes.add(calculatePrice(q3));
 
 		Quote q4 = new Quote("Reserved", "1yr", "Partial Upfront", "standard");
-		calculatePrice(q4);
+		quotes.add(calculatePrice(q4));
 
 		Quote q5 = new Quote("Reserved", "1yr", "All Upfront", "standard");
-		calculatePrice(q5);
+		quotes.add(calculatePrice(q5));
 
 		Quote q6 = new Quote("Reserved", "3yr", "Partial Upfront", "standard");
-		calculatePrice(q6);
+		quotes.add(calculatePrice(q6));
 
 		Quote q7 = new Quote("Reserved", "3yr", "All Upfront", "standard");
-		calculatePrice(q7);
+		quotes.add(calculatePrice(q7));
 
 		Quote q8 = new Quote("Reserved", "3yr", "No Upfront", "convertible");
-		calculatePrice(q8);
+		quotes.add(calculatePrice(q8));
 
 		Quote q9 = new Quote("Reserved", "3yr", "Partial Upfront", "convertible");
-		calculatePrice(q9);
+		quotes.add(calculatePrice(q9));
 
 		Quote q10 = new Quote("Reserved", "3yr", "All Upfront", "convertible");
-		calculatePrice(q10);
+		quotes.add(calculatePrice(q10));
 
-		calculateDiscount();
+		calculateDiscount(quotes);
 
-		new DefaultExcelWriter().write(outputFileName);
+		//new DefaultExcelWriter().write(outputFileName, quotes);
+		POIExcelWriter.write(outputFileName, quotes);
 	}
 
-	private void calculateDiscount() {
-		Collections.sort(Constants.quotes);
+	private void calculateDiscount(List<Quote> quotes) {
+		Collections.sort(quotes);
 
-		double higherValue = Constants.quotes.get(0).getThreeYearTotal();
+		double higherValue = quotes.get(0).getThreeYearTotal();
 
 		if (higherValue > 0) {
-			for (Quote q : Constants.quotes) {
+			for (Quote q : quotes) {
 				q.setDiscount((1 - (q.getThreeYearTotal() / higherValue)));
 			}
 		}
 	}
 
-	private void calculatePrice(Quote quote) {
+	private Quote calculatePrice(Quote quote) {
 		// LOGGER.info("Calculating " + quote.getName());
 
+		long rowNum = 1;//first line is the title
+
 		for (InstanceInput input : Constants.servers) {
+
+			rowNum++;
 
 			// TODO fix this
 			if (!quote.getName().equals(QuoteName.YOUR_INPUT.getName())) {
@@ -107,7 +115,7 @@ public class Calculator {
 
 				findMatches(quote, input, output, false);
 				
-				calculateQuoteTotals(quote, output);
+				calculateQuoteTotals(quote, output, rowNum);
 
 			}
 			// Constants.output.add(output);
@@ -115,11 +123,12 @@ public class Calculator {
 
 		}
 		quote.setThreeYearTotal(quote.getThreeYearTotal() * 36);
-		Constants.quotes.add(quote);
 		LOGGER.info(quote.getName() + ":" + quote.getThreeYearTotal());
+		//Constants.quotes.add(quote);
+		return quote;
 	}
 
-	private void calculateQuoteTotals(Quote quote, InstanceOutput output) {
+	private void calculateQuoteTotals(Quote quote, InstanceOutput output, long rowNum) {
 		//
 		double monthly = quote.getMonthly() + output.getComputeMonthlyPrice() + output.getStorageMonthlyPrice()
 				+ output.getSnapshotMonthlyPrice() + output.getS3BackupMonthlyPrice()
@@ -134,7 +143,14 @@ public class Calculator {
 
 		double upfront = quote.getUpfront() + output.getUpfrontFee();
 		quote.setUpfront(upfront);
+
+		//quote.setMonthlyFormula(CalculatorUsingFormula.calculateQuoteTotals(quote, output, rowNum));//TODO testing
+
 	}
+
+
+
+
 
 	private void findMatches(Quote quote, InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
@@ -143,7 +159,7 @@ public class Calculator {
 			if ("HANA_OLAP".equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
 				double efectiveMemory = output.getInstanceMemory() * input.getInstances();
 				if (efectiveMemory / input.getOriginalMemory() > 1.1) {
-					LOGGER.info("Iterating findMatches:" + input.getDescription());
+					//LOGGER.info("Iterating findMatches:" + input.getDescription());
 					findMatches(quote, input, output, true);
 				}
 			}

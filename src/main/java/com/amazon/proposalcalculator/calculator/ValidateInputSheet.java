@@ -37,9 +37,9 @@ public class ValidateInputSheet {
 
     private static boolean isSAPInputSheet(InstanceInput input){
 
-        return input.getSaps() != null
-            || input.getArchiveLogsLocalBackup() != null
-            || input.getSapInstanceType() != null
+        return (input.getSaps() != null && input.getSaps().intValue() != 0)
+            || (input.getArchiveLogsLocalBackup() != null && input.getArchiveLogsLocalBackup().equals("0"))
+            ||  input.getSapInstanceType() != null
         ;
     }
 }

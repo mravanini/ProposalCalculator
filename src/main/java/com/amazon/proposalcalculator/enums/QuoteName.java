@@ -2,7 +2,7 @@ package com.amazon.proposalcalculator.enums;
 
 public enum QuoteName {
 
-	YOUR_INPUT("Your Input");
+	YOUR_INPUT("Your_Input");
 	
 	QuoteName(String name) {
 		this.setName(name);

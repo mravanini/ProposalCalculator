@@ -146,7 +146,7 @@ public class RunOnServer {
 
 			// calculate and delete message from SQS
 			String outputFileName = currentTimeMillis + "_" + Constants.OUTPUT_FILE_NAME;
-			new Calculator().calculate(inputFileName, outputFileName);
+			new Calculator().calculate(outputFileName);
 			sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
 
 			// put file back to S3

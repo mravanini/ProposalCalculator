@@ -3,10 +3,12 @@ package com.amazon.proposalcalculator.bean;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.amazon.proposalcalculator.enums.OfferingClass;
 import com.ebay.xcelite.annotations.Column;
 
 public class Quote implements Comparable<Quote> {
-	
+
+
 	public Quote(String name) {
 		this.name = name;
 	}
@@ -19,9 +21,9 @@ public class Quote implements Comparable<Quote> {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(termType);
-		if (leaseContractLength != null) sb.append(" ").append(leaseContractLength.substring(0,2).toUpperCase());
+		if (leaseContractLength != null) sb.append("_").append(leaseContractLength.substring(0,2).toUpperCase());
 		if (purchaseOption != null) sb.append(justFirstLetters(purchaseOption));
-		if ("convertible".equals(offeringClass)) sb.append(" ").append(justFirstLetters(offeringClass));
+		if (OfferingClass.Convertible.name().equalsIgnoreCase(offeringClass)) sb.append("_").append(justFirstLetters(offeringClass));
 		this.setName(sb.toString());
 	}
 
@@ -32,6 +34,10 @@ public class Quote implements Comparable<Quote> {
 	private String offeringClass;
 	private double monthly;
 	private double upfront;
+
+	private String upfrontFormula;
+	private String monthlyFormula;
+
 	private double threeYearTotal;
 	private double discount;
 	private Collection<InstanceOutput> output = new ArrayList<InstanceOutput>();
@@ -122,4 +128,19 @@ public class Quote implements Comparable<Quote> {
 		this.threeYearTotal = threeYearTotal;
 	}
 
+	public String getUpfrontFormula() {
+		return upfrontFormula;
+	}
+
+	public void setUpfrontFormula(String upfrontFormula) {
+		this.upfrontFormula = upfrontFormula;
+	}
+
+	public void setMonthlyFormula(String monthlyFormula) {
+		this.monthlyFormula = monthlyFormula;
+	}
+
+	public String getMonthlyFormula() {
+		return monthlyFormula;
+	}
 }

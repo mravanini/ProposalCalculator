@@ -19,10 +19,10 @@ public class Constants {
 	public static List<Price> ec2PriceList;
 	public static List<S3Price> s3PriceList;
 	public static Collection<InstanceInput> servers;
-	public static List<Quote> quotes;
+	//public static List<Quote> quotes;
 	public static Collection<ConfigInput> configs;
 	public static double HOURS_IN_A_MONTH = 730.4375f;
-	public static double GIB_TO_GB = 1.073741824f;
+	public static double GIB_TO_GB = 1.073741824f;//TODO EQUALIZE GB TO GiB
 	public static ConfigInput config;
 	public static DataTransferInput dataTransfer;
 	public static long beginTime;

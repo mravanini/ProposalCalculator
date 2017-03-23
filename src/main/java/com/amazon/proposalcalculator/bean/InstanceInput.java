@@ -67,7 +67,8 @@ public class InstanceInput {
 	
 	@Column(name = "Lease Contract Length")
 	private String leaseContractLength;
-	
+	public static String leaseContractLengthColumn = "%s!S%d";
+
 	@Column(name = "Purchase Option")
 	private String purchaseOption;
 	
