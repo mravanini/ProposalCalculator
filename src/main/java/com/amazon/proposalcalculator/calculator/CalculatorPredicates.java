@@ -20,15 +20,15 @@ public class CalculatorPredicates {
 	public static Predicate<Price> sapCertifiedInstances(InstanceInput server) {
 		return  p -> (p.getInstanceType().toLowerCase().startsWith("m4")
 				|| p.getInstanceType().toLowerCase().startsWith("c4")
-				|| p.getInstanceType().toLowerCase().startsWith("c3")
+				//|| p.getInstanceType().toLowerCase().startsWith("c3")
 				|| p.getInstanceType().toLowerCase().startsWith("r4")
-				|| p.getInstanceType().toLowerCase().startsWith("r3")
+				//|| p.getInstanceType().toLowerCase().startsWith("r3")
 				|| p.getInstanceType().toLowerCase().startsWith("x1"));
 	}
 	
 	public static Predicate<Price> hanaCertifiedInstances(InstanceInput server) {
-		return p -> (p.getInstanceType().toLowerCase().startsWith("cr1.8xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
+		return p -> (/*p.getInstanceType().toLowerCase().startsWith("cr1.8xlarge")
+				|| */p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
