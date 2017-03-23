@@ -43,7 +43,11 @@ public class ValidateReservedPurchaseOptionCombination {
                                                 input.getOfferingClass()))).collect(Collectors.toList());
 
         if (validCombinations.isEmpty()){
-            throw new PricingCalculatorException(INVALID_COMBINATION);
+            throw new PricingCalculatorException(INVALID_COMBINATION + " Combination found:" +
+                    input.getTermType() + ", " +
+                    input.getLeaseContractLength() + ", " +
+                    input.getPurchaseOption() + ", " +
+                    input.getOfferingClass());
         }
     }
 
