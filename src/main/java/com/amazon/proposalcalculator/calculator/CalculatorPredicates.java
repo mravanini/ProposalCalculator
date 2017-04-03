@@ -17,23 +17,27 @@ import java.util.function.Predicate;
  */
 public class CalculatorPredicates {
 	
-	public static Predicate<Price> sapCertifiedInstances(InstanceInput server) {
+	public static Predicate<Price> sapProductionCertifiedInstances(InstanceInput server) {
 		return  p -> (p.getInstanceType().toLowerCase().startsWith("m4")
 				|| p.getInstanceType().toLowerCase().startsWith("c4")
-				//|| p.getInstanceType().toLowerCase().startsWith("c3")
 				|| p.getInstanceType().toLowerCase().startsWith("r4")
-				//|| p.getInstanceType().toLowerCase().startsWith("r3")
 				|| p.getInstanceType().toLowerCase().startsWith("x1"));
 	}
 	
-	public static Predicate<Price> hanaCertifiedInstances(InstanceInput server) {
-		return p -> (/*p.getInstanceType().toLowerCase().startsWith("cr1.8xlarge")
-				|| */p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
+	public static Predicate<Price> hanaProductionCertifiedInstances(InstanceInput server) {
+		return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 				|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge"));
+				|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+	}
+	
+	public static Predicate<Price> hanaDevQaInstances(InstanceInput server) {
+		return  p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("m4")
+				|| p.getInstanceType().toLowerCase().startsWith("c4")
+				|| p.getInstanceType().toLowerCase().startsWith("r4")
+				|| p.getInstanceType().toLowerCase().startsWith("x1")));
 	}
 	
 	public static Predicate<Price> newGeneration(InstanceInput server) {

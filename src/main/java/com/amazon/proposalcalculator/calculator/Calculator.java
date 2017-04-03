@@ -3,6 +3,7 @@ package com.amazon.proposalcalculator.calculator;
 import com.amazon.proposalcalculator.assemblies.InstanceOutputAssembly;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.InstanceOutput;
+import com.amazon.proposalcalculator.bean.MinimalHanaStorage;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.Environment;
@@ -30,6 +31,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
 
+	private static final int MIN_HANA_CLUSTER_SIZE = 3;
 	private static final String DATE_FORMAT = "dd/MM/yyyy";
 	private static final String UPFRONT_FEE = "Upfront Fee";
 	private final static Logger LOGGER = LogManager.getLogger();
@@ -197,17 +199,21 @@ public class Calculator {
 			predicate = predicate.and(cpu(input));
 		
 		// only sap certified...
-		if (/*Environment.PROD.equals(input.getEnvironment()) &&*/ input.getSapInstanceType() != null
+		if (input.getSapInstanceType() != null
 				&& (input.getSapInstanceType().startsWith(SAPInstanceType.APPS.name())
 						|| input.getSapInstanceType().startsWith(SAPInstanceType.ANY_DB.name()))) {
-			predicate = predicate.and(sapCertifiedInstances(input));
+			predicate = predicate.and(sapProductionCertifiedInstances(input));
 		}
 		
 		// only hana certified instances
-		if (Environment.PROD.equals(input.getEnvironment()) && input.getSapInstanceType() != null
+		if (input.getSapInstanceType() != null
 				&& (SAPInstanceType.HANA_OLTP.name().equals(input.getSapInstanceType())
 						|| SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType()))) {
-			predicate = predicate.and(hanaCertifiedInstances(input));
+			if (Environment.PROD.equals(input.getEnvironment())) {
+				predicate = predicate.and(hanaProductionCertifiedInstances(input));
+			} else {
+				predicate = predicate.and(hanaDevQaInstances(input));
+			}
 		}
 
 		List<Price> possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
@@ -230,7 +236,13 @@ public class Calculator {
 			input.setOriginalMemory(input.getMemory());
 			input.setOriginalCpu(input.getCpu());
 			input.setOriginalSaps(input.getSaps());
-			input.setInstances(3);
+			
+			input.setOriginalStorage(input.getStorage());
+			input.setOriginalSnapshot(input.getSnapshot());
+			input.setOriginalArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup());
+			input.setOriginalS3Backup(input.getS3Backup());
+			
+			input.setInstances(MIN_HANA_CLUSTER_SIZE);
 		} else {
 			input.setInstances(input.getInstances()+1);
 		}
@@ -242,44 +254,84 @@ public class Calculator {
 		
 		if (input.getOriginalCpu() != null)
 			input.setCpu(input.getOriginalCpu()/input.getInstances());
+		
+		if (input.getOriginalStorage() != null)
+			input.setStorage(input.getOriginalStorage()/input.getInstances());
+		
+		if (input.getOriginalSnapshot() != null)
+			input.setSnapshot(input.getOriginalSnapshot()/input.getInstances());
+		
+		if (input.getOriginalArchiveLogsLocalBackup() != null)
+			input.setArchiveLogsLocalBackup(input.getOriginalArchiveLogsLocalBackup()/input.getInstances());
+		
+		if (input.getOriginalS3Backup() != null)
+			input.setS3Backup(input.getOriginalS3Backup()/input.getInstances());
+		
 	}
 
-	private void findBestMatch(Quote quote, InstanceInput input, InstanceOutput output,
-			List<Price> possibleMatches) {
-			
-			Price price = getBestPrice(possibleMatches);
+	private void findBestMatch(Quote quote, InstanceInput input, InstanceOutput output, List<Price> possibleMatches) {
+		Price price = getBestPrice(possibleMatches);
 
-			output.setInstanceType(price.getInstanceType());
-			output.setInstanceVCPU(price.getvCPU());
-			output.setInstanceMemory(price.getMemory());
-			output.setInstanceSAPS(price.getSaps());
+		minimalStorage(output, input, price);
 
-			output.setComputeUnitPrice(price.getInstanceHourPrice());
-			output.setComputeMonthlyPrice(
-					price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
-							* (price.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+		setPrices(input, output, price);
+	}
 
-			double days = 0;
-			if (input.getBeginning() != null && input.getEnd() != null) {
-				days = diffInDays(input.getBeginning(), input.getEnd());
-			} else {
-				days = Constants.HOURS_IN_A_MONTH / 24;
+	private void minimalStorage(InstanceOutput output, InstanceInput input, Price price) {
+		if (input.getSapInstanceType() != null && input.getSapInstanceType().startsWith("HANA")) {
+			MinimalHanaStorage minimalHanaStorage = CalculateHanaMinimalStorage.getInstance()
+					.getMinimalHanaStorage(price.getInstanceType());
+
+			if (input.getArchiveLogsLocalBackup() == null || (input.getArchiveLogsLocalBackup() < minimalHanaStorage.getBackupVolume())) {
+				input.setArchiveLogsLocalBackup(minimalHanaStorage.getBackupVolume());
+				output.setArchiveLogsLocalBackup(minimalHanaStorage.getBackupVolume());
 			}
 
-			output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
-					* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+			Integer generalVolumeSize = minimalHanaStorage.getDataAndLogsVolume() + minimalHanaStorage.getRootVolume()
+					+ minimalHanaStorage.getSapBinariesVolume();
+			if (input.getInstances() > 1) {
+				generalVolumeSize = generalVolumeSize + (minimalHanaStorage.getSharedVolume() / input.getInstances());
+			}
+			
+			if (input.getStorage() == null || input.getStorage() < generalVolumeSize) {
+				input.setStorage(generalVolumeSize);
+				output.setStorage(generalVolumeSize);
+			}
+		}
+	}
 
-			output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
-			output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+	private void setPrices(InstanceInput input, InstanceOutput output, Price price) {
+		output.setInstanceType(price.getInstanceType());
+		output.setInstanceVCPU(price.getvCPU());
+		output.setInstanceMemory(price.getMemory());
+		output.setInstanceSAPS(price.getSaps());
 
-			output.setArchiveLogsLocalBackupMonthlyPrice(
-					StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
-
-			output.setUpfrontFee(price.getUpfrontFee() * input.getInstances());
-
-			DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
-			double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
+		output.setComputeUnitPrice(price.getInstanceHourPrice());
 		
+		output.setComputeMonthlyPrice(
+				price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
+						* (price.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+
+		double days = 0;
+		if (input.getBeginning() != null && input.getEnd() != null) {
+			days = diffInDays(input.getBeginning(), input.getEnd());
+		} else {
+			days = Constants.HOURS_IN_A_MONTH / 24;
+		}
+
+		output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
+				* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+
+		output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input) * input.getInstances());
+		output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input) * input.getInstances());
+
+		output.setArchiveLogsLocalBackupMonthlyPrice(
+				StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input) * input.getInstances());
+
+		output.setUpfrontFee(price.getUpfrontFee() * input.getInstances());
+
+		DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
+		double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
 	}
 
 	private void setEfectivePrice(List<Price> priceList) {

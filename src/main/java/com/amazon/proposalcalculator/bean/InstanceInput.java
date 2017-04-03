@@ -3,23 +3,112 @@ package com.amazon.proposalcalculator.bean;
 import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
-	
+
 	@Column(name = "Description")
 	private String description;
-	
+
 	@Column(name = "Region")
 	private String region;
 
 	@Column(name = "Instances")
-	//TODO remove default value
+	// TODO remove default value
 	private int instances = 1;
-	
+
 	@Column(name = "Environment")
 	private String environment;
-	
+
 	@Column(name = "SAP Instance Type")
 	private String sapInstanceType;
+
+	@Column(name = "CPU")
+	private Integer cpu;
+
+	@Column(name = "Original CPU")
+	private Integer originalCpu;
+
+	@Column(name = "CPU Tolerance")
+	private Double cpuTolerance;
+
+	@Column(name = "SAPS")
+	private Integer saps;
+
+	@Column(name = "Original SAPS")
+	private Integer originalSaps;
+
+	@Column(name = "Use SAP Certified Instances")
+	private String useSAPCertifiedInstances;
+
+	@Column(name = "Monthly Utilization")
+	private Double monthlyUtilization;
+
+	@Column(name = "Memory")
+	private Double memory;
+
+	@Column(name = "Original Memory")
+	private Double originalMemory = 0d;
+
+	@Column(name = "Memory Tolerance")
+	private Double memoryTolerance;
+
+	@Column(name = "Storage(GB)")
+	private Integer storage;
 	
+	private Integer originalStorage;
+
+	@Column(name = "Volume Type")
+	private String volumeType;
+
+	@Column(name = "IOPS")
+	private Integer iops;
+
+	@Column(name = "Snapshot(GB)")
+	private Integer snapshot;
+	
+	private Integer originalSnapshot;
+
+	@Column(name = "Archive Logs/Local Backup(GB)")
+	private Integer archiveLogsLocalBackup;
+	
+	private Integer originalArchiveLogsLocalBackup;
+
+	@Column(name = "S3 Backup(GB)")
+	private Integer s3Backup;
+	
+	private Integer originalS3Backup;
+
+	@Column(name = "Term Type")
+	private String termType;
+
+	@Column(name = "Lease Contract Length")
+	private String leaseContractLength;
+	public static String leaseContractLengthColumn = "%s!S%d";
+
+	@Column(name = "Purchase Option")
+	private String purchaseOption;
+
+	@Column(name = "Offering Class")
+	private String offeringClass;
+
+	@Column(name = "Tenancy")
+	private String tenancy;
+
+	@Column(name = "Operating System")
+	private String operatingSystem;
+
+	@Column(name = "Beginning")
+	private String beginning;
+
+	@Column(name = "End")
+	private String end;
+
+	@Column(name = "Pre Installed S/W")
+	private String preInstalledSw;
+
+	@Column(name = "Only Current Generation Instances")
+	private String onlyCurrentGenerationInstances;
+
+	private String errorMessageInput;
+
 	public Integer getOriginalCpu() {
 		return originalCpu;
 	}
@@ -36,87 +125,6 @@ public class InstanceInput {
 		this.originalSaps = originalSaps;
 	}
 
-	@Column(name = "CPU")
-	private Integer cpu;
-	
-	@Column(name = "Original CPU")
-	private Integer originalCpu;
-	
-	@Column(name = "CPU Tolerance")
-	private Double cpuTolerance;
-
-	@Column(name = "SAPS")
-	private Integer saps;
-	
-	@Column(name = "Original SAPS")
-	private Integer originalSaps;
-	
-	@Column(name = "Use SAP Certified Instances")
-	private String useSAPCertifiedInstances;
-
-	@Column(name = "Monthly Utilization")
-	private Double monthlyUtilization;
-
-	@Column(name = "Memory")
-	private Double memory;
-	
-	@Column(name = "Original Memory")
-	private Double originalMemory = 0d;
-	
-	@Column(name = "Memory Tolerance")
-	private Double memoryTolerance;
-
-	@Column(name = "Storage(GB)")
-	private Integer storage;
-
-	@Column(name = "Volume Type")
-	private String volumeType;
-
-	@Column(name = "IOPS")
-	private Integer iops;
-
-	@Column(name = "Snapshot(GB)")
-	private Integer snapshot;
-	
-	@Column(name = "Archive Logs/Local Backup(GB)")
-	private Integer archiveLogsLocalBackup;
-	
-	@Column(name = "S3 Backup(GB)")
-	private Integer s3Backup;
-
-	@Column(name = "Term Type")
-	private String termType;
-	
-	@Column(name = "Lease Contract Length")
-	private String leaseContractLength;
-	public static String leaseContractLengthColumn = "%s!S%d";
-
-	@Column(name = "Purchase Option")
-	private String purchaseOption;
-	
-	@Column(name = "Offering Class")
-	private String offeringClass;
-
-	@Column(name = "Tenancy")
-	private String tenancy;
-
-	@Column(name = "Operating System")
-	private String operatingSystem;
-	
-	@Column(name = "Beginning")
-	private String beginning;
-	
-	@Column(name = "End")
-	private String end;	
-	
-	@Column(name = "Pre Installed S/W")
-	private String preInstalledSw;
-	
-	@Column(name = "Only Current Generation Instances")
-	private String onlyCurrentGenerationInstances;
-
-	private String errorMessageInput;
-
 	public String getErrorMessageInput() {
 		return this.errorMessageInput;
 	}
@@ -128,7 +136,8 @@ public class InstanceInput {
 			this.errorMessageInput = errorMessageInput;
 		}
 	}
-	public boolean hasErrors(){
+
+	public boolean hasErrors() {
 		return this.errorMessageInput != null;
 	}
 
@@ -156,7 +165,9 @@ public class InstanceInput {
 		this.memory = memory;
 	}
 
-	public Integer getStorage() { return storage; }
+	public Integer getStorage() {
+		return storage;
+	}
 
 	public void setStorage(Integer storage) {
 		this.storage = storage;
@@ -170,9 +181,13 @@ public class InstanceInput {
 		this.volumeType = volumeType;
 	}
 
-	public Integer getSnapshot() { return snapshot; }
+	public Integer getSnapshot() {
+		return snapshot;
+	}
 
-	public void setSnapshot(Integer snapshot) { this.snapshot = snapshot; }
+	public void setSnapshot(Integer snapshot) {
+		this.snapshot = snapshot;
+	}
 
 	public String getBeginning() {
 		return beginning;
@@ -356,6 +371,38 @@ public class InstanceInput {
 
 	public void setOriginalMemory(Double originalMemory) {
 		this.originalMemory = originalMemory;
+	}
+
+	public Integer getOriginalStorage() {
+		return originalStorage;
+	}
+
+	public void setOriginalStorage(Integer originalStorage) {
+		this.originalStorage = originalStorage;
+	}
+
+	public Integer getOriginalSnapshot() {
+		return originalSnapshot;
+	}
+
+	public void setOriginalSnapshot(Integer originalSnapshot) {
+		this.originalSnapshot = originalSnapshot;
+	}
+
+	public Integer getOriginalArchiveLogsLocalBackup() {
+		return originalArchiveLogsLocalBackup;
+	}
+
+	public void setOriginalArchiveLogsLocalBackup(Integer originalArchiveLogsLocalBackup) {
+		this.originalArchiveLogsLocalBackup = originalArchiveLogsLocalBackup;
+	}
+
+	public Integer getOriginalS3Backup() {
+		return originalS3Backup;
+	}
+
+	public void setOriginalS3Backup(Integer originalS3Backup) {
+		this.originalS3Backup = originalS3Backup;
 	}
 	
 	
