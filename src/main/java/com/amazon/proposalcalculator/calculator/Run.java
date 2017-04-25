@@ -43,9 +43,9 @@ public class Run {
     private static void init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
         S3PriceListReader.read(forceDownload);
-        DefaultExcelReader.read();
-        ConfigReader.read();
-        DataTransferReader.read();
+        DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
+        ConfigReader.read(Constants.INPUT_FILE_NAME);
+        DataTransferReader.read(Constants.INPUT_FILE_NAME);
     }
 
 }

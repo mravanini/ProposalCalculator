@@ -108,6 +108,9 @@ public class InstanceInput {
 	private String onlyCurrentGenerationInstances;
 
 	private String errorMessageInput;
+	
+	@Column(name = "Billing Option")
+	private String billingOption;
 
 	public Integer getOriginalCpu() {
 		return originalCpu;
@@ -403,6 +406,14 @@ public class InstanceInput {
 
 	public void setOriginalS3Backup(Integer originalS3Backup) {
 		this.originalS3Backup = originalS3Backup;
+	}
+
+	public String getBillingOption() {
+		return billingOption;
+	}
+
+	public void setBillingOption(String billingOption) {
+		this.billingOption = billingOption;
 	}
 	
 	

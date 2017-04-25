@@ -19,6 +19,8 @@ public class ValidateCommonInputs {
     static void validate(InstanceInput input){
 
         validateDescription(input.getDescription());
+        
+        fillBillingOption(input);
 
         input.setRegion(fillRegion(input.getRegion()));
 
@@ -105,6 +107,52 @@ public class ValidateCommonInputs {
 
     private static String fillTermType(String termType) {
         return (termType == null) ? TermType.OnDemand.name() : TermType.getTermType(termType).name();
+    }
+    
+    private static void fillBillingOption(InstanceInput input) {
+    	if (BillingOption.ON_DEMAND.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.OnDemand.name());
+    	} else if (BillingOption.ONE_YRNU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.ONE_YEAR.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.NO_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.ONE_YRPU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.ONE_YEAR.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.PARTIAL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.ONE_YRAU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.ONE_YEAR.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.ALL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.THREE_YRPU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.PARTIAL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.THREE_YRAU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.ALL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.THREE_YRNUC.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.NO_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Convertible.name());
+    	} else if (BillingOption.THREE_YRPUC.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.PARTIAL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Convertible.name());
+    	} else if (BillingOption.THREE_YRAUC.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.ALL_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Convertible.name());
+    	} 
     }
 
 //    private static Integer fillS3Backup(Integer s3Backup) {

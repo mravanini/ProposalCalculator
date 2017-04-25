@@ -140,9 +140,9 @@ public class RunOnServer {
 			IOUtils.closeQuietly(objectData);
 
 			// read spreadsheets
-			DefaultExcelReader.read();
-			ConfigReader.read();
-			DataTransferReader.read();
+			DefaultExcelReader.read(inputFileName);
+			ConfigReader.read(inputFileName);
+			DataTransferReader.read(inputFileName);
 
 			// calculate and delete message from SQS
 			String outputFileName = currentTimeMillis + "_" + Constants.OUTPUT_FILE_NAME;
