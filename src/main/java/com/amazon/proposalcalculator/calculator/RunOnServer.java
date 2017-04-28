@@ -105,8 +105,8 @@ public class RunOnServer {
 		for (JsonNode record : records) {
 
 			// get file from S3
-			String inputFileS3Key = record.get("s3").get("s3Object").get("key").asText();
-			//String inputFileS3Key = record.get("s3").get("object").get("key").asText();//TODO NÃO COMMITAR
+			//String inputFileS3Key = record.get("s3").get("s3Object").get("key").asText();
+			String inputFileS3Key = record.get("s3").get("object").get("key").asText();
 			String bucketName = record.get("s3").get("bucket").get("name").asText();
 			LOGGER.info("S3 Key : " + inputFileS3Key);
 			LOGGER.info("Bucket : " + bucketName);
