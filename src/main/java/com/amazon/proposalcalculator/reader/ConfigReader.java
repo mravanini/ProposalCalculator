@@ -16,12 +16,12 @@ public class ConfigReader {
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public static void main(String[] args) {
-		new ConfigReader().read();
+		new ConfigReader().read(Constants.INPUT_FILE_NAME);
 	}
 
-	public static void read() {
+	public static void read(String inputFileName) {
 		LOGGER.info("Reading input spreadsheet - tab Config...");
-		Xcelite xcelite = new Xcelite(new File(Constants.INPUT_FILE_NAME));
+		Xcelite xcelite = new Xcelite(new File(inputFileName));
 		try {
 			XceliteSheet sheet = xcelite.getSheet("Config");
 			SheetReader<ConfigInput> reader = sheet.getBeanReader(ConfigInput.class);

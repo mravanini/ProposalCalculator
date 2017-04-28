@@ -19,13 +19,13 @@ public class DataTransferReader {
 	
 	public static void main(String[] args) throws IOException {
 		EC2PriceListReader.read(false);
-		DataTransferReader.read();
+		DataTransferReader.read(Constants.INPUT_FILE_NAME);
 		DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
 		dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
 	}
 	
-	public static void read() {
-		Xcelite xcelite = new Xcelite(new File(Constants.INPUT_FILE_NAME));
+	public static void read(String inputFileName) {
+		Xcelite xcelite = new Xcelite(new File(inputFileName));
 		try {
 			XceliteSheet sheet = xcelite.getSheet("Data Transfer");
 			SheetReader<Collection<Object>> simpleReader = sheet.getSimpleReader();

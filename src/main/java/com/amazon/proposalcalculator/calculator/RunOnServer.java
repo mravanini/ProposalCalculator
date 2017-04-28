@@ -123,9 +123,9 @@ public class RunOnServer {
 				IOUtils.closeQuietly(objectData);
 
 				// read spreadsheets
-				Collection<InstanceInput> instanceInputs = DefaultExcelReader.read();
-				ConfigReader.read();
-				DataTransferReader.read();
+				Collection<InstanceInput> instanceInputs = DefaultExcelReader.read(inputFileName);
+				ConfigReader.read(inputFileName);
+				DataTransferReader.read(inputFileName);
 
 				// calculate and delete message from SQS
 				String outputFileName = getCurrentTime() + "_" + Constants.OUTPUT_FILE_NAME;
@@ -154,6 +154,8 @@ public class RunOnServer {
 				putFileBackToS3(s3Client, bucketName, s3Object, outputFileNameWithError);
 
 			}
+//			ObjectMetadata metadata = new ObjectMetadata();
+//			metadata.addUserMetadata(METAKEY, meta);
 		}
 	}
 

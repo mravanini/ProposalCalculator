@@ -43,10 +43,11 @@ public class Run {
     private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
         S3PriceListReader.read(forceDownload);
-        Collection<InstanceInput> instanceInputs = DefaultExcelReader.read();
-        ConfigReader.read();
-        DataTransferReader.read();
-        return instanceInputs;
+        Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
+        ConfigReader.read(Constants.INPUT_FILE_NAME);
+        DataTransferReader.read(Constants.INPUT_FILE_NAME);
+
+        return servers;
     }
 
 }
