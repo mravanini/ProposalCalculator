@@ -1,19 +1,19 @@
 package com.amazon.proposalcalculator.calculator;
 
+import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.enums.ProductName;
 import com.amazon.proposalcalculator.reader.ConfigReader;
 import com.amazon.proposalcalculator.reader.DataTransferReader;
 import com.amazon.proposalcalculator.reader.DefaultExcelReader;
 import com.amazon.proposalcalculator.reader.EC2PriceListReader;
-import com.amazon.proposalcalculator.reader.ParseMainArguments;
 import com.amazon.proposalcalculator.reader.S3PriceListReader;
 import com.amazon.proposalcalculator.utils.Constants;
 
-import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created by ravanini on 02/12/16.
@@ -29,8 +29,8 @@ public class Run {
             Boolean forceDownload;
             //forceDownload = ParseMainArguments.isForceDownload(args);
             forceDownload = false;
-            init(forceDownload);
-            new Calculator().calculate(Constants.OUTPUT_FILE_NAME);
+            Collection<InstanceInput> instanceInputs = init(forceDownload);
+            Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
             LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
         } catch (Exception e){
@@ -40,12 +40,13 @@ public class Run {
         }
     }
 
-    private static void init(Boolean forceDownload) throws IOException {
+    private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
         S3PriceListReader.read(forceDownload);
-        DefaultExcelReader.read();
+        Collection<InstanceInput> instanceInputs = DefaultExcelReader.read();
         ConfigReader.read();
         DataTransferReader.read();
+        return instanceInputs;
     }
 
 }

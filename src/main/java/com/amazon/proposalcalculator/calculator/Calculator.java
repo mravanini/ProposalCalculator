@@ -14,7 +14,6 @@ import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.enums.SAPInstanceType;
 import com.amazon.proposalcalculator.enums.TermType;
 import com.amazon.proposalcalculator.utils.Constants;
-import com.amazon.proposalcalculator.writer.DefaultExcelWriter;
 import com.amazon.proposalcalculator.writer.POIExcelWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,52 +35,51 @@ public class Calculator {
 	private static final String UPFRONT_FEE = "Upfront Fee";
 	private final static Logger LOGGER = LogManager.getLogger();
 
-	public void calculate(String outputFileName) throws IOException {
+	public static void calculate(Collection<InstanceInput> servers, String outputFileName) throws IOException {
 
-		//Constants.quotes = new ArrayList<Quote>();
 		List quotes = new ArrayList<Quote>();
 
-		ValidateInputSheet.validate(Constants.servers);
+		ValidateInputSheet.validate(servers);
 
 		LOGGER.info("Calculating prices...");
 
 		Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
-		quotes.add(calculatePrice(q1));
+		quotes.add(calculatePrice(servers, q1));
 
 		Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
-		quotes.add(calculatePrice(q2));
+		quotes.add(calculatePrice(servers, q2));
 
 		Quote q3 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "No Upfront",
 				OfferingClass.Standard.name());
-		quotes.add(calculatePrice(q3));
+		quotes.add(calculatePrice(servers, q3));
 
 		Quote q4 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "Partial Upfront",
 				OfferingClass.Standard.name());
-		quotes.add(calculatePrice(q4));
+		quotes.add(calculatePrice(servers, q4));
 
 		Quote q5 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "All Upfront",
 				OfferingClass.Standard.name());
-		quotes.add(calculatePrice(q5));
+		quotes.add(calculatePrice(servers, q5));
 
 		Quote q6 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
 				"Partial Upfront", OfferingClass.Standard.name());
-		quotes.add(calculatePrice(q6));
+		quotes.add(calculatePrice(servers, q6));
 
 		Quote q7 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
 				OfferingClass.Standard.name());
-		quotes.add(calculatePrice(q7));
+		quotes.add(calculatePrice(servers, q7));
 
 		Quote q8 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "No Upfront",
 				OfferingClass.Convertible.name());
-		quotes.add(calculatePrice(q8));
+		quotes.add(calculatePrice(servers, q8));
 
 		Quote q9 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
 				"Partial Upfront", OfferingClass.Convertible.name());
-		quotes.add(calculatePrice(q9));
+		quotes.add(calculatePrice(servers, q9));
 
 		Quote q10 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
 				OfferingClass.Convertible.name());
-		quotes.add(calculatePrice(q10));
+		quotes.add(calculatePrice(servers, q10));
 
 		calculateDiscount(quotes);
 
@@ -89,7 +87,7 @@ public class Calculator {
 		POIExcelWriter.write(outputFileName, quotes);
 	}
 
-	private void calculateDiscount(List<Quote> quotes) {
+	private static void calculateDiscount(List<Quote> quotes) {
 		Collections.sort(quotes);
 
 		double higherValue = quotes.get(0).getThreeYearTotal();
@@ -101,12 +99,12 @@ public class Calculator {
 		}
 	}
 
-	private Quote calculatePrice(Quote quote) {
+	private static Quote calculatePrice(Collection<InstanceInput> servers, Quote quote) {
 		// LOGGER.info("Calculating " + quote.getName());
 
 		long rowNum = 1;//first line is the title
 
-		for (InstanceInput input : Constants.servers) {
+		for (InstanceInput input : servers) {
 
 			rowNum++;
 
@@ -146,7 +144,7 @@ public class Calculator {
 		return quote;
 	}
 
-	private void calculateQuoteTotals(Quote quote, InstanceOutput output, long rowNum) {
+	private static void calculateQuoteTotals(Quote quote, InstanceOutput output, long rowNum) {
 		//
 		double monthly = quote.getMonthly() + output.getComputeMonthlyPrice() + output.getStorageMonthlyPrice()
 				+ output.getSnapshotMonthlyPrice() + output.getS3BackupMonthlyPrice()
@@ -170,7 +168,7 @@ public class Calculator {
 
 
 
-	private void findMatches(Quote quote, InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
+	private static void findMatches(Quote quote, InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
@@ -184,7 +182,7 @@ public class Calculator {
 		}
 	}
 
-	private List<Price> findPossibleMatches(InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
+	private static List<Price> findPossibleMatches(InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
 		LOGGER.debug("Calculating instance: " + input.getDescription());
 
 		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
@@ -231,7 +229,7 @@ public class Calculator {
 		}
 	}
 
-	private void breakInManyInstances(InstanceInput input) {
+	private static void breakInManyInstances(InstanceInput input) {
 		if (input.getInstances() == 1) { 
 			input.setOriginalMemory(input.getMemory());
 			input.setOriginalCpu(input.getCpu());
@@ -269,7 +267,7 @@ public class Calculator {
 		
 	}
 
-	private void findBestMatch(Quote quote, InstanceInput input, InstanceOutput output, List<Price> possibleMatches) {
+	private static void findBestMatch(Quote quote, InstanceInput input, InstanceOutput output, List<Price> possibleMatches) {
 		Price price = getBestPrice(possibleMatches);
 
 		minimalStorage(output, input, price);
@@ -277,7 +275,7 @@ public class Calculator {
 		setPrices(input, output, price);
 	}
 
-	private void minimalStorage(InstanceOutput output, InstanceInput input, Price price) {
+	private static void minimalStorage(InstanceOutput output, InstanceInput input, Price price) {
 		if (input.getSapInstanceType() != null && input.getSapInstanceType().startsWith("HANA")) {
 			MinimalHanaStorage minimalHanaStorage = CalculateHanaMinimalStorage.getInstance()
 					.getMinimalHanaStorage(price.getInstanceType());
@@ -300,7 +298,7 @@ public class Calculator {
 		}
 	}
 
-	private void setPrices(InstanceInput input, InstanceOutput output, Price price) {
+	private static void setPrices(InstanceInput input, InstanceOutput output, Price price) {
 		output.setInstanceType(price.getInstanceType());
 		output.setInstanceVCPU(price.getvCPU());
 		output.setInstanceMemory(price.getMemory());
@@ -334,7 +332,7 @@ public class Calculator {
 		double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
 	}
 
-	private void setEfectivePrice(List<Price> priceList) {
+	private static void setEfectivePrice(List<Price> priceList) {
 		for (Price somePrice : priceList) {
 			if (somePrice.getTermType().equals(TermType.OnDemand.name()) || 
 					somePrice.getPurchaseOption().equals(PurchaseOption.NO_UPFRONT.getColumnName())) {
@@ -361,7 +359,7 @@ public class Calculator {
 		}
 	}
 
-	private Price getUpfrontFee(List<Price> priceList, Price price) {
+	private static Price getUpfrontFee(List<Price> priceList, Price price) {
 		for (Price somePrice : priceList) {
 			if (somePrice.getSku().equals(price.getSku()) && somePrice.getPriceDescription().equals(UPFRONT_FEE)) {
 				return somePrice;
@@ -370,7 +368,7 @@ public class Calculator {
 		return null;
 	}
 
-	private Price getInstanceHourFee(List<Price> priceList, Price price) {
+	private static Price getInstanceHourFee(List<Price> priceList, Price price) {
 		for (Price somePrice : priceList) {
 			if (somePrice.getSku().equals(price.getSku()) && !somePrice.getPriceDescription().equals(UPFRONT_FEE)) {
 				return somePrice;
@@ -379,7 +377,7 @@ public class Calculator {
 		return null;
 	}
 
-	private Price getBestPrice(List<Price> prices) {
+	private static Price getBestPrice(List<Price> prices) {
 		setEfectivePrice(prices);
 
 		Price bestPrice = prices.get(0);
@@ -392,7 +390,7 @@ public class Calculator {
 		return bestPrice;
 	}
 
-	private long diffInDays(String beginning, String end) {
+	private static long diffInDays(String beginning, String end) {
 		try {
 			SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 			Date beginningDate = format.parse(beginning);
@@ -404,7 +402,7 @@ public class Calculator {
 		}
 	}
 
-	private long diffInDays(Date beginning, Date end) {
+	private static long diffInDays(Date beginning, Date end) {
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(beginning);

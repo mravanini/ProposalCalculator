@@ -20,14 +20,14 @@ public class DefaultExcelReader {
 		new DefaultExcelReader().read();
 	}
 
-	public static void read() {
+	public static Collection<InstanceInput> read() {
 		LOGGER.info("Reading input spreadsheet - tab Servers...");
 		Xcelite xcelite = new Xcelite(new File(Constants.INPUT_FILE_NAME));
 		
 		XceliteSheet sheet = xcelite.getSheet("Servers");
 		SheetReader<InstanceInput> reader = sheet.getBeanReader(InstanceInput.class);
-		Collection<InstanceInput> servers = reader.read();
-		Constants.servers = servers;
+		Collection<InstanceInput> instanceInputs = reader.read();
+		return instanceInputs;
 		
 	}
 
