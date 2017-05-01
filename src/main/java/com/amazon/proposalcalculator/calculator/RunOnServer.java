@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
@@ -105,11 +106,11 @@ public class RunOnServer {
 		for (JsonNode record : records) {
 
 			// get file from S3
-			//String inputFileS3Key = record.get("s3").get("s3Object").get("key").asText();
-			String inputFileS3Key = record.get("s3").get("object").get("key").asText();
+			String inputFileS3Key = URLDecoder.decode(record.get("s3").get("object").get("key").asText(), "UTF-8");
 			String bucketName = record.get("s3").get("bucket").get("name").asText();
 			LOGGER.info("S3 Key : " + inputFileS3Key);
 			LOGGER.info("Bucket : " + bucketName);
+
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, inputFileS3Key));
 
 			try {
