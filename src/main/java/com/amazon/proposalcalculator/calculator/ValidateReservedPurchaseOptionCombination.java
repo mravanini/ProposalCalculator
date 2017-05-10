@@ -29,6 +29,7 @@ public class ValidateReservedPurchaseOptionCombination {
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
+        combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Standard.name()));
         combinations.add(new PossiblePurchaseCombination(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Convertible.name()));

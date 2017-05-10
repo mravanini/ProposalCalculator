@@ -9,6 +9,7 @@ public enum BillingOption {
 	ONE_YRNU("1 Yr No Upfront Reserved"),
 	ONE_YRPU("1 Yr Partial Upfront Reserved"),
 	ONE_YRAU("1 Yr All Upfront Reserved"),
+	THREE_YRNU("3 Yr No Upfront Reserved"),
 	THREE_YRPU("3 Yr Partial Upfront Reserved"),
 	THREE_YRAU("3 Yr All Upfront Reserved"),
 	THREE_YRNUC("3 Yr No Upfront Convertible"),

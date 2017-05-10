@@ -49,37 +49,59 @@ public class Calculator {
 		Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
 		quotes.add(calculatePrice(servers, q2));
 
-		Quote q3 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "No Upfront",
+		Quote q3 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.ONE_YEAR.getColumnName(), 
+				PurchaseOption.NO_UPFRONT.getColumnName(),
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q3));
 
-		Quote q4 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "Partial Upfront",
+		Quote q4 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.ONE_YEAR.getColumnName(), 
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(),
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q4));
 
-		Quote q5 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(), "All Upfront",
+		Quote q5 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.ONE_YEAR.getColumnName(), 
+				PurchaseOption.ALL_UPFRONT.getColumnName(),
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q5));
-
-		Quote q6 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
-				"Partial Upfront", OfferingClass.Standard.name());
+		
+		Quote q6 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.NO_UPFRONT.getColumnName(), 
+				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q6));
 
-		Quote q7 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
+		Quote q7 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q7));
 
-		Quote q8 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "No Upfront",
-				OfferingClass.Convertible.name());
+		Quote q8 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				PurchaseOption.ALL_UPFRONT.getColumnName(),
+				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q8));
 
-		Quote q9 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
-				"Partial Upfront", OfferingClass.Convertible.name());
+		Quote q9 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				PurchaseOption.NO_UPFRONT.getColumnName(),
+				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q9));
 
-		Quote q10 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(), "All Upfront",
+		Quote q10 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
 				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q10));
+
+		Quote q11 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				PurchaseOption.ALL_UPFRONT.getColumnName(),
+				OfferingClass.Convertible.name());
+		quotes.add(calculatePrice(servers, q11));
 
 		calculateDiscount(quotes);
 

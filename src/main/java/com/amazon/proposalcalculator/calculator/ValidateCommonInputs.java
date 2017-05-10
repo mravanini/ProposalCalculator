@@ -127,6 +127,11 @@ public class ValidateCommonInputs {
     		input.setLeaseContractLength(LeaseContractLength.ONE_YEAR.getColumnName());
     		input.setPurchaseOption(PurchaseOption.ALL_UPFRONT.getColumnName());
     		input.setOfferingClass(OfferingClass.Standard.name());
+    	} else if (BillingOption.THREE_YRNU.getName().equals(input.getBillingOption())) {
+    		input.setTermType(TermType.Reserved.name());
+    		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+    		input.setPurchaseOption(PurchaseOption.NO_UPFRONT.getColumnName());
+    		input.setOfferingClass(OfferingClass.Standard.name());
     	} else if (BillingOption.THREE_YRPU.getName().equals(input.getBillingOption())) {
     		input.setTermType(TermType.Reserved.name());
     		input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
