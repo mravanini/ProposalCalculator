@@ -28,6 +28,7 @@ public class Run {
         	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;
             //forceDownload = ParseMainArguments.isForceDownload(args);
+            
             forceDownload = false;
             Collection<InstanceInput> instanceInputs = init(forceDownload);
             Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);
