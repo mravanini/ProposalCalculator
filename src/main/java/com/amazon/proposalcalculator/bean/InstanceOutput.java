@@ -88,7 +88,7 @@ public class InstanceOutput extends InstanceInput {
 			case 24:
 				return getInstanceSAPS();
 			case 25:
-				return new Integer(getInstanceVCPU());
+				return new Double(getInstanceVCPU());
 			case 26:
 				return getInstanceMemory();
 			case UPFRONT_FEE:
@@ -125,7 +125,7 @@ public class InstanceOutput extends InstanceInput {
 	private String instanceType;
 
 	@Column(name = "Instance vCPU")
-	private int instanceVCPU;
+	private double instanceVCPU;
 	
 	@Column(name = "Instance SAPS")
 	private Integer instanceSAPS;
@@ -186,11 +186,11 @@ public class InstanceOutput extends InstanceInput {
 		this.instanceType = instanceType;
 	}
 
-	public int getInstanceVCPU() {
+	public double getInstanceVCPU() {
 		return instanceVCPU;
 	}
 
-	public void setInstanceVCPU(int instanceVCPU) {
+	public void setInstanceVCPU(double instanceVCPU) {
 		this.instanceVCPU = instanceVCPU;
 	}
 

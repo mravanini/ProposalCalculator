@@ -30,7 +30,7 @@ public class ValidateSAPSpecificInputsTest {
     public void testSAPsNullAndCPUZero(){
         InstanceInput input = new InstanceInput();
         input.setSapInstanceType(SAPInstanceType.ANY_DB.name());
-        input.setCpu(0);
+        input.setCpu(0D);
         try {
             ValidateSAPSpecificInputs.validate(input);
         }catch (PricingCalculatorException pce){
@@ -43,7 +43,7 @@ public class ValidateSAPSpecificInputsTest {
     public void testSAPsNullArchiveLogsNull(){
         InstanceInput input = new InstanceInput();
         input.setSapInstanceType(SAPInstanceType.ANY_DB.name());
-        input.setCpu(20);
+        input.setCpu(20D);
 
         ValidateSAPSpecificInputs.validate(input);
 

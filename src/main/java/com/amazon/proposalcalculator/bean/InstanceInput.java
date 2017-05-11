@@ -21,10 +21,10 @@ public class InstanceInput {
 	private String sapInstanceType;
 
 	@Column(name = "CPU")
-	private Integer cpu;
+	private Double cpu;
 
 	@Column(name = "Original CPU")
-	private Integer originalCpu;
+	private Double originalCpu;
 
 	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance;
@@ -112,11 +112,11 @@ public class InstanceInput {
 	@Column(name = "Billing Option")
 	private String billingOption;
 
-	public Integer getOriginalCpu() {
+	public Double getOriginalCpu() {
 		return originalCpu;
 	}
 
-	public void setOriginalCpu(Integer originalCpu) {
+	public void setOriginalCpu(Double originalCpu) {
 		this.originalCpu = originalCpu;
 	}
 
@@ -152,11 +152,11 @@ public class InstanceInput {
 		this.description = description;
 	}
 
-	public Integer getCpu() {
+	public Double getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(Integer cpu) {
+	public void setCpu(Double cpu) {
 		this.cpu = cpu;
 	}
 

@@ -65,7 +65,7 @@ public class ValidateCommonInputsTest {
     @Test
     public void testValidateCPUValidValue(){
         InstanceInput input = buildInstanceInput();
-        input.setCpu(4);
+        input.setCpu(4D);
         ValidateCommonInputs.validate(input);
         assertEquals(4, input.getCpu().intValue());
     }

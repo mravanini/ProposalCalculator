@@ -50,13 +50,17 @@ public class ValidateSAPSpecificInputs {
     }
 
     private static void validateMandatoryFields(InstanceInput input) {
-        if (!validInteger(input.getSaps()) && !validInteger(input.getCpu())){
+        if (!validInteger(input.getSaps()) && !validDouble(input.getCpu())){
             throw new PricingCalculatorException(CPU_OR_SAPS_MUST_BE_PROVIDED);
         }
     }
 
     private static boolean validInteger(Integer value){
         return value != null && value.intValue() != 0;
+    }
+    
+    private static boolean validDouble(Double value){
+        return value != null && value.doubleValue() != 0;
     }
 
 }
