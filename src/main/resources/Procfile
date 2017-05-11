@@ -1,1 +1,1 @@
-web: java -jar server.jar -Xmms:256m
+web: java -jar ProposalCalculator.jar -Xmms:256m
