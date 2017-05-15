@@ -24,6 +24,14 @@ public class POIExcelWriter {
     private static List<Integer> percentageColumns;
     private static List<Integer> currencyColumns;
 
+    private static CellStyle cellCurrencyStyle;
+
+    private static XSSFCellStyle cellAlignCenterStyle;
+
+    private static CellStyle percentageCellStyle;
+
+    private static CellStyle cellDoubleStyle;
+
     static {
         percentageColumns = new ArrayList<>();
         percentageColumns.add(InstanceOutput.CPU_TOLERANCE);
@@ -183,9 +191,11 @@ public class POIExcelWriter {
     }
 
     private static CellStyle alignCenter(XSSFWorkbook workbook) {
-        XSSFCellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        return cellStyle;
+        if(cellAlignCenterStyle == null) {
+            cellAlignCenterStyle = workbook.createCellStyle();
+            cellAlignCenterStyle.setAlignment(HorizontalAlignment.CENTER);
+        }
+        return cellAlignCenterStyle;
     }
 
     private static void setCellPercentage(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
@@ -197,9 +207,11 @@ public class POIExcelWriter {
 
     private static void setCellPercentageStyle(Cell cell, XSSFWorkbook workbook) {
 
-        CellStyle style = workbook.createCellStyle();
-        style.setDataFormat(workbook.createDataFormat().getFormat("#0%"));
-        cell.setCellStyle(style);
+        if(percentageCellStyle == null) {
+            percentageCellStyle = workbook.createCellStyle();
+            percentageCellStyle.setDataFormat(workbook.createDataFormat().getFormat("#0%"));
+        }
+        cell.setCellStyle(percentageCellStyle);
     }
 
     private static XSSFFont createFontBold(XSSFWorkbook workbook) {
@@ -234,13 +246,20 @@ public class POIExcelWriter {
 
         Cell cell = setCell(row, columnCount, rowValue);
 
-        CellStyle cellCurrencyStyle = workbook.createCellStyle();
-
-        CreationHelper ch = workbook.getCreationHelper();
-        cellCurrencyStyle.setDataFormat(ch.createDataFormat().getFormat("$#,#0.00"));
-
-        cell.setCellStyle(cellCurrencyStyle);
+        cell.setCellStyle(getCurrencyCellStyle(workbook));
     }
+
+    private static CellStyle getCurrencyCellStyle(Workbook workbook){
+
+        if(cellCurrencyStyle == null) {
+            cellCurrencyStyle = workbook.createCellStyle();
+
+            CreationHelper ch = workbook.getCreationHelper();
+            cellCurrencyStyle.setDataFormat(ch.createDataFormat().getFormat("$#,#0.00"));
+        }
+        return cellCurrencyStyle;
+    }
+
 
 //    private void setCellDecimalFormat(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
 //
@@ -262,9 +281,11 @@ public class POIExcelWriter {
     }
 
     private static CellStyle getCellDecimalFormatStyle(XSSFWorkbook workbook) {
-        CellStyle cellDoubleStyle = workbook.createCellStyle();
-        cellDoubleStyle.setDataFormat(
-                workbook.getCreationHelper().createDataFormat().getFormat("#############0.00"));
+        if(cellDoubleStyle == null){
+            cellDoubleStyle = workbook.createCellStyle();
+            cellDoubleStyle.setDataFormat(
+                    workbook.getCreationHelper().createDataFormat().getFormat("#############0.00"));
+        }
         return cellDoubleStyle;
     }
 
