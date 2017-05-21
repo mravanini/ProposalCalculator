@@ -11,8 +11,7 @@ public class InstanceInput {
 	private String region;
 
 	@Column(name = "Instances")
-	// TODO remove default value
-	private int instances = 1;
+	private int instances;
 
 	@Column(name = "Environment")
 	private String environment;

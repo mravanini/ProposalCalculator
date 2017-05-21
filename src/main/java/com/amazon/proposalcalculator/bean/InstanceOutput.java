@@ -32,7 +32,8 @@ public class InstanceOutput extends InstanceInput {
 			"Purchase Option", "Offering Class", "Tenancy", "Operating System",
 			"Instance Type", "Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price",
 			"Compute Monthly Price", "Storage Monthly Price", "Snapshot Monthly Price",
-			"Archive Logs/Local Backup Monthly Price", "S3 Backup Monthly Price", "Error Message"};
+			"Archive Logs/Local Backup Monthly Price", "S3 Backup Monthly Price",
+			"Error Message"};
 
 
 	public Object getCell(int column){
@@ -108,7 +109,7 @@ public class InstanceOutput extends InstanceInput {
 			case 34:
 				return getErrorMessage();
 			default:
-				throw new PricingCalculatorException("This collumn option doesn't exist: " + column);
+				throw new PricingCalculatorException("This column option doesn't exist: " + column);
 		}
 	}
 

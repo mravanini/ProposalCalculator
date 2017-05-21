@@ -19,6 +19,8 @@ public class ValidateCommonInputs {
     static void validate(InstanceInput input){
 
         validateDescription(input.getDescription());
+
+        input.setInstances(fillQuantityOfInstances(input.getInstances()));
         
         fillBillingOption(input);
 
@@ -56,7 +58,17 @@ public class ValidateCommonInputs {
 
         input.setTenancy(fillTenancy(input.getTenancy()));
 
+        input.setOnlyCurrentGenerationInstances(fillOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances()));
+
         input.setPreInstalledSw(fillPreInstalledSoftware(input.getPreInstalledSw()));
+    }
+
+    private static String fillOnlyCurrentGenerationInstances(String onlyCurrentGenerationInstances) {
+        return onlyCurrentGenerationInstances == null ? "No" : onlyCurrentGenerationInstances;
+    }
+
+    private static int fillQuantityOfInstances(int instances) {
+        return instances == 0 ? 1 : instances;
     }
 
     private static String fillPreInstalledSoftware(String preInstalledSw) {

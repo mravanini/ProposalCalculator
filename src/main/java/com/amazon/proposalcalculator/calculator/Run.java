@@ -24,13 +24,16 @@ public class Run {
 
     public static void main(String[] args) {
         try {
-        	System.out.println(ProductName.AmazonS3.toString());
         	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;
             //forceDownload = ParseMainArguments.isForceDownload(args);
             
             forceDownload = false;
+
             Collection<InstanceInput> instanceInputs = init(forceDownload);
+            //Collection<InstanceInput> instanceInputs = initGeneric(forceDownload);
+
+
             Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
             LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
@@ -51,4 +54,13 @@ public class Run {
         return servers;
     }
 
+    private static Collection<InstanceInput> initGeneric(Boolean forceDownload) throws IOException {
+        EC2PriceListReader.read(forceDownload);
+        S3PriceListReader.read(forceDownload);
+        Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME_GENERIC);
+        ConfigReader.read(Constants.INPUT_FILE_NAME_GENERIC);
+        DataTransferReader.read(Constants.INPUT_FILE_NAME_GENERIC);
+
+        return servers;
+    }
 }
