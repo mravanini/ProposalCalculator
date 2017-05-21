@@ -30,8 +30,8 @@ public class Run {
             
             forceDownload = false;
 
-            Collection<InstanceInput> instanceInputs = init(forceDownload);
-            //Collection<InstanceInput> instanceInputs = initGeneric(forceDownload);
+            //Collection<InstanceInput> instanceInputs = init(forceDownload);
+            Collection<InstanceInput> instanceInputs = initGeneric(forceDownload);
 
 
             Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);

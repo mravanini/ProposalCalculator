@@ -25,8 +25,8 @@ public class Constants {
 	public static String OUTPUT_WITH_ERROR_FILE_NAME = "error_output.txt";
 	public static String METAKEY = "sap";
 
-	public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:126421527990:proposal-calculator";
-	//public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:879125893843:proposal-calculator";
+	//public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:126421527990:proposal-calculator";
+	public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:879125893843:proposal-calculator";
 
 
 }
