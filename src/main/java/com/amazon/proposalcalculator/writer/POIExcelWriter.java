@@ -51,6 +51,11 @@ public class POIExcelWriter {
     public static void write(String outputFileName, List<Quote> quotes) throws IOException {
         LOGGER.info("Writing output spreadsheet...");
 
+        setCellCurrencyStyle(null);
+        setCellAlignCenterStyle(null);
+        setPercentageCellStyle(null);
+        setCellDoubleStyle(null);
+
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         workbook = generateSummaryTab(quotes, workbook);
@@ -289,4 +294,19 @@ public class POIExcelWriter {
         return cellDoubleStyle;
     }
 
+    public static void setCellAlignCenterStyle(XSSFCellStyle cellAlignCenterStyle) {
+        POIExcelWriter.cellAlignCenterStyle = cellAlignCenterStyle;
+    }
+
+    public static void setCellCurrencyStyle(CellStyle cellCurrencyStyle) {
+        POIExcelWriter.cellCurrencyStyle = cellCurrencyStyle;
+    }
+
+    public static void setCellDoubleStyle(CellStyle cellDoubleStyle) {
+        POIExcelWriter.cellDoubleStyle = cellDoubleStyle;
+    }
+
+    public static void setPercentageCellStyle(CellStyle percentageCellStyle) {
+        POIExcelWriter.percentageCellStyle = percentageCellStyle;
+    }
 }
