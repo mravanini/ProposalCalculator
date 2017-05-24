@@ -34,6 +34,12 @@ public class CalculateHanaMinimalStorage {
 		storageList.add(new MinimalHanaStorage("r3.4xlarge", 900, 50, 50, 300, 512));
 		storageList.add(new MinimalHanaStorage("r3.2xlarge", 900, 50, 50, 300, 512));
 		
+		storageList.add(new MinimalHanaStorage("m4.16xlarge", 900, 50, 50, 300, 1024));
+		storageList.add(new MinimalHanaStorage("m4.10xlarge", 900, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("m4.4xlarge", 900, 50, 50, 300, 512));
+		
+		storageList.add(new MinimalHanaStorage("c4.8xlarge", 900, 50, 50, 300, 512));
+		
 		//C4
 		//M4
 	}

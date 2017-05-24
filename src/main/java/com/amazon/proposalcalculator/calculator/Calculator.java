@@ -191,13 +191,14 @@ public class Calculator {
 
 
 	private static void findMatches(Quote quote, InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
+		LOGGER.debug("findMatches:" + input.getDescription() + "::" + input.getEnvironment());
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
 			if ("HANA_OLAP".equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
 				double efectiveMemory = output.getInstanceMemory() * input.getInstances();
 				if (efectiveMemory / input.getOriginalMemory() > 1.1) {
-					//LOGGER.info("Iterating findMatches:" + input.getDescription());
+					LOGGER.debug("Recursive findMatches:" + input.getDescription());
 					findMatches(quote, input, output, true);
 				}
 			}
@@ -244,7 +245,8 @@ public class Calculator {
 		} else if (SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())) {
 			breakInManyInstances(input);
 			output.setInstances(input.getInstances());
-			return findPossibleMatches(input, output, false);
+			List<Price> findPossibleMatches = findPossibleMatches(input, output, false);
+			return findPossibleMatches;
 		} else  {
 			output.setErrorMessage("Could not find a match for this server configuration.");
 			return null;
@@ -252,6 +254,7 @@ public class Calculator {
 	}
 
 	private static void breakInManyInstances(InstanceInput input) {
+		LOGGER.info("Breaking... " + input.getDescription() + "::" + input.getEnvironment());
 		if (input.getInstances() == 1) { 
 			input.setOriginalMemory(input.getMemory());
 			input.setOriginalCpu(input.getCpu());

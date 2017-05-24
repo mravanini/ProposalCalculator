@@ -40,10 +40,16 @@ public class CalculatorPredicates {
 				|| p.getInstanceType().toLowerCase().startsWith("x1")));
 	}
 
-	public static Predicate<Price> newGeneration(InstanceInput server) {
+	/*public static Predicate<Price> newGeneration(InstanceInput server) {
 		return p -> ("No".equals(server.getOnlyCurrentGenerationInstances())
 				|| ("Yes".equals(server.getOnlyCurrentGenerationInstances())
 						&& (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration()))));
+	}*/
+	
+	public static Predicate<Price> newGeneration(InstanceInput server) {
+				return p -> ("No".equals(server.getOnlyCurrentGenerationInstances()))
+						|| ("Yes".equals(server.getOnlyCurrentGenerationInstances())
+								&& (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration())));
 	}
 	
     public static Predicate<Price> ec2(InstanceInput server){

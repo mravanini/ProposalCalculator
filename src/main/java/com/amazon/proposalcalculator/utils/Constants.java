@@ -28,5 +28,4 @@ public class Constants {
 	//public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:126421527990:proposal-calculator";
 	public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:879125893843:proposal-calculator";
 
-
 }
