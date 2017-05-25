@@ -25,12 +25,19 @@ public class CalculatorPredicates {
 	}
 	
 	public static Predicate<Price> hanaProductionCertifiedInstances(InstanceInput server) {
-		return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
-				|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+		boolean isCluster = server.getInstances() > 1 && "HANA_OLAP".equals(server.getSapInstanceType());
+		if (!isCluster) {
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+		} else {
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+		}
 	}
 	
 	public static Predicate<Price> hanaDevQaInstances(InstanceInput server) {

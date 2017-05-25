@@ -14,6 +14,7 @@ import com.amazon.proposalcalculator.enums.QuoteName;
 import com.amazon.proposalcalculator.enums.SAPInstanceType;
 import com.amazon.proposalcalculator.enums.TermType;
 import com.amazon.proposalcalculator.utils.Constants;
+import com.amazon.proposalcalculator.utils.SomeMath;
 import com.amazon.proposalcalculator.writer.POIExcelWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Calculator {
 
+	private static final double MAX_MEMORY_WASTE= 1.5;
 	private static final int MIN_HANA_CLUSTER_SIZE = 3;
 	private static final String DATE_FORMAT = "dd/MM/yyyy";
 	private static final String UPFRONT_FEE = "Upfront Fee";
@@ -193,18 +195,15 @@ public class Calculator {
 
 	}
 
-
-
-
-
-	private static void findMatches(Quote quote, InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
+	private static void findMatches(Quote quote, InstanceInput input, 
+			InstanceOutput output, boolean forceBreakInstances) {
 		LOGGER.debug("findMatches:" + input.getDescription() + "::" + input.getEnvironment());
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
 			if ("HANA_OLAP".equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
 				double efectiveMemory = output.getInstanceMemory() * input.getInstances();
-				if (efectiveMemory / input.getOriginalMemory() > 1.1) {
+				if (efectiveMemory / input.getOriginalMemory() > MAX_MEMORY_WASTE) {
 					LOGGER.debug("Recursive findMatches:" + input.getDescription());
 					findMatches(quote, input, output, true);
 				}
@@ -212,7 +211,8 @@ public class Calculator {
 		}
 	}
 
-	private static List<Price> findPossibleMatches(InstanceInput input, InstanceOutput output, boolean forceBreakInstances) {
+	private static List<Price> findPossibleMatches(InstanceInput input, 
+			InstanceOutput output, boolean forceBreakInstances) {
 		LOGGER.debug("Calculating instance: " + input.getDescription());
 
 		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
@@ -262,10 +262,16 @@ public class Calculator {
 
 	private static void breakInManyInstances(InstanceInput input) {
 		LOGGER.info("Breaking... " + input.getDescription() + "::" + input.getEnvironment());
+		
 		if (input.getInstances() == 1) { 
 			input.setOriginalMemory(input.getMemory());
-			input.setOriginalCpu(input.getCpu());
-			input.setOriginalSaps(input.getSaps());
+			
+			//input.setOriginalCpu(input.getCpu());
+			//input.setOriginalSaps(input.getSaps());
+			
+			//for HANA OLAP, sizing will be done only by Memory
+			input.setOriginalCpu(0D);
+			input.setOriginalSaps(0);
 			
 			input.setOriginalStorage(input.getStorage());
 			input.setOriginalSnapshot(input.getSnapshot());
@@ -276,14 +282,15 @@ public class Calculator {
 		} else {
 			input.setInstances(input.getInstances()+1);
 		}
+		
 		if (input.getOriginalMemory() != null)
-			input.setMemory(input.getOriginalMemory()/input.getInstances());
+			input.setMemory(SomeMath.roundDouble(input.getOriginalMemory()/input.getInstances(), 2));
 		
 		if (input.getOriginalSaps() != null)
 			input.setSaps(input.getOriginalSaps()/input.getInstances());
 		
 		if (input.getOriginalCpu() != null)
-			input.setCpu(input.getOriginalCpu()/input.getInstances());
+			input.setCpu(SomeMath.roundDouble(input.getOriginalCpu()/input.getInstances(), 2));
 		
 		if (input.getOriginalStorage() != null)
 			input.setStorage(input.getOriginalStorage()/input.getInstances());
