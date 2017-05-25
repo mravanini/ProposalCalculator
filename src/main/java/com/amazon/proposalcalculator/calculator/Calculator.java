@@ -175,8 +175,15 @@ public class Calculator {
 		
 		double months = LeaseContractLength.THREE_YEARS.getColumnName().equals(output.getLeaseContractLength()) ? 36 : 12;
 		double monthlyUpfront = output.getUpfrontFee() / months;
-		double threeYearTotal = quote.getThreeYearTotal() + monthlyUpfront + output.getComputeMonthlyPrice()
-				+ output.getStorageMonthlyPrice() + output.getSnapshotMonthlyPrice();
+		
+		double threeYearTotal = quote.getThreeYearTotal() + 
+								monthlyUpfront + 
+								output.getComputeMonthlyPrice() + 
+								output.getStorageMonthlyPrice() + 
+								output.getSnapshotMonthlyPrice() + 
+								output.getArchiveLogsLocalBackupMonthlyPrice() +
+								output.getS3BackupMonthlyPrice();
+		
 		quote.setThreeYearTotal(threeYearTotal);
 
 		double upfront = quote.getUpfront() + output.getUpfrontFee();
