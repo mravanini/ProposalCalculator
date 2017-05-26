@@ -104,7 +104,7 @@ public class Calculator {
 				PurchaseOption.ALL_UPFRONT.getColumnName(),
 				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q11));
-
+		
 		calculateDiscount(quotes);
 
 		//new DefaultExcelWriter().write(outputFileName, quotes);
@@ -145,15 +145,18 @@ public class Calculator {
 			if (input.hasErrors()) {
 				output.setErrorMessage(input.getErrorMessageInput());
 			} else {
+				//find instance and break
+				findMatches(quote, input, output, false);
+				
+				//then calculate the price for storage at the end...
 				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
 				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
 
 				output.setArchiveLogsLocalBackupMonthlyPrice(
 						StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
+				
 				double s3BackupMonthlyPrice = StoragePricingCalculator.getS3BackupMonthlyPrice(input);
 				output.setS3BackupMonthlyPrice(s3BackupMonthlyPrice);
-
-				findMatches(quote, input, output, false);
 				
 				calculateQuoteTotals(quote, output, rowNum);
 
@@ -250,8 +253,9 @@ public class Calculator {
 		if (!forceBreakInstances && possibleMatches.size() > 0) {
 			return possibleMatches;
 		} else if (SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())) {
-			breakInManyInstances(input);
-			output.setInstances(input.getInstances());
+			breakInManyInstances(input, output);
+			//output.setInstances(input.getInstances());
+			
 			List<Price> findPossibleMatches = findPossibleMatches(input, output, false);
 			return findPossibleMatches;
 		} else  {
@@ -260,7 +264,7 @@ public class Calculator {
 		}
 	}
 
-	private static void breakInManyInstances(InstanceInput input) {
+	private static void breakInManyInstances(InstanceInput input, InstanceOutput output) {
 		LOGGER.info("Breaking... " + input.getDescription() + "::" + input.getEnvironment());
 		
 		if (input.getInstances() == 1) { 
@@ -303,6 +307,25 @@ public class Calculator {
 		
 		if (input.getOriginalS3Backup() != null)
 			input.setS3Backup(input.getOriginalS3Backup()/input.getInstances());
+		
+		
+		output.setInstances(input.getInstances());
+		
+		output.setOriginalCpu(input.getOriginalCpu());
+		output.setOriginalSaps(input.getOriginalSaps());
+		output.setOriginalStorage(input.getOriginalStorage());
+		output.setOriginalSnapshot(input.getOriginalSnapshot());
+		output.setOriginalArchiveLogsLocalBackup(input.getOriginalArchiveLogsLocalBackup());
+		output.setOriginalS3Backup(input.getOriginalS3Backup());
+		output.setOriginalMemory(input.getOriginalMemory());
+		
+		output.setCpu(input.getCpu());
+		output.setSaps(input.getSaps());
+		output.setStorage(input.getStorage());
+		output.setSnapshot(input.getSnapshot());
+		output.setArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup());
+		output.setS3Backup(input.getS3Backup());
+		output.setMemory(input.getMemory());
 		
 	}
 
