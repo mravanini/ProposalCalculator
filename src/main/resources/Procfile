@@ -1,1 +1,1 @@
-web: java -jar ProposalCalculator.jar -Xmms:512m
+web: java -jar -Xms1024m -Xmx1024m ProposalCalculator.jar
