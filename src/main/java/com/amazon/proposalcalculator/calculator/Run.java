@@ -36,6 +36,15 @@ public class Run {
             Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
             LOGGER.info("Calculation done! Took " + (Constants.endTime - Constants.beginTime)/1000 + " seconds!");
+        } catch (IllegalStateException ise){
+
+            if (ise.getMessage().contains("formula cell")){
+                LOGGER.fatal("The Calculator does not support formulas yet. Please use only raw numbers." , ise);
+                System.exit(1);
+
+            }
+            else throw ise;
+
         } catch (Exception e){
             LOGGER.fatal("A fatal error has occured: " , e);
             //System.err.println("An error has occured: " + e.getLocalizedMessage());
