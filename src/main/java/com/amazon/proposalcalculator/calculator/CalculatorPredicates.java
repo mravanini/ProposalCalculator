@@ -7,6 +7,7 @@ import com.amazon.proposalcalculator.bean.S3Price;
 import com.amazon.proposalcalculator.enums.ProductFamily;
 import com.amazon.proposalcalculator.enums.ProductName;
 import com.amazon.proposalcalculator.enums.S3StorageClass;
+import com.amazon.proposalcalculator.enums.SAPInstanceType;
 import com.amazon.proposalcalculator.enums.VolumeType;
 import com.amazon.proposalcalculator.utils.Constants;
 
@@ -25,18 +26,38 @@ public class CalculatorPredicates {
 	}
 	
 	public static Predicate<Price> hanaProductionCertifiedInstances(InstanceInput server) {
-		boolean isCluster = server.getInstances() > 1 && "HANA_OLAP".equals(server.getSapInstanceType());
-		if (!isCluster) {
-			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+		boolean isCluster = server.getInstances() > 1;
+		if (!isCluster && SAPInstanceType.HANA_OLTP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
+			return p -> (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
-		} else {
-			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge"));
+		} else if (isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
+			return p -> ((p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+		} else if (!isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
+			return p -> ((p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")));
+		} else if (!isCluster && SAPInstanceType.HANA_B1.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
+			return p -> ((p.getInstanceType().toLowerCase().startsWith("c3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")));
+		} else {
+			return p -> (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge"));
 		}
 	}
 	

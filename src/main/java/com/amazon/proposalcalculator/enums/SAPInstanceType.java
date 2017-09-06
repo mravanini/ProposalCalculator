@@ -10,7 +10,8 @@ public enum SAPInstanceType {
     APPS,
     ANY_DB,
     HANA_OLTP,
-    HANA_OLAP;
+    HANA_OLAP,
+    HANA_B1;
 
     public static SAPInstanceType getSAPInstanceType(String columnName){
 

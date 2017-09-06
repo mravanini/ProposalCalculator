@@ -22,6 +22,7 @@ public class CalculateHanaMinimalStorage {
 	private static List<MinimalHanaStorage> storageList = new ArrayList<MinimalHanaStorage>();
 	
 	static {
+		storageList.add(new MinimalHanaStorage("x1e.32xlarge", 6144, 50, 50, 1024, 8192));
 		storageList.add(new MinimalHanaStorage("x1.32xlarge", 3072, 50, 50, 1024, 4096));
 		storageList.add(new MinimalHanaStorage("x1.16xlarge", 2100, 50, 50, 1024, 2048));
 		
@@ -50,7 +51,7 @@ public class CalculateHanaMinimalStorage {
 				return minimalHanaStorage;
 			}
 		}
-		return null;
+		return new MinimalHanaStorage(instanceSize, 900, 50, 50, 300, 512);
 	}
 
 }

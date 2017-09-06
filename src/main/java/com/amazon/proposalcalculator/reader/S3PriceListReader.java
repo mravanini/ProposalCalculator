@@ -32,6 +32,9 @@ public class S3PriceListReader {
 	}
 
 	public static List<S3Price> read(Boolean forceDownload) throws IOException {
+		if (Constants.s3PriceList != null) {
+			return Constants.s3PriceList;
+		}
 		HeaderColumnNameMappingStrategy<S3Price> strategy = new HeaderColumnNameMappingStrategy<S3Price>();
 		strategy.setType(S3Price.class);
 		CsvToBean<S3Price> csvToBean = new CsvToBean<S3Price>();

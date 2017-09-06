@@ -61,7 +61,7 @@ public class POIExcelWriter {
         workbook = generateSummaryTab(quotes, workbook);
 
         workbook = generateQuoteTabs(quotes, workbook);
-
+        
         try (FileOutputStream outputStream = new FileOutputStream(outputFileName)) {
             workbook.write(outputStream);
             workbook.close();

@@ -31,6 +31,10 @@ public class EC2PriceListReader {
 	}
 
 	public static List<Price> read(Boolean forceDownload) throws IOException {
+		if (Constants.ec2PriceList != null) {
+			return Constants.ec2PriceList;
+		}
+		
 		HeaderColumnNameMappingStrategy<Price> strategy = new HeaderColumnNameMappingStrategy<Price>();
 		strategy.setType(Price.class);
 		CsvToBean<Price> csvToBean = new CsvToBean<Price>();

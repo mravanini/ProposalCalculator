@@ -23,6 +23,7 @@ public class Run {
     private final static Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
+    	//while(true)
         try {
         	Constants.beginTime = System.currentTimeMillis();
             Boolean forceDownload;

@@ -204,7 +204,7 @@ public class Calculator {
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
-			if ("HANA_OLAP".equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
+			if (SAPInstanceType.HANA_OLAP.equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
 				double efectiveMemory = output.getInstanceMemory() * input.getInstances();
 				if (efectiveMemory / input.getOriginalMemory() > MAX_MEMORY_WASTE) {
 					LOGGER.debug("Recursive findMatches:" + input.getDescription());
@@ -239,7 +239,8 @@ public class Calculator {
 		// only hana certified instances
 		if (input.getSapInstanceType() != null
 				&& (SAPInstanceType.HANA_OLTP.name().equals(input.getSapInstanceType())
-						|| SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType()))) {
+						|| SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())
+						|| SAPInstanceType.HANA_B1.name().equals(input.getSapInstanceType()))) {
 			if (Environment.PROD.name().equals(input.getEnvironment())) {
 				predicate = predicate.and(hanaProductionCertifiedInstances(input));
 			} else {
@@ -349,9 +350,8 @@ public class Calculator {
 
 			Integer generalVolumeSize = minimalHanaStorage.getDataAndLogsVolume() + minimalHanaStorage.getRootVolume()
 					+ minimalHanaStorage.getSapBinariesVolume();
-			if (input.getInstances() > 1) {
-				generalVolumeSize = generalVolumeSize + (minimalHanaStorage.getSharedVolume() / input.getInstances());
-			}
+			
+			generalVolumeSize = generalVolumeSize + (minimalHanaStorage.getSharedVolume() / input.getInstances());
 			
 			if (input.getStorage() == null || input.getStorage() < generalVolumeSize) {
 				input.setStorage(generalVolumeSize);
