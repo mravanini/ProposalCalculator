@@ -64,11 +64,13 @@ public class RunOnServer {
 					processRecords(sqsClient, s3Client, myQueueUrl, message);
 					//TODO shouldn't we delete sqs message here??
 
+					//todo for testing purposes only
 					Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
-					LOGGER.warn("Exception location environment = " + exceptionLocation);
+					//LOGGER.warn("Exception location environment = " + exceptionLocation);
 					if(exceptionLocation.intValue() == 1){
 						throw new Exception("test exception handling");
 					}
+					//end: todo for testing purposes only
 
 				}
 			}
@@ -114,6 +116,13 @@ public class RunOnServer {
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, inputFileS3Key));
 
 			try {
+				//todo for testing purposes only
+				Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
+				//LOGGER.warn("Exception location environment = " + exceptionLocation);
+				if(exceptionLocation.intValue() == 3){
+					throw new Exception("test deleting message");
+				}
+				//end: todo for testing purposes only
 
 				InputStream objectData = s3Object.getObjectContent();
 
@@ -137,13 +146,18 @@ public class RunOnServer {
 				// put file back to S3
 				putFileBackToS3(s3Client, bucketName, s3Object, outputFileName);
 
-				Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
-				LOGGER.warn("Exception location environment = " + exceptionLocation);
+				//todo for testing purposes only
+				//LOGGER.warn("Exception location environment = " + exceptionLocation);
 				if(exceptionLocation.intValue() == 2){
 					throw new Exception("test exception handling");
 				}
+				//end: todo for testing purposes only
 
 			}catch (Exception e){
+
+				LOGGER.warn("Deleting message from the queue: " + myQueueUrl + ", receiptHandle: " + messageReceiptHandle);
+
+				sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
 
 				LOGGER.error("Error Message: " + e.getMessage(), e);
 

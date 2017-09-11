@@ -48,3 +48,5 @@ output_sap_colunas_para_remover.xlsx
 output_sap_old.xlsx
 
 input_sap_angelo.xlsx
+
+out/artifacts/ProposalCalculator_jar/Archive.zip
