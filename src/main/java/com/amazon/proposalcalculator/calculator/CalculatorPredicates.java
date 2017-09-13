@@ -28,36 +28,36 @@ public class CalculatorPredicates {
 	public static Predicate<Price> hanaProductionCertifiedInstances(InstanceInput server) {
 		boolean isCluster = server.getInstances() > 1;
 		if (!isCluster && SAPInstanceType.HANA_OLTP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge"));
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")));
 		} else if (isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> ((p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
 		} else if (!isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> ((p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")));
 		} else if (!isCluster && SAPInstanceType.HANA_B1.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> ((p.getInstanceType().toLowerCase().startsWith("c3.8xlarge")
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("c3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")));
 		} else {
-			return p -> (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge"));
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")));
 		}
 	}
 	
@@ -144,7 +144,9 @@ public class CalculatorPredicates {
     }
     
     public static Predicate<Price> licenceModel(InstanceInput server){
-        return p -> p.getLicenseModel() != null && p.getLicenseModel().equals("Windows".equals(server.getOperatingSystem()) ? "License Included" : "No License required");
+        //comentado temporariamente para avaliarmos a mudanca no windows....
+    		//return p -> p.getLicenseModel() != null && p.getLicenseModel().equals("Windows".equals(server.getOperatingSystem()) ? "License Included" : "No License required");
+    		return p -> p.getLicenseModel() != null && p.getLicenseModel().equals("No License required");
     }
 
     public static Predicate<Price> tenancy(InstanceInput server) {
