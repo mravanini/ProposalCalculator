@@ -43,6 +43,7 @@ public class InstanceOutputAssembly {
 		output.setUseSAPCertifiedInstances(input.getUseSAPCertifiedInstances());
 		output.setSaps(input.getSaps());
 		output.setOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances());
+		output.setUseBurstablePerformance(input.getUseBurstablePerformance());
 
 		output.setEnvironment(input.getEnvironment());
 		output.setSapInstanceType(input.getSapInstanceType());

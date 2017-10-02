@@ -221,7 +221,7 @@ public class Calculator {
 		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
 				.and(operatingSystem(input)).and(preInstalledSw(input)).and(termType(input))
 				.and(offeringClass(input)).and(leaseContractLength(input)).and(purchaseOption(input))
-				.and(memory(input)).and(newGeneration(input));
+				.and(memory(input)).and(newGeneration(input).and(burstable(input)) );
 		
 		//f CPU and SAPS are both provided. CPU is ignored.
 		if (input.getSaps() != null)

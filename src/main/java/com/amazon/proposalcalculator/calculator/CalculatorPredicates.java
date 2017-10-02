@@ -80,6 +80,11 @@ public class CalculatorPredicates {
 								&& (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration())));
 	}
 	
+	public static Predicate<Price> burstable(InstanceInput server) {
+		return  p -> ("Yes".equals(server.getUseBurstablePerformance())
+					|| (("No".equals(server.getUseBurstablePerformance()) && !p.getInstanceType().toLowerCase().startsWith("t2"))));
+	}
+	
     public static Predicate<Price> ec2(InstanceInput server){
        return p -> !p.getPriceDescription().contains("Dedicated Host") && p.getProductFamily().equals("Compute Instance");
     }

@@ -105,6 +105,9 @@ public class InstanceInput {
 
 	@Column(name = "Only Current Generation Instances")
 	private String onlyCurrentGenerationInstances;
+	
+	@Column(name = "Use Burstable Performance")
+	private String useBurstablePerformance;
 
 	private String errorMessageInput;
 	
@@ -413,6 +416,14 @@ public class InstanceInput {
 
 	public void setBillingOption(String billingOption) {
 		this.billingOption = billingOption;
+	}
+
+	public String getUseBurstablePerformance() {
+		return useBurstablePerformance;
+	}
+
+	public void setUseBurstablePerformance(String useBurstablePerformance) {
+		this.useBurstablePerformance = useBurstablePerformance;
 	}
 	
 	
