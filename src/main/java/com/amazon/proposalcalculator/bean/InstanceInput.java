@@ -171,7 +171,7 @@ public class InstanceInput {
 	@Column(name = "Monthly Utilization")
 	private Double monthlyUtilization;
 
-	@Column(name = "Memory")
+	@Column(name = "Memory(GB)")
 	private Double memory;
 
 	@Column(name = "Original Memory")

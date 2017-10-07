@@ -144,6 +144,7 @@ public class Calculator {
 
 			if (input.hasErrors()) {
 				output.setErrorMessage(input.getErrorMessageInput());
+				quote.setHasErrors(Boolean.TRUE);
 			} else {
 				//find instance and break
 				findMatches(quote, input, output, false);
@@ -201,12 +202,12 @@ public class Calculator {
 	private static void findMatches(Quote quote, InstanceInput input, 
 			InstanceOutput output, boolean forceBreakInstances) {
 		LOGGER.debug("findMatches:" + input.getDescription() + "::" + input.getEnvironment());
-		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances);
+		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances, quote);
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
 			if (SAPInstanceType.HANA_OLAP.equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
-				double efectiveMemory = output.getInstanceMemory() * input.getInstances();
-				if (efectiveMemory / input.getOriginalMemory() > MAX_MEMORY_WASTE) {
+				double effectiveMemory = output.getInstanceMemory() * input.getInstances();
+				if (effectiveMemory / input.getOriginalMemory() > MAX_MEMORY_WASTE) {
 					LOGGER.debug("Recursive findMatches:" + input.getDescription());
 					findMatches(quote, input, output, true);
 				}
@@ -215,7 +216,7 @@ public class Calculator {
 	}
 
 	private static List<Price> findPossibleMatches(InstanceInput input, 
-			InstanceOutput output, boolean forceBreakInstances) {
+			InstanceOutput output, boolean forceBreakInstances, Quote quote) {
 		LOGGER.debug("Calculating instance: " + input.getDescription());
 
 		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
@@ -257,10 +258,11 @@ public class Calculator {
 			breakInManyInstances(input, output);
 			//output.setInstances(input.getInstances());
 			
-			List<Price> findPossibleMatches = findPossibleMatches(input, output, false);
+			List<Price> findPossibleMatches = findPossibleMatches(input, output, false, quote);
 			return findPossibleMatches;
 		} else  {
 			output.setErrorMessage("Could not find a match for this server configuration.");
+			quote.setHasErrors(Boolean.TRUE);
 			return null;
 		}
 	}

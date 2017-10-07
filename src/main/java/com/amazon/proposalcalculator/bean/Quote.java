@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.amazon.proposalcalculator.enums.OfferingClass;
-import com.ebay.xcelite.annotations.Column;
 
 public class Quote implements Comparable<Quote> {
 
@@ -40,6 +39,7 @@ public class Quote implements Comparable<Quote> {
 
 	private double threeYearTotal;
 	private double discount;
+	private boolean hasErrors;
 	private Collection<InstanceOutput> output = new ArrayList<InstanceOutput>();
 	
 	private String justFirstLetters(String words) {
@@ -89,6 +89,13 @@ public class Quote implements Comparable<Quote> {
 	}
 	public void setOfferingClass(String offeringClass) {
 		this.offeringClass = offeringClass;
+	}
+
+	public boolean hasErrors() {
+		return hasErrors;
+	}
+	public void setHasErrors(boolean hasErrors) {
+		this.hasErrors = hasErrors;
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
 
 @Row(colsOrder = {"Description", "Environment", "SAP Instance Type", "Region", "Instances", "SAPS", "CPU", "CPU Tolerance",
-		"Memory", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
+		"Memory(GB)", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
 		"IOPS", "Snapshot(GB)", "Archive Logs/Local Backup(GB)", "S3 Backup(GB)", "Term Type", "Lease Contract Length",
 		"Purchase Option",
 		"Offering Class", "Tenancy", "Operating System", "Pre Installed S/W", "Beginning", "End", "Instance Type",
@@ -27,7 +27,8 @@ public class InstanceOutput extends InstanceInput {
 	public static final int S3_BACKUP_MONTHLY_PRICE = 33;
 
 	public static String[] titles = {"Description", "Environment", "SAP Instance Type", "Region", "Instances", "SAPS",
-			"CPU", "CPU Tolerance","Memory", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume Type",
+			"CPU", "CPU Tolerance","Memory(GB)", "Memory Tolerance", "Monthly Utilization", "Storage(GB)", "Volume " +
+			"Type",
 			"IOPS", "Snapshot(GB)", "Archive Logs/Local Backup(GB)", "S3 Backup(GB)", "Term Type", "Lease Contract Length",
 			"Purchase Option", "Offering Class", "Tenancy", "Operating System",
 			"Instance Type", "Instance SAPS", "Instance vCPU", "Instance Memory", "Upfront Fee", "Compute Unit Price",

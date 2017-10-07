@@ -36,15 +36,13 @@ public class POIExcelReader {
 		Sheet sheet = workbook.getSheetAt(0);
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		Collection<InstanceInput> instanceInputs = new ArrayList<>();
-		boolean firstRow = true;
 		Boolean isSAPWorkbook = null;
 
 		Iterator<Row> iterator = sheet.iterator();
 
 		while (iterator.hasNext()) {
 
-			if (firstRow) {
-				firstRow = false;
+			if (isSAPWorkbook == null) {//first row
 				isSAPWorkbook = isSAPWorkbook(iterator.next());
 			} else {
 				Row currentRow = iterator.next();

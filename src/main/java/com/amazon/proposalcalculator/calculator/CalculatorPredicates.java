@@ -75,14 +75,14 @@ public class CalculatorPredicates {
 	}*/
 	
 	public static Predicate<Price> newGeneration(InstanceInput server) {
-				return p -> ("No".equals(server.getOnlyCurrentGenerationInstances()))
-						|| ("Yes".equals(server.getOnlyCurrentGenerationInstances())
-								&& (p.getCurrentGeneration() == null || "Yes".equals(p.getCurrentGeneration())));
+				return p -> ("no".equals(server.getOnlyCurrentGenerationInstances().toLowerCase()))
+						|| ("yes".equals(server.getOnlyCurrentGenerationInstances().toLowerCase())
+								&& (p.getCurrentGeneration() == null || "yes".equals(p.getCurrentGeneration().toLowerCase())));
 	}
 	
 	public static Predicate<Price> burstable(InstanceInput server) {
-		return  p -> ("Yes".equals(server.getUseBurstablePerformance())
-					|| (("No".equals(server.getUseBurstablePerformance()) 
+		return  p -> ("yes".equals(server.getUseBurstablePerformance().toLowerCase())
+					|| (("no".equals(server.getUseBurstablePerformance().toLowerCase())
 							&& !p.getInstanceType().toLowerCase().startsWith("t2"))));
 	}
 	

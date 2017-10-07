@@ -4,9 +4,12 @@ import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.LeaseContractLength;
 import com.amazon.proposalcalculator.utils.SomeMath;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.FileOutputStream;
@@ -20,6 +23,9 @@ import java.util.List;
 public class POIExcelWriter {
 
     private final static Logger LOGGER = LogManager.getLogger();
+    public static final String ERRORS_FOUND = "Errors were found during the processing of this spreadsheet. Check the other sheets for " +
+            "more details.";
+    public static final int ERROR_MESSAGE_LINE = 14;
 
     private static List<Integer> percentageColumns;
     private static List<Integer> currencyColumns;
@@ -125,6 +131,8 @@ public class POIExcelWriter {
         createTitleRow(workbook, sheet, rowCount, titles);
 
         Row row;
+        boolean hasErrors = Boolean.FALSE;
+
         for (Quote quote : quotes) {
             row = sheet.createRow(++rowCount);
             int columnCount = -1;
@@ -150,11 +158,31 @@ public class POIExcelWriter {
             setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthly(), 2), workbook);
             setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal(), 2), workbook);
             setCellPercentage(row, ++columnCount, SomeMath.round(quote.getDiscount(), 4), workbook);
+
+            if(quote.hasErrors()){
+                hasErrors = Boolean.TRUE;
+            }
+        }
+
+        if (hasErrors){
+            printErrorMessage(workbook, sheet);
         }
 
         autoSizeColumns(sheet);
 
         return workbook;
+    }
+
+    private static void printErrorMessage(XSSFWorkbook workbook, XSSFSheet sheet) {
+
+        XSSFFont bold = createFontBoldRed(workbook);
+
+        Row row = sheet.createRow(ERROR_MESSAGE_LINE);
+        sheet.addMergedRegion(new CellRangeAddress(ERROR_MESSAGE_LINE,ERROR_MESSAGE_LINE,0,6));
+
+        Cell cell = row.createCell(0);
+
+        cell.setCellValue(setFont(bold, ERRORS_FOUND));
     }
 
 
@@ -224,6 +252,15 @@ public class POIExcelWriter {
         bold.setBold(Boolean.TRUE);
         return bold;
     }
+
+    private static XSSFFont createFontBoldRed(XSSFWorkbook workbook) {
+        XSSFFont boldRed = workbook.createFont();
+        boldRed.setColor(HSSFColor.RED.index);
+        boldRed.setBold(Boolean.TRUE);
+        return boldRed;
+    }
+
+
 
     private static XSSFRichTextString setFont(XSSFFont font, String text) {
         XSSFRichTextString richTextString = new XSSFRichTextString(text);
