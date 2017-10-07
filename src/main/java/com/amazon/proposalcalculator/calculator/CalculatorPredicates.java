@@ -82,7 +82,8 @@ public class CalculatorPredicates {
 	
 	public static Predicate<Price> burstable(InstanceInput server) {
 		return  p -> ("Yes".equals(server.getUseBurstablePerformance())
-					|| (("No".equals(server.getUseBurstablePerformance()) && !p.getInstanceType().toLowerCase().startsWith("t2"))));
+					|| (("No".equals(server.getUseBurstablePerformance()) 
+							&& !p.getInstanceType().toLowerCase().startsWith("t2"))));
 	}
 	
     public static Predicate<Price> ec2(InstanceInput server){

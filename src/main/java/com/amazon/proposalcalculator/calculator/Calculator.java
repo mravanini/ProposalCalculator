@@ -266,7 +266,8 @@ public class Calculator {
 	}
 
 	private static void breakInManyInstances(InstanceInput input, InstanceOutput output) {
-		LOGGER.info("Breaking... " + input.getDescription() + "::" + input.getEnvironment());
+		LOGGER.info("Breaking... " + input.getDescription() + "::" + input.getEnvironment() 
+			+ "::" + input.getCpu() + "::" + input.getMemory());
 		
 		if (input.getInstances() == 1) { 
 			input.setOriginalMemory(input.getMemory());

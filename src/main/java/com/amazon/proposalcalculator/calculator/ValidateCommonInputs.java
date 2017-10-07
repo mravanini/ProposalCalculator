@@ -61,10 +61,16 @@ public class ValidateCommonInputs {
         input.setOnlyCurrentGenerationInstances(fillOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances()));
 
         input.setPreInstalledSw(fillPreInstalledSoftware(input.getPreInstalledSw()));
+        
+        input.setUseBurstablePerformance(fillUseBurstablePerformance(input.getUseBurstablePerformance()));
     }
 
     private static String fillOnlyCurrentGenerationInstances(String onlyCurrentGenerationInstances) {
         return onlyCurrentGenerationInstances == null ? "No" : onlyCurrentGenerationInstances;
+    }
+    
+    private static String fillUseBurstablePerformance(String useBurstablePerformance) {
+        return useBurstablePerformance == null ? "Yes" : useBurstablePerformance;
     }
 
     private static int fillQuantityOfInstances(int instances) {
@@ -75,7 +81,7 @@ public class ValidateCommonInputs {
         return (preInstalledSw == null) ? PreInstalledSoftware.NA.name()
                 : PreInstalledSoftware.getPreInstalledSoftware(preInstalledSw).name();
     }
-
+    
     private static String fillTenancy(String tenancy) {
 
         return (tenancy == null) ? Tenancy.Shared.name()
