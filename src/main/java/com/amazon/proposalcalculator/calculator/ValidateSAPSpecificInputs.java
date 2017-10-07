@@ -10,7 +10,7 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public class ValidateSAPSpecificInputs {
 
-    static final String CPU_OR_SAPS_MUST_BE_PROVIDED = "CPU or SAPS must be provided.";
+//    static final String CPU_OR_SAPS_MUST_BE_PROVIDED = "CPU or SAPS must be provided.";
     static final String SAP_INSTANCE_TYPE_IS_A_MANDATORY_FIELD = "SAP Instance Type is a mandatory field for SAP calculations.";
     static final String SAP_INSTANCES_MUST_NOT_BE_LINUX = "Open Source Linux is not supported for SAP workloads. Use SUSE or RHEL instead.";
 
@@ -22,7 +22,7 @@ public class ValidateSAPSpecificInputs {
 
 //        input.setArchiveLogsLocalBackup(fillArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup()));
 
-        validateMandatoryFields(input);
+//        validateMandatoryFields(input);
 
         validateOperatingSystemIsNotLinux(input.getOperatingSystem());
     }
@@ -49,11 +49,11 @@ public class ValidateSAPSpecificInputs {
         }
     }
 
-    private static void validateMandatoryFields(InstanceInput input) {
-        if (!validInteger(input.getSaps()) && !validDouble(input.getCpu())){
-            throw new PricingCalculatorException(CPU_OR_SAPS_MUST_BE_PROVIDED);
-        }
-    }
+//    private static void validateMandatoryFields(InstanceInput input) {
+//        if (!validInteger(input.getSaps()) && !validDouble(input.getCpu())){
+//            throw new PricingCalculatorException(CPU_OR_SAPS_MUST_BE_PROVIDED);
+//        }
+//    }
 
     private static boolean validInteger(Integer value){
         return value != null && value.intValue() != 0;

@@ -26,7 +26,7 @@ public class EC2PriceListReader {
 	public static void main(String[] args) throws IOException {
 		long now = System.currentTimeMillis();
         read(false);
-		LOGGER.info("Time to read: " + (System.currentTimeMillis() - now) + " miliseconds");
+		LOGGER.info("Time to read: " + (System.currentTimeMillis() - now) + " milliseconds");
 
 	}
 

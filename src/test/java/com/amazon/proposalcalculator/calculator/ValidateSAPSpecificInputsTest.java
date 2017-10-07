@@ -26,18 +26,18 @@ public class ValidateSAPSpecificInputsTest {
         }
     }
 
-    @Test(expected = PricingCalculatorException.class)
-    public void testSAPsNullAndCPUZero(){
-        InstanceInput input = new InstanceInput();
-        input.setSapInstanceType(SAPInstanceType.ANY_DB.name());
-        input.setCpu(0D);
-        try {
-            ValidateSAPSpecificInputs.validate(input);
-        }catch (PricingCalculatorException pce){
-            assertEquals(ValidateSAPSpecificInputs.CPU_OR_SAPS_MUST_BE_PROVIDED, pce.getMessage());
-            throw pce;
-        }
-    }
+//    @Test(expected = PricingCalculatorException.class)
+//    public void testSAPsNullAndCPUZero(){
+//        InstanceInput input = new InstanceInput();
+//        input.setSapInstanceType(SAPInstanceType.ANY_DB.name());
+//        input.setCpu(0D);
+//        try {
+//            ValidateSAPSpecificInputs.validate(input);
+//        }catch (PricingCalculatorException pce){
+//            assertEquals(ValidateSAPSpecificInputs.CPU_OR_SAPS_MUST_BE_PROVIDED, pce.getMessage());
+//            throw pce;
+//        }
+//    }
 
     @Test
     public void testSAPsNullArchiveLogsNull(){

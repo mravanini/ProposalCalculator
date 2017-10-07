@@ -80,7 +80,7 @@ public class POIExcelWriter {
             for (InstanceOutput output : quote.getOutput()) {
                 row = sheet.createRow(++rowCount);
 
-                for (int columnCount = 0; columnCount < InstanceOutput.getCollumnCount(); columnCount++) {
+                for (int columnCount = 0; columnCount < InstanceOutput.getColumnCount(); columnCount++) {
 
                     Object cellValue = output.getCell(columnCount);
 
