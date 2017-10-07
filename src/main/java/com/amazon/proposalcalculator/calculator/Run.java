@@ -2,11 +2,7 @@ package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.enums.ProductName;
-import com.amazon.proposalcalculator.reader.ConfigReader;
-import com.amazon.proposalcalculator.reader.DataTransferReader;
-import com.amazon.proposalcalculator.reader.DefaultExcelReader;
-import com.amazon.proposalcalculator.reader.EC2PriceListReader;
-import com.amazon.proposalcalculator.reader.S3PriceListReader;
+import com.amazon.proposalcalculator.reader.*;
 import com.amazon.proposalcalculator.utils.Constants;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +28,6 @@ public class Run {
             forceDownload = false;
 
             Collection<InstanceInput> instanceInputs = init(forceDownload);
-            //Collection<InstanceInput> instanceInputs = initGeneric(forceDownload);
 
             Calculator.calculate(instanceInputs, Constants.OUTPUT_FILE_NAME);
             Constants.endTime = System.currentTimeMillis();
@@ -56,20 +51,12 @@ public class Run {
     private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException {
         EC2PriceListReader.read(forceDownload);
         S3PriceListReader.read(forceDownload);
-        Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
+        //Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
+        Collection<InstanceInput> servers = POIExcelReader.read(Constants.INPUT_FILE_NAME);
         ConfigReader.read(Constants.INPUT_FILE_NAME);
         DataTransferReader.read(Constants.INPUT_FILE_NAME);
 
         return servers;
     }
 
-    private static Collection<InstanceInput> initGeneric(Boolean forceDownload) throws IOException {
-        EC2PriceListReader.read(forceDownload);
-        S3PriceListReader.read(forceDownload);
-        Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME_GENERIC);
-        ConfigReader.read(Constants.INPUT_FILE_NAME_GENERIC);
-        DataTransferReader.read(Constants.INPUT_FILE_NAME_GENERIC);
-
-        return servers;
-    }
 }

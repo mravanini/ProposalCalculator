@@ -1,8 +1,139 @@
 package com.amazon.proposalcalculator.bean;
 
+import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
+
+	public static final String SAP_INSTANCE_TYPE = "SAP Instance Type";
+	public static final String SAPS = "SAPS";
+
+	public void setCellSAP(int column, Object value){
+		switch (column){
+			case 0:
+				setDescription((String) value);
+				break;
+			case 1:
+				setEnvironment((String) value);
+				break;
+			case 2:
+				setSapInstanceType((String) value);
+				break;
+			case 3:
+				setRegion((String) value);
+				break;
+			case 4:
+				setSaps(((Double) value).intValue());
+				break;
+			case 5:
+				setCpu((Double)value);
+				break;
+			case 6:
+				setCpuTolerance((Double)value);
+				break;
+			case 7:
+				setMemory((Double)value);
+				break;
+			case 8:
+				setMemoryTolerance((Double)value);
+				break;
+			case 9:
+				setMonthlyUtilization((Double)value);
+				break;
+			case 10:
+				setStorage(((Double) value).intValue());//(Integer.parseInt((String)value));
+				break;
+			case 11:
+				setVolumeType((String)value);
+				break;
+			case 12:
+				setIops(((Double) value).intValue());
+				break;
+			case 13:
+				setSnapshot(((Double) value).intValue());
+				break;
+			case 14:
+				setArchiveLogsLocalBackup(((Double) value).intValue());
+				break;
+			case 15:
+				setS3Backup(((Double) value).intValue());
+				break;
+			case 16:
+				setOperatingSystem((String)value);
+				break;
+			case 17:
+				setBillingOption((String)value);
+				break;
+			default:
+				throw new PricingCalculatorException("This column option doesn't exist in the input sheet: " +
+						column);
+		}
+	}
+
+	public void setCellGeneric(int column, Object value){
+		switch (column){
+			case 0:
+				setDescription((String) value);
+				break;
+			case 1:
+				setInstances(((Double)value).intValue());
+				break;
+			case 2:
+				setEnvironment((String) value);
+				break;
+			case 3:
+				setRegion((String) value);
+				break;
+			case 4:
+				setCpu((Double)value);
+				break;
+			case 5:
+				setCpuTolerance((Double)value);
+				break;
+			case 6:
+				setMemory((Double)value);
+				break;
+			case 7:
+				setMemoryTolerance((Double)value);
+				break;
+			case 8:
+				setMonthlyUtilization((Double)value);
+				break;
+			case 9:
+				setStorage(((Double) value).intValue());
+				break;
+			case 10:
+				setVolumeType((String)value);
+				break;
+			case 11:
+				setIops(((Double) value).intValue());
+				break;
+			case 12:
+				setSnapshot(((Double) value).intValue());
+				break;
+			case 13:
+				setS3Backup(((Double) value).intValue());
+				break;
+			case 14:
+				setOperatingSystem((String)value);
+				break;
+			case 15:
+				setOnlyCurrentGenerationInstances((String)value);
+				break;
+			case 16:
+				setUseBurstablePerformance((String)value);
+				break;
+			case 17:
+				setPreInstalledSw((String)value);
+				break;
+			case 18:
+				setBillingOption((String)value);
+				break;
+			default:
+				throw new PricingCalculatorException("This column option doesn't exist in the input sheet: " +
+						column);
+		}
+	}
 
 	@Column(name = "Description")
 	private String description;
@@ -16,7 +147,7 @@ public class InstanceInput {
 	@Column(name = "Environment")
 	private String environment;
 
-	@Column(name = "SAP Instance Type")
+	@Column(name = SAP_INSTANCE_TYPE)
 	private String sapInstanceType;
 
 	@Column(name = "CPU")
@@ -28,7 +159,7 @@ public class InstanceInput {
 	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance;
 
-	@Column(name = "SAPS")
+	@Column(name = SAPS)
 	private Integer saps;
 
 	@Column(name = "Original SAPS")

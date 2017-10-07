@@ -109,11 +109,11 @@ public class InstanceOutput extends InstanceInput {
 			case 34:
 				return getErrorMessage();
 			default:
-				throw new PricingCalculatorException("This column option doesn't exist: " + column);
+				throw new PricingCalculatorException("This column option doesn't exist in the output sheet: " + column);
 		}
 	}
 
-	public static int getCollumnCount(){
+	public static int getColumnCount(){
 		return titles.length;
 	}
 
