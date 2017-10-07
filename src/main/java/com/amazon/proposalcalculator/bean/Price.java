@@ -1,5 +1,6 @@
 package com.amazon.proposalcalculator.bean;
 
+import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.utils.MemoryConverter;
 import com.ebay.xcelite.annotations.Column;
 import com.opencsv.bean.CsvBindByName;
@@ -147,7 +148,7 @@ public class Price {
 	}
 
 	public double getMemory() {
-		return memory;
+		return (int) Math.round(memory * Constants.GIB_TO_GB);
 	}
 
 	public void setMemory(double memory) {

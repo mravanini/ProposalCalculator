@@ -51,6 +51,7 @@ public class SAPS {
 			instance.sapsMap.put("r3.xlarge", 3990);
 			instance.sapsMap.put("r3.large", 1995);
 			instance.sapsMap.put("x1.32xlarge", 131500);
+			instance.sapsMap.put("x1e.32xlarge", 131500);
 			instance.sapsMap.put("x1.16xlarge", 65750);
 			
 			//Previous generation instances
