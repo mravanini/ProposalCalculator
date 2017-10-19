@@ -167,19 +167,28 @@ public class Calculator {
 
 		}
 		quote.setThreeYearTotal(quote.getThreeYearTotal() * 36);
-		LOGGER.info(quote.getName() + ":" + quote.getThreeYearTotal());
+		
+		
+		LOGGER.info(quote.getName() 
+				+ "::" + (int) quote.getOneYrUpfront() 
+				+ "::" + (int) quote.getThreeYrsUpfront() 
+				+ "::" + (int) quote.getUpfront() 
+				+ "::" + (int) quote.getThreeYearTotal());
+		
+		
 		//Constants.quotes.add(quote);
 		return quote;
 	}
 
 	private static void calculateQuoteTotals(Quote quote, InstanceOutput output, long rowNum) {
-		//
+		
 		double monthly = quote.getMonthly() + output.getComputeMonthlyPrice() + output.getStorageMonthlyPrice()
 				+ output.getSnapshotMonthlyPrice() + output.getS3BackupMonthlyPrice()
 				+ output.getArchiveLogsLocalBackupMonthlyPrice() /*+ dataTransferOutMonthlyPrice*/ ;
 		quote.setMonthly(monthly);
 		
-		double months = LeaseContractLength.THREE_YEARS.getColumnName().equals(output.getLeaseContractLength()) ? 36 : 12;
+		double months = 
+				LeaseContractLength.THREE_YEARS.getColumnName().equals(output.getLeaseContractLength()) ? 36 : 12;
 		double monthlyUpfront = output.getUpfrontFee() / months;
 		
 		double threeYearTotal = quote.getThreeYearTotal() + 
@@ -192,9 +201,18 @@ public class Calculator {
 		
 		quote.setThreeYearTotal(threeYearTotal);
 
+		//mudar aqui
 		double upfront = quote.getUpfront() + output.getUpfrontFee();
 		quote.setUpfront(upfront);
-
+		
+		if (months == 12) {
+			double oneYrUpfront = quote.getOneYrUpfront() + output.getUpfrontFee();
+			quote.setOneYrUpfront(oneYrUpfront);
+		} else if (months == 36) {
+			double threeYrsUpfront = quote.getThreeYrsUpfront() + output.getUpfrontFee();
+			quote.setThreeYrsUpfront(threeYrsUpfront);
+		}
+		
 		//quote.setMonthlyFormula(CalculatorUsingFormula.calculateQuoteTotals(quote, output, rowNum));//TODO testing
 
 	}

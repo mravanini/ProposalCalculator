@@ -139,7 +139,7 @@ public class POIExcelWriter {
 
             setCell(row, ++columnCount, quote.getName());
 
-            if (LeaseContractLength.ONE_YEAR.getColumnName().equals(quote.getLeaseContractLength())) {
+            /*if (LeaseContractLength.ONE_YEAR.getColumnName().equals(quote.getLeaseContractLength())) {
                 setCellCurrency(row, ++columnCount, SomeMath.round(quote.getUpfront(), 2), workbook);
                 setCellCurrency(row, ++columnCount, 0, workbook);
 
@@ -151,7 +151,10 @@ public class POIExcelWriter {
                 setCellCurrency(row, ++columnCount, 0, workbook);
                 setCellCurrency(row, ++columnCount, 0, workbook);
 
-            }
+            }*/
+            
+            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfront(), 2), workbook);
+            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfront(), 2), workbook);
 
             //setCellFormula(row, ++columnCount, quote.getMonthlyFormula(), workbook); //testing
 
