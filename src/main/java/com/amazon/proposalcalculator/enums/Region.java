@@ -8,7 +8,7 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 public enum Region {
 
 
-    //TODO remove this ENUM after better implemenation is done on retrieving these informations
+    //TODO remove this ENUM after better implementation is done on retrieving these information
     US_EAST_OHIO("US East (Ohio)"),
     US_WEST_OREGON("US West (Oregon)"),
     US_WEST_N_CALIFORNIA("US West (N. California)"),

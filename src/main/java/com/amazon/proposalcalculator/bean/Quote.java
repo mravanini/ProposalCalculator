@@ -47,8 +47,8 @@ public class Quote implements Comparable<Quote> {
 	
 	private String justFirstLetters(String words) {
 		StringBuilder result = new StringBuilder();
-		String[] splitedWords = words.split(" ");
-		for (String string : splitedWords) {
+		String[] splitWords = words.split(" ");
+		for (String string : splitWords) {
 			result.append(string.substring(0, 1).toUpperCase());
 		}
 		return result.toString();

@@ -35,11 +35,11 @@ public class WriteStackTrace {
         StringBuffer stackTrace = new StringBuffer();
         stackTrace.append("An error occurred when calculating input workload: ");
 
-        if (e.getMessage().contains("formula cell")) {
-            stackTrace.append("The Calculator does not support formulas yet. Please use only raw numbers.");
-        }else {
+//        if (e.getMessage().contains("formula cell")) {
+//            stackTrace.append("The Calculator does not support formulas yet. Please use only raw numbers.");
+//        }else {
             stackTrace.append(e.getLocalizedMessage());
-        }
+//        }
         stackTrace.append("\nThe system administrator has been notified about this error.");
 
         LOGGER.error(stackTrace);

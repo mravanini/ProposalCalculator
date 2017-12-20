@@ -86,24 +86,42 @@ public class Calculator {
 				PurchaseOption.ALL_UPFRONT.getColumnName(),
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q8));
-
+		
 		Quote q9 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				LeaseContractLength.ONE_YEAR.getColumnName(), 
 				PurchaseOption.NO_UPFRONT.getColumnName(),
 				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q9));
 
 		Quote q10 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(),
+				LeaseContractLength.ONE_YEAR.getColumnName(),
 				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
 				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q10));
 
 		Quote q11 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				LeaseContractLength.ONE_YEAR.getColumnName(), 
 				PurchaseOption.ALL_UPFRONT.getColumnName(),
 				OfferingClass.Convertible.name());
 		quotes.add(calculatePrice(servers, q11));
+
+		Quote q12 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				PurchaseOption.NO_UPFRONT.getColumnName(),
+				OfferingClass.Convertible.name());
+		quotes.add(calculatePrice(servers, q12));
+
+		Quote q13 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
+				OfferingClass.Convertible.name());
+		quotes.add(calculatePrice(servers, q13));
+
+		Quote q14 = new Quote(TermType.Reserved.name(), 
+				LeaseContractLength.THREE_YEARS.getColumnName(), 
+				PurchaseOption.ALL_UPFRONT.getColumnName(),
+				OfferingClass.Convertible.name());
+		quotes.add(calculatePrice(servers, q14));
 		
 		calculateDiscount(quotes);
 
@@ -423,7 +441,7 @@ public class Calculator {
 		//double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
 	}
 
-	private static void setEfectivePrice(List<Price> priceList) {
+	private static void setEffectivePrice(List<Price> priceList) {
 		for (Price somePrice : priceList) {
 			if (somePrice.getTermType().equals(TermType.OnDemand.name()) || 
 					somePrice.getPurchaseOption().equals(PurchaseOption.NO_UPFRONT.getColumnName())) {
@@ -469,7 +487,7 @@ public class Calculator {
 	}
 
 	private static Price getBestPrice(List<Price> prices) {
-		setEfectivePrice(prices);
+		setEffectivePrice(prices);
 
 		Price bestPrice = prices.get(0);
 

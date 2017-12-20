@@ -7,15 +7,24 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum PreInstalledSoftware {
 
-    NA,
-    SQLStandard,
-    SQLWeb,
-    SQLEnterprise;
+    NA("NA"),
+    SQLStandard("SQL Std"),
+    SQLWeb("SQL Web"),
+    SQLEnterprise("SQL Ent");
+
+    private String columnName;
+    PreInstalledSoftware(String columnName){
+        this.columnName = columnName;
+    }
+    public String getColumnName() {
+        return columnName;
+    }
+
 
     public static PreInstalledSoftware getPreInstalledSoftware(String columnName){
 
         for(PreInstalledSoftware preInstalledSoftware : PreInstalledSoftware.values()){
-            if (preInstalledSoftware.name().equalsIgnoreCase(columnName)){
+            if (preInstalledSoftware.getColumnName().equalsIgnoreCase(columnName)){
                 return preInstalledSoftware;
 
             }

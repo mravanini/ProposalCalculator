@@ -120,7 +120,7 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> preInstalledSw(InstanceInput server){
-        return p -> p.getPreInstalledSw() != null && p.getPreInstalledSw().equals(server.getPreInstalledSw());
+        return p -> p.getPreInstalledSw() != null && p.getPreInstalledSw().equalsIgnoreCase(server.getPreInstalledSw());
     }
 
     public static Predicate<Price> termType(InstanceInput server){

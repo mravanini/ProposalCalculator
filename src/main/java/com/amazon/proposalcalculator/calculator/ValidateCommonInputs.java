@@ -78,8 +78,8 @@ public class ValidateCommonInputs {
     }
 
     private static String fillPreInstalledSoftware(String preInstalledSw) {
-        return (preInstalledSw == null) ? PreInstalledSoftware.NA.name()
-                : PreInstalledSoftware.getPreInstalledSoftware(preInstalledSw).name();
+        return (preInstalledSw == null) ? PreInstalledSoftware.NA.getColumnName()
+                : PreInstalledSoftware.getPreInstalledSoftware(preInstalledSw).getColumnName();
     }
     
     private static String fillTenancy(String tenancy) {

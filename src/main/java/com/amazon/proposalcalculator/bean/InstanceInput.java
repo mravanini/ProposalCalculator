@@ -1,248 +1,207 @@
 package com.amazon.proposalcalculator.bean;
 
+import com.amazon.proposalcalculator.enums.InstanceInputColumn;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
 
-	public static final String SAP_INSTANCE_TYPE = "SAP Instance Type";
-	public static final String SAPS = "SAPS";
-
-	public void setCellSAP(int column, Object value){
+	public void setCellSAP(InstanceInputColumn column, Object value){
 		switch (column){
-			case 0:
+			case DESCRIPTION:
 				setDescription((String) value);
 				break;
-			case 1:
+			case ENVIRONMENT:
 				setEnvironment((String) value);
 				break;
-			case 2:
+			case SAP_INSTANCE_TYPE:
 				setSapInstanceType((String) value);
 				break;
-			case 3:
+			case REGION:
 				setRegion((String) value);
 				break;
-			case 4:
+			case SAPS:
 				setSaps(((Double) value).intValue());
 				break;
-			case 5:
+			case CPU:
 				setCpu((Double)value);
 				break;
-			case 6:
+			case CPU_TOLERANCE:
 				setCpuTolerance((Double)value);
 				break;
-			case 7:
+			case MEMORY:
 				setMemory((Double)value);
 				break;
-			case 8:
+			case MEMORY_TOLERANCE:
 				setMemoryTolerance((Double)value);
 				break;
-			case 9:
+			case MONTHLY_UTILIZATION:
 				setMonthlyUtilization((Double)value);
 				break;
-			case 10:
+			case STORAGE:
 				setStorage(((Double) value).intValue());//(Integer.parseInt((String)value));
 				break;
-			case 11:
+			case VOLUME_TYPE:
 				setVolumeType((String)value);
 				break;
-			case 12:
+			case IOPS:
 				setIops(((Double) value).intValue());
 				break;
-			case 13:
+			case SNAPSHOT:
 				setSnapshot(((Double) value).intValue());
 				break;
-			case 14:
+			case ARCHIVE_LOGS_LOCAL_BACKUP:
 				setArchiveLogsLocalBackup(((Double) value).intValue());
 				break;
-			case 15:
+			case S3_BACKUP:
 				setS3Backup(((Double) value).intValue());
 				break;
-			case 16:
+			case OPERATING_SYSTEM:
 				setOperatingSystem((String)value);
 				break;
-			case 17:
+			case BILLING_OPTION:
 				setBillingOption((String)value);
 				break;
-			default:
-				throw new PricingCalculatorException("This column option doesn't exist in the input sheet: " +
-						column);
 		}
 	}
 
-	public void setCellGeneric(int column, Object value){
+	public void setCellGeneric(InstanceInputColumn column, Object value){
 		switch (column){
-			case 0:
+			case DESCRIPTION:
 				setDescription((String) value);
 				break;
-			case 1:
+			case INSTANCES:
 				setInstances(((Double)value).intValue());
 				break;
-			case 2:
+			case ENVIRONMENT:
 				setEnvironment((String) value);
 				break;
-			case 3:
+			case REGION:
 				setRegion((String) value);
 				break;
-			case 4:
+			case CPU:
 				setCpu((Double)value);
 				break;
-			case 5:
+			case CPU_TOLERANCE:
 				setCpuTolerance((Double)value);
 				break;
-			case 6:
+			case MEMORY:
 				setMemory((Double)value);
 				break;
-			case 7:
+			case MEMORY_TOLERANCE:
 				setMemoryTolerance((Double)value);
 				break;
-			case 8:
+			case MONTHLY_UTILIZATION:
 				setMonthlyUtilization((Double)value);
 				break;
-			case 9:
+			case STORAGE:
 				setStorage(((Double) value).intValue());
 				break;
-			case 10:
+			case VOLUME_TYPE:
 				setVolumeType((String)value);
 				break;
-			case 11:
+			case IOPS:
 				setIops(((Double) value).intValue());
 				break;
-			case 12:
+			case SNAPSHOT:
 				setSnapshot(((Double) value).intValue());
 				break;
-			case 13:
+			case S3_BACKUP:
 				setS3Backup(((Double) value).intValue());
 				break;
-			case 14:
+			case OPERATING_SYSTEM:
 				setOperatingSystem((String)value);
 				break;
-			case 15:
+			case ONLY_CURRENT_GENERATION_INSTANCES:
 				setOnlyCurrentGenerationInstances((String)value);
 				break;
-			case 16:
+			case USE_BURSTABLE_PERFORMANCE:
 				setUseBurstablePerformance((String)value);
 				break;
-			case 17:
+			case PRE_INSTALLED_SOFTWARE:
 				setPreInstalledSw((String)value);
 				break;
-			case 18:
+			case BILLING_OPTION:
 				setBillingOption((String)value);
 				break;
-			default:
-				throw new PricingCalculatorException("This column option doesn't exist in the input sheet: " +
-						column);
 		}
 	}
 
-	@Column(name = "Description")
 	private String description;
 
-	@Column(name = "Region")
 	private String region;
 
-	@Column(name = "Instances")
 	private int instances;
 
-	@Column(name = "Environment")
 	private String environment;
 
-	@Column(name = SAP_INSTANCE_TYPE)
 	private String sapInstanceType;
 
-	@Column(name = "CPU")
 	private Double cpu;
 
-	@Column(name = "Original CPU")
 	private Double originalCpu;
 
-	@Column(name = "CPU Tolerance")
 	private Double cpuTolerance;
 
-	@Column(name = SAPS)
 	private Integer saps;
 
-	@Column(name = "Original SAPS")
 	private Integer originalSaps;
 
-	@Column(name = "Use SAP Certified Instances")
 	private String useSAPCertifiedInstances;
 
-	@Column(name = "Monthly Utilization")
 	private Double monthlyUtilization;
 
-	@Column(name = "Memory(GB)")
 	private Double memory;
 
-	@Column(name = "Original Memory")
 	private Double originalMemory = 0d;
 
-	@Column(name = "Memory Tolerance")
 	private Double memoryTolerance;
 
-	@Column(name = "Storage(GB)")
 	private Integer storage;
 	
 	private Integer originalStorage;
 
-	@Column(name = "Volume Type")
 	private String volumeType;
 
-	@Column(name = "IOPS")
 	private Integer iops;
 
-	@Column(name = "Snapshot(GB)")
 	private Integer snapshot;
 	
 	private Integer originalSnapshot;
 
-	@Column(name = "Archive Logs/Local Backup(GB)")
 	private Integer archiveLogsLocalBackup;
 	
 	private Integer originalArchiveLogsLocalBackup;
 
-	@Column(name = "S3 Backup(GB)")
 	private Integer s3Backup;
 	
 	private Integer originalS3Backup;
 
-	@Column(name = "Term Type")
 	private String termType;
 
-	@Column(name = "Lease Contract Length")
 	private String leaseContractLength;
 	public static String leaseContractLengthColumn = "%s!S%d";
 
-	@Column(name = "Purchase Option")
 	private String purchaseOption;
 
-	@Column(name = "Offering Class")
 	private String offeringClass;
 
-	@Column(name = "Tenancy")
 	private String tenancy;
 
-	@Column(name = "Operating System")
 	private String operatingSystem;
 
-	@Column(name = "Beginning")
 	private String beginning;
 
-	@Column(name = "End")
 	private String end;
 
-	@Column(name = "Pre Installed S/W")
 	private String preInstalledSw;
 
-	@Column(name = "Only Current Generation Instances")
 	private String onlyCurrentGenerationInstances;
 	
-	@Column(name = "Use Burstable Performance")
 	private String useBurstablePerformance;
 
 	private String errorMessageInput;
 	
-	@Column(name = "Billing Option")
 	private String billingOption;
 
 	public Double getOriginalCpu() {
