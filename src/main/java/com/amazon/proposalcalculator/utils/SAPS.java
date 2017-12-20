@@ -29,30 +29,41 @@ public class SAPS {
 			instance.sapsMap.put("m4.2xlarge", 9464);
 			instance.sapsMap.put("m4.xlarge", 4732);
 			instance.sapsMap.put("m4.large", 2366);
+			
 			instance.sapsMap.put("c4.8xlarge", 37950);
 			instance.sapsMap.put("c4.4xlarge", 19030);
 			instance.sapsMap.put("c4.2xlarge", 9515);
 			instance.sapsMap.put("c4.xlarge", 4758);
 			instance.sapsMap.put("c4.large ", 2379);
+			
 			instance.sapsMap.put("c3.8xlarge", 31830);
 			instance.sapsMap.put("c3.4xlarge", 15915);
 			instance.sapsMap.put("c3.2xlarge", 7957);
 			instance.sapsMap.put("c3.xlarge", 3978);
 			instance.sapsMap.put("c3.large", 1989);
+			
 			instance.sapsMap.put("r4.16xlarge", 76400);
 			instance.sapsMap.put("r4.8xlarge", 38200);
 			instance.sapsMap.put("r4.4xlarge", 19100);
 			instance.sapsMap.put("r4.2xlarge", 9550);
 			instance.sapsMap.put("r4.xlarge", 4775);
 			instance.sapsMap.put("r4.large", 2387);
+			
 			instance.sapsMap.put("r3.8xlarge", 31920);
 			instance.sapsMap.put("r3.4xlarge", 15960);
 			instance.sapsMap.put("r3.2xlarge", 7980);
 			instance.sapsMap.put("r3.xlarge", 3990);
 			instance.sapsMap.put("r3.large", 1995);
+			
 			instance.sapsMap.put("x1.32xlarge", 131500);
-			instance.sapsMap.put("x1e.32xlarge", 131500);
 			instance.sapsMap.put("x1.16xlarge", 65750);
+			
+			instance.sapsMap.put("x1e.32xlarge", 131500);
+			instance.sapsMap.put("x1e.16xlarge", 65750);
+			instance.sapsMap.put("x1e.8xlarge", 32875);
+			instance.sapsMap.put("x1e.4xlarge", 16437);
+			instance.sapsMap.put("x1e.2xlarge", 8219);
+			instance.sapsMap.put("x1e.xlarge", 4109);
 			
 			//Previous generation instances
 			instance.sapsMap.put("cc2.8xlarge", 30430); //90330 as a database server for 3-tier config

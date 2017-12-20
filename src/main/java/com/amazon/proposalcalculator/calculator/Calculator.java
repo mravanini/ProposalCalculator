@@ -149,15 +149,18 @@ public class Calculator {
 				//find instance and break
 				findMatches(quote, input, output, false);
 				
+				
+				//why this? check
+				//changing to add # of instances...
 				//then calculate the price for storage at the end...
-				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input));
-				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input));
+				output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input) * input.getInstances());
+				output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input) * input.getInstances());
 
 				output.setArchiveLogsLocalBackupMonthlyPrice(
-						StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input));
+						StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input) * input.getInstances());
 				
 				double s3BackupMonthlyPrice = StoragePricingCalculator.getS3BackupMonthlyPrice(input);
-				output.setS3BackupMonthlyPrice(s3BackupMonthlyPrice);
+				output.setS3BackupMonthlyPrice(s3BackupMonthlyPrice * input.getInstances());
 				
 				calculateQuoteTotals(quote, output, rowNum);
 
@@ -185,6 +188,7 @@ public class Calculator {
 		double monthly = quote.getMonthly() + output.getComputeMonthlyPrice() + output.getStorageMonthlyPrice()
 				+ output.getSnapshotMonthlyPrice() + output.getS3BackupMonthlyPrice()
 				+ output.getArchiveLogsLocalBackupMonthlyPrice() /*+ dataTransferOutMonthlyPrice*/ ;
+		
 		quote.setMonthly(monthly);
 		
 		double months = 
@@ -403,7 +407,11 @@ public class Calculator {
 		output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
 				* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
 
+		//here?
 		output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input) * input.getInstances());
+		
+		
+		
 		output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input) * input.getInstances());
 
 		output.setArchiveLogsLocalBackupMonthlyPrice(
@@ -411,8 +419,8 @@ public class Calculator {
 
 		output.setUpfrontFee(price.getUpfrontFee() * input.getInstances());
 
-		DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
-		double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
+		//DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
+		//double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
 	}
 
 	private static void setEfectivePrice(List<Price> priceList) {
