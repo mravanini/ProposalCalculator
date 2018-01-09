@@ -24,7 +24,16 @@ public class ValidateSAPSpecificInputs {
 
 //        validateMandatoryFields(input);
 
-        validateOperatingSystemIsNotLinux(input.getOperatingSystem());
+        input.setOperatingSystem(fillOperatingSystem(input.getOperatingSystem()));
+
+//        validateOperatingSystemIsNotLinux(input.getOperatingSystem());
+    }
+
+    private static String fillOperatingSystem(String operatingSystem) {
+        if (OperatingSystem.BYOL.name().equalsIgnoreCase(operatingSystem)){
+            return OperatingSystem.Linux.name();
+        }
+        return operatingSystem;
     }
 
     private static void validateSAPInstanceType(String sapInstanceType) {

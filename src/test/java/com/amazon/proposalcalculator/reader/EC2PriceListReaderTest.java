@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +18,7 @@ public class EC2PriceListReaderTest {
 
 
     @Test
-    public void test() throws IOException {
+    public void test() throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         EC2PriceListReader ec2PriceListReader = new EC2PriceListReader();
         List<Price> prices = ec2PriceListReader.read(false);

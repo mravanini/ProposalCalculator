@@ -20,6 +20,7 @@ public class CalculatorPredicates {
 	
 	public static Predicate<Price> sapProductionCertifiedInstances(InstanceInput server) {
 		return  p -> (p.getInstanceType().toLowerCase().startsWith("m4")
+				|| p.getInstanceType().toLowerCase().startsWith(Constants.STANDBY_INSTANCE)
 				|| p.getInstanceType().toLowerCase().startsWith("c4")
 				|| p.getInstanceType().toLowerCase().startsWith("r4")
 				|| p.getInstanceType().toLowerCase().startsWith("x1"));

@@ -2,6 +2,7 @@ package com.amazon.proposalcalculator.reader;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +18,7 @@ import com.ebay.xcelite.writer.SheetWriter;
 
 public class DataTransferReader {
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		EC2PriceListReader.read(false);
 		DataTransferReader.read(Constants.INPUT_FILE_NAME);
 		DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();

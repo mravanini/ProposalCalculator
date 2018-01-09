@@ -3,6 +3,7 @@ package com.amazon.proposalcalculator.reader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.amazon.proposalcalculator.bean.Price;
@@ -23,14 +24,14 @@ public class EC2PriceListReader {
 
 
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		long now = System.currentTimeMillis();
         read(false);
 		LOGGER.info("Time to read: " + (System.currentTimeMillis() - now) + " milliseconds");
 
 	}
 
-	public static List<Price> read(Boolean forceDownload) throws IOException {
+	public static List<Price> read(Boolean forceDownload) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 		if (Constants.ec2PriceList != null) {
 			return Constants.ec2PriceList;
 		}
@@ -42,7 +43,12 @@ public class EC2PriceListReader {
 
 		LOGGER.info("Reading price list...");
 		List<Price> beanList = csvToBean.parse(strategy, csvReader);
+
+		//Generate standBy (0 vCPU, 0 GiB) instances
+		beanList = StandByInstances.generate(beanList);
+
 		Constants.ec2PriceList = beanList;
+
 		for (Price price : beanList) {
 			if (price.getInstanceType() != null) {
 				price.setSaps(SAPS.getInstance().getSAPS(price.getInstanceType()));

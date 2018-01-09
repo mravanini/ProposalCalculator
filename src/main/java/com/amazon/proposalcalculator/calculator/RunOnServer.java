@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -84,7 +85,7 @@ public class RunOnServer {
 		}
 	}
 
-	private static void readPriceLists(String[] args) throws IOException {
+	private static void readPriceLists(String[] args) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		Constants.beginTime = System.currentTimeMillis();
 
 		//TODO remove forceDownload or will this be treated later?

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 /**
@@ -48,7 +49,7 @@ public class Run {
         }
     }
 
-    private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException {
+    private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         EC2PriceListReader.read(forceDownload);
         S3PriceListReader.read(forceDownload);
         //Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);

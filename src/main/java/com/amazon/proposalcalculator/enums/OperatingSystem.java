@@ -10,7 +10,8 @@ public enum OperatingSystem {
     SUSE,
     Windows,
     RHEL,
-    Linux;
+    Linux,
+    BYOL;
 
     public static OperatingSystem getOperatingSystem(String columnName){
 
