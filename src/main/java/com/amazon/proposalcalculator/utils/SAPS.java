@@ -13,7 +13,7 @@ public class SAPS {
 	}
 
 	public Integer getSAPS(String instanceType) {
-		Object result = sapsMap.get(instanceType.toLowerCase());
+		Object result = instance.sapsMap.get(instanceType.toLowerCase().trim());
 		if (result != null)
 			return (Integer) result;
 		return 0;
@@ -23,6 +23,9 @@ public class SAPS {
 		if (instance == null) {
 			instance = new SAPS();
 			instance.sapsMap = new TreeMap<String, Integer>();
+			
+			instance.sapsMap.put(Constants.STANDBY_INSTANCE, 0);
+			
 			instance.sapsMap.put("m4.16xlarge", 75770);
 			instance.sapsMap.put("m4.10xlarge", 47320);
 			instance.sapsMap.put("m4.4xlarge", 18928);
@@ -34,7 +37,7 @@ public class SAPS {
 			instance.sapsMap.put("c4.4xlarge", 19030);
 			instance.sapsMap.put("c4.2xlarge", 9515);
 			instance.sapsMap.put("c4.xlarge", 4758);
-			instance.sapsMap.put("c4.large ", 2379);
+			instance.sapsMap.put("c4.large", 2379);
 			
 			instance.sapsMap.put("c3.8xlarge", 31830);
 			instance.sapsMap.put("c3.4xlarge", 15915);

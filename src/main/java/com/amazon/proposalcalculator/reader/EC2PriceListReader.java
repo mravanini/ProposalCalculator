@@ -47,13 +47,17 @@ public class EC2PriceListReader {
 		//Generate standBy (0 vCPU, 0 GiB) instances
 		beanList = StandByInstances.generate(beanList);
 
-		Constants.ec2PriceList = beanList;
-
 		for (Price price : beanList) {
 			if (price.getInstanceType() != null) {
-				price.setSaps(SAPS.getInstance().getSAPS(price.getInstanceType()));
+				Integer saps = SAPS.getInstance().getSAPS(price.getInstanceType());
+				price.setSaps(saps);
+				if (price.getInstanceType().startsWith("s")) {
+					System.out.println(price.getInstanceType() + " " + price.getSaps());
+				}
 			}
 		}
+		
+		Constants.ec2PriceList = beanList;
 		
 		LOGGER.info("EC2 Price List size: " + beanList.size() + " records");
 

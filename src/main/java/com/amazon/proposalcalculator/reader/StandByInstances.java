@@ -66,7 +66,7 @@ public class StandByInstances {
 
     private static Predicate<Price> t2NanoToBeCloned() {
         return  p -> (p.getInstanceType() != null
-                && p.getInstanceType().equalsIgnoreCase("t2.nano")
+                && p.getInstanceType().equalsIgnoreCase("c4.large")
                 && p.getTenancy() != null
                 && p.getTenancy().equalsIgnoreCase("Shared"));
     }
