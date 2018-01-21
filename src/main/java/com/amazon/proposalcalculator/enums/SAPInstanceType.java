@@ -12,6 +12,18 @@ public enum SAPInstanceType {
     HANA_OLTP,
     HANA_OLAP,
     HANA_B1;
+	
+	public static boolean isHANA(String sapInstanceType){
+		return isHANA(SAPInstanceType.valueOf(sapInstanceType.toUpperCase()));
+	}
+	
+	public static boolean isHANA(SAPInstanceType sapInstanceType){
+		if (sapInstanceType.equals(HANA_OLTP) || sapInstanceType.equals(HANA_OLAP) 
+				|| sapInstanceType.equals(HANA_B1)){
+			return Boolean.TRUE;
+		}
+		return Boolean.FALSE;
+	}
 
     public static SAPInstanceType getSAPInstanceType(String columnName){
 

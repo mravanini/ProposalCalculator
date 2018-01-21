@@ -20,7 +20,7 @@ public class Constants {
 	public static long endTime;
 	public static String S3EndRange = "51200";
 	//public static String INPUT_FILE_NAME = "/Users/carvaa/Documents/lixo/input_sap_test.xlsx";
-	public static String INPUT_FILE_NAME = "input_sap.xlsx";
+	public static String INPUT_FILE_NAME = "input_sap_melissa3.xlsx";
 	public static String OUTPUT_FILE_NAME = "output_sap.xlsx";
 	public static String OUTPUT_WITH_ERROR_FILE_NAME = "error_output.txt";
 	public static String METAKEY = "sap";
@@ -28,9 +28,9 @@ public class Constants {
 	//public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:126421527990:proposal-calculator";
 	public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:879125893843:proposal-calculator";
 
-	public static final String STAND_BY_NEW_INSTANCE_TYPE = "standby_instance";
-	public static final String STAND_BY_INSTANCE_TYPE = "c4.large";
-	public static final String STAND_BY_INSTANCE_TENANCY = "Shared";
+	public static final String STAND_BY_INSTANCE_TYPE = "standby_instance";
+	public static final String STAND_BY_INSTANCE_TYPE_TEMPLATE = "c4.large";
+	public static final String STAND_BY_INSTANCE_TENANCY_TEMPLATE = "Shared";
 	public static final double DR_OPTIMIZED_PERCENTAGE = 0.25;
 	public static final double DR_INACTIVE_PERCENTAGE = 0;
 

@@ -24,7 +24,7 @@ public class SAPS {
 			instance = new SAPS();
 			instance.sapsMap = new TreeMap<String, Integer>();
 			
-			instance.sapsMap.put(Constants.STAND_BY_NEW_INSTANCE_TYPE, 0);
+			instance.sapsMap.put(Constants.STAND_BY_INSTANCE_TYPE, 0);
 			
 			instance.sapsMap.put("m4.16xlarge", 75770);
 			instance.sapsMap.put("m4.10xlarge", 47320);

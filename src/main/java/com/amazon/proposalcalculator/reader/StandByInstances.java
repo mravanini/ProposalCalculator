@@ -44,7 +44,7 @@ public class StandByInstances {
 
     private static Price convertToDR(Price newPrice) {
         newPrice.setPricePerUnit(0);
-        newPrice.setInstanceType(Constants.STAND_BY_NEW_INSTANCE_TYPE);
+        newPrice.setInstanceType(Constants.STAND_BY_INSTANCE_TYPE);
         newPrice.setvCPU(0);
         newPrice.setMemory(0);
 
@@ -64,9 +64,9 @@ public class StandByInstances {
 
     private static Predicate<Price> c4LargeToBeCloned() {
         return  p -> (p.getInstanceType() != null
-                && p.getInstanceType().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TYPE)
+                && p.getInstanceType().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TYPE_TEMPLATE)
                 && p.getTenancy() != null
-                && p.getTenancy().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TENANCY));
+                && p.getTenancy().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TENANCY_TEMPLATE));
     }
 
     /**

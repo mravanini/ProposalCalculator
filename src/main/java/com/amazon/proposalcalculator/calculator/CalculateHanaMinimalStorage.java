@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.amazon.proposalcalculator.bean.MinimalHanaStorage;
+import com.amazon.proposalcalculator.utils.Constants;
 
 public class CalculateHanaMinimalStorage {
 	
@@ -22,6 +23,8 @@ public class CalculateHanaMinimalStorage {
 	private static List<MinimalHanaStorage> storageList = new ArrayList<MinimalHanaStorage>();
 	
 	static {
+		
+		storageList.add(new MinimalHanaStorage(Constants.STAND_BY_INSTANCE_TYPE, 3072, 50, 50, 1024, 4096));
 		
 		storageList.add(new MinimalHanaStorage("x1.32xlarge", 3072, 50, 50, 1024, 4096));
 		storageList.add(new MinimalHanaStorage("x1.16xlarge", 2100, 50, 50, 1024, 2048));

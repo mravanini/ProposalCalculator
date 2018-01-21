@@ -265,7 +265,7 @@ public class Calculator {
 				.and(memory(input)).and(newGeneration(input).and(burstable(input)) );
 		
 		//f CPU and SAPS are both provided. CPU is ignored.
-		if (input.getSaps() != null)
+		if (input.getSaps() > 0)
 			predicate = predicate.and(saps(input));
 		else	
 			predicate = predicate.and(cpu(input));
@@ -377,6 +377,14 @@ public class Calculator {
 		Price price = getBestPrice(possibleMatches);
 
 		minimalStorage(output, input, price);
+		
+		if (input.getEnvironment().equals(Environment.DR_OPTIMIZED.toString())) {
+			input.setCpu(input.getCpu() * Constants.DR_OPTIMIZED_PERCENTAGE);
+            input.setMemory(input.getMemory() * Constants.DR_OPTIMIZED_PERCENTAGE);
+            input.setSaps((int) (input.getSaps() * Constants.DR_OPTIMIZED_PERCENTAGE));
+			possibleMatches = findPossibleMatches(input, output, false, quote);
+			price = getBestPrice(possibleMatches);
+		}
 
 		setPrices(input, output, price);
 	}
@@ -404,17 +412,8 @@ public class Calculator {
 	}
 
 	private static void setPrices(InstanceInput input, InstanceOutput output, Price price) {
-		output.setInstanceType(price.getInstanceType());
-		output.setInstanceVCPU(price.getvCPU());
-		output.setInstanceMemory(price.getMemory());
-		output.setInstanceSAPS(price.getSaps());
-
-		output.setComputeUnitPrice(price.getInstanceHourPrice());
 		
-		output.setComputeMonthlyPrice(
-				price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
-						* (price.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
-
+		//calculate period
 		double days = 0;
 		if (input.getBeginning() != null && input.getEnd() != null) {
 			days = diffInDays(input.getBeginning(), input.getEnd());
@@ -422,20 +421,31 @@ public class Calculator {
 			days = Constants.HOURS_IN_A_MONTH / 24;
 		}
 
-		output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
-				* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
-
-		//here?
+		
+		if (input.getEnvironment().equals(Environment.DR_INACTIVE.toString())) {
+			output.setInstanceType(Constants.STAND_BY_INSTANCE_TYPE);
+			output.setInstanceVCPU(0);
+			output.setInstanceMemory(0d);
+			output.setInstanceSAPS(0);
+		} else {
+			output.setInstanceType(price.getInstanceType());
+			output.setInstanceVCPU(price.getvCPU());
+			output.setInstanceMemory(price.getMemory());
+			output.setInstanceSAPS(price.getSaps());
+			output.setComputeUnitPrice(price.getInstanceHourPrice());
+			output.setUpfrontFee(price.getUpfrontFee() * input.getInstances());
+			output.setComputeMonthlyPrice(
+					price.getInstanceHourPrice() * Constants.HOURS_IN_A_MONTH * input.getInstances()
+							* (price.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+			output.setComputeTotalPrice(price.getInstanceHourPrice() * days * 24 * input.getInstances()
+					* (input.getTermType().equals(TermType.OnDemand.name()) ? input.getMonthlyUtilization() : 1));
+		}
+		
+		//Storage
 		output.setStorageMonthlyPrice(StoragePricingCalculator.getStorageMonthlyPrice(input) * input.getInstances());
-		
-		
-		
 		output.setSnapshotMonthlyPrice(StoragePricingCalculator.getSnapshotMonthlyPrice(input) * input.getInstances());
-
 		output.setArchiveLogsLocalBackupMonthlyPrice(
 				StoragePricingCalculator.getArchiveLogsLocalBackupMonthlyPrice(input) * input.getInstances());
-
-		output.setUpfrontFee(price.getUpfrontFee() * input.getInstances());
 
 		//DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
 		//double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);

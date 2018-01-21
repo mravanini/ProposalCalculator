@@ -37,15 +37,18 @@ public class ValidateSAPSpecificInputs {
 
     private static void fillSAPsCPURamOnDREnvironment(InstanceInput input) {
 
+    		/*
         if(Environment.DR_OPTIMIZED.name().equalsIgnoreCase(input.getEnvironment())){
             input.setCpu(input.getCpu() * Constants.DR_OPTIMIZED_PERCENTAGE);
             input.setMemory(input.getMemory() * Constants.DR_OPTIMIZED_PERCENTAGE);
             input.setSaps((int) (input.getSaps() * Constants.DR_OPTIMIZED_PERCENTAGE));
-        } else if(Environment.DR_INACTIVE.name().equalsIgnoreCase(input.getEnvironment())){
+        } else if(Environment.DR_INACTIVE.name().equalsIgnoreCase(input.getEnvironment())
+        		&& !SAPInstanceType.isHANA(input.getSapInstanceType())){
             input.setCpu(input.getCpu() * Constants.DR_INACTIVE_PERCENTAGE);
             input.setMemory(input.getMemory() * Constants.DR_INACTIVE_PERCENTAGE);
             input.setSaps((int) (input.getSaps() * Constants.DR_INACTIVE_PERCENTAGE));
         }
+        */
 
     }
 
