@@ -43,10 +43,6 @@ public class CalculatorPredicates {
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
 		} else if (!isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
 			return p -> (p.getMemory() >= HANA_MIN_MEMORY && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
-		} else if (!isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> (p.getMemory() >= HANA_MIN_MEMORY && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
