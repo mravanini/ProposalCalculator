@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class Constants {
-	
+
 	public static List<Price> ec2PriceList;
 	public static List<S3Price> s3PriceList;
 	public static double HOURS_IN_A_MONTH = 730.4375f;
@@ -28,5 +28,10 @@ public class Constants {
 	//public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:126421527990:proposal-calculator";
 	public static final String TOPIC_ARN = "arn:aws:sns:us-west-2:879125893843:proposal-calculator";
 
-	public static final String STANDBY_INSTANCE = "standby_instance";
+	public static final String STAND_BY_NEW_INSTANCE_TYPE = "standby_instance";
+	public static final String STAND_BY_INSTANCE_TYPE = "c4.large";
+	public static final String STAND_BY_INSTANCE_TENANCY = "Shared";
+	public static final double DR_OPTIMIZED_PERCENTAGE = 0.25;
+	public static final double DR_INACTIVE_PERCENTAGE = 0;
+
 }

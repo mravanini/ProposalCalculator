@@ -1,13 +1,11 @@
 package com.amazon.proposalcalculator.reader;
 
-import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.utils.Constants;
 import org.apache.commons.beanutils.BeanUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.List;
 import java.util.function.Predicate;
@@ -18,7 +16,7 @@ public class StandByInstances {
 
     public static List<Price> generate(List<Price> beanList) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
-        Predicate<Price> predicate = t2NanoToBeCloned();
+        Predicate<Price> predicate = c4LargeToBeCloned();
 
         List<Price> t2NanoToBeClonedList = beanList.stream().filter(predicate)
                 .collect(Collectors.toList());
@@ -46,7 +44,7 @@ public class StandByInstances {
 
     private static Price convertToDR(Price newPrice) {
         newPrice.setPricePerUnit(0);
-        newPrice.setInstanceType(Constants.STANDBY_INSTANCE);
+        newPrice.setInstanceType(Constants.STAND_BY_NEW_INSTANCE_TYPE);
         newPrice.setvCPU(0);
         newPrice.setMemory(0);
 
@@ -64,11 +62,11 @@ public class StandByInstances {
 
     }
 
-    private static Predicate<Price> t2NanoToBeCloned() {
+    private static Predicate<Price> c4LargeToBeCloned() {
         return  p -> (p.getInstanceType() != null
-                && p.getInstanceType().equalsIgnoreCase("c4.large")
+                && p.getInstanceType().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TYPE)
                 && p.getTenancy() != null
-                && p.getTenancy().equalsIgnoreCase("Shared"));
+                && p.getTenancy().equalsIgnoreCase(Constants.STAND_BY_INSTANCE_TENANCY));
     }
 
     /**

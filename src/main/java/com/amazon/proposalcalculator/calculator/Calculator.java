@@ -282,7 +282,7 @@ public class Calculator {
 				&& (SAPInstanceType.HANA_OLTP.name().equals(input.getSapInstanceType())
 						|| SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())
 						|| SAPInstanceType.HANA_B1.name().equals(input.getSapInstanceType()))) {
-			if (Environment.PROD.name().equals(input.getEnvironment())) {
+			if (Environment.isEquivalentToProd(input.getEnvironment())) {
 				predicate = predicate.and(hanaProductionCertifiedInstances(input));
 			} else {
 				predicate = predicate.and(hanaDevQaInstances(input));

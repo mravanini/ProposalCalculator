@@ -51,9 +51,6 @@ public class EC2PriceListReader {
 			if (price.getInstanceType() != null) {
 				Integer saps = SAPS.getInstance().getSAPS(price.getInstanceType());
 				price.setSaps(saps);
-				if (price.getInstanceType().startsWith("s")) {
-					System.out.println(price.getInstanceType() + " " + price.getSaps());
-				}
 			}
 		}
 		

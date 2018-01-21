@@ -1,13 +1,16 @@
 package com.amazon.proposalcalculator.calculator;
 
 import com.amazon.proposalcalculator.bean.InstanceInput;
+import com.amazon.proposalcalculator.enums.Environment;
 import com.amazon.proposalcalculator.enums.OperatingSystem;
 import com.amazon.proposalcalculator.enums.SAPInstanceType;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
+import com.amazon.proposalcalculator.utils.Constants;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * Created by ravanini on 24/02/17.
@@ -65,18 +68,54 @@ public class ValidateSAPSpecificInputsTest {
         assertEquals(50, input.getArchiveLogsLocalBackup().intValue());
     }
 
-    @Test (expected = PricingCalculatorException.class)
-    public void testLinuxSO(){
-        InstanceInput input = new InstanceInput();
-        input.setSaps(20);
-        input.setSapInstanceType(SAPInstanceType.APPS.name());
-        input.setOperatingSystem(OperatingSystem.Linux.name());
+//    @Test (expected = PricingCalculatorException.class)
+//    public void testLinuxSO(){
+//        InstanceInput input = new InstanceInput();
+//        input.setSaps(20);
+//        input.setSapInstanceType(SAPInstanceType.APPS.name());
+//        input.setOperatingSystem(OperatingSystem.Linux.name());
+//
+//        try {
+//            ValidateSAPSpecificInputs.validate(input);
+//        }catch (PricingCalculatorException pce){
+//            assertEquals(ValidateSAPSpecificInputs.SAP_INSTANCES_MUST_NOT_BE_LINUX, pce.getMessage());
+//            throw pce;
+//        }
+//    }
 
-        try {
-            ValidateSAPSpecificInputs.validate(input);
-        }catch (PricingCalculatorException pce){
-            assertEquals(ValidateSAPSpecificInputs.SAP_INSTANCES_MUST_NOT_BE_LINUX, pce.getMessage());
-            throw pce;
-        }
+    @Test
+    public void testDROptimizedPercentage(){
+        InstanceInput input = new InstanceInput();
+        input.setSaps(21);
+        input.setCpu(8.0);
+        input.setMemory(16.0);
+        input.setEnvironment(Environment.DR_OPTIMIZED.name());
+        input.setSapInstanceType(SAPInstanceType.APPS.name());
+        input.setOperatingSystem(OperatingSystem.SUSE.name());
+
+        ValidateSAPSpecificInputs.validate(input);
+
+        assertEquals(new Integer(5), input.getSaps());
+        assertEquals(new Double(2.0), input.getCpu());
+        assertEquals(new Double(4.0), input.getMemory());
+
+    }
+
+    @Test
+    public void testDRInactivePercentage(){
+        InstanceInput input = new InstanceInput();
+        input.setSaps(21);
+        input.setCpu(8.0);
+        input.setMemory(16.0);
+        input.setEnvironment(Environment.DR_INACTIVE.name());
+        input.setSapInstanceType(SAPInstanceType.APPS.name());
+        input.setOperatingSystem(OperatingSystem.SUSE.name());
+
+        ValidateSAPSpecificInputs.validate(input);
+
+        assertEquals(new Integer(0), input.getSaps());
+        assertEquals(new Double(0.0), input.getCpu());
+        assertEquals(new Double(0.0), input.getMemory());
+
     }
 }
