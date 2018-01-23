@@ -26,7 +26,7 @@ public enum VolumeType {
     public static VolumeType getVolumeType(String columnName){
 
         for(VolumeType type : VolumeType.values()){
-            if (type.getColumnName().equals(columnName)){
+            if (type.getColumnName().equalsIgnoreCase(columnName)){
                 return type;
             }
         }

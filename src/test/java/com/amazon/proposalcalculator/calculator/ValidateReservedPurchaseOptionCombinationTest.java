@@ -144,22 +144,22 @@ public class ValidateReservedPurchaseOptionCombinationTest {
 
 
 
-    @Test(expected = PricingCalculatorException.class)
-    public void testReservedException1(){
-        InstanceInput input = new InstanceInput();
-
-        input.setTermType(TermType.Reserved.name());
-        input.setOfferingClass(OfferingClass.Standard.name());
-        input.setPurchaseOption(PurchaseOption.NO_UPFRONT.getColumnName());
-        input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
-
-        try {
-            ValidateReservedPurchaseOptionCombination.validate(input);
-        }catch (PricingCalculatorException pce){
-            assertEquals(ValidateReservedPurchaseOptionCombination.INVALID_COMBINATION, pce.getMessage());
-            throw pce;
-        }
-    }
+//    @Test(expected = PricingCalculatorException.class)
+//    public void testReservedException1(){
+//        InstanceInput input = new InstanceInput();
+//
+//        input.setTermType(TermType.Reserved.name());
+//        input.setOfferingClass(OfferingClass.Standard.name());
+//        input.setPurchaseOption(PurchaseOption.NO_UPFRONT.getColumnName());
+//        input.setLeaseContractLength(LeaseContractLength.THREE_YEARS.getColumnName());
+//
+//        try {
+//            ValidateReservedPurchaseOptionCombination.validate(input);
+//        }catch (PricingCalculatorException pce){
+//            assertEquals(ValidateReservedPurchaseOptionCombination.INVALID_COMBINATION, pce.getMessage());
+//            throw pce;
+//        }
+//    }
 
     @Test(expected = PricingCalculatorException.class)
     public void testReservedException2(){

@@ -20,12 +20,12 @@ public enum Region {
     ASIA_PACIFIC_TOKIO("Asia Pacific (Tokyo)"),
     GOV_CLOUD("AWS GovCloud (US)"),
     CANADA_CENTRAL("Canada (Central)"),
-    CHINA_BEIJING("China (Beijing)"),
-    //CHINA_NINGXIA("China (Ningxia)"),
+    //CHINA_BEIJING("China (Beijing)"),// china is not on the ec2 price list
+    //CHINA_NINGXIA("China (Ningxia)"),// china is not on the ec2 price list
     EU_FRANKFURT("EU (Frankfurt)"),
     EU_IRELAND("EU (Ireland)"),
     EU_LONDON( "EU (London)"),
-    //EU_PARIS("EU (Paris)"),
+    EU_PARIS("EU (Paris)"),
     SOUTH_AMERICA_SAO_PAULO("South America (Sao Paulo)")
     ;
 

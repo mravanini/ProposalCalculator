@@ -271,12 +271,12 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
 
         input.setTenancy(Tenancy.Dedicated.name());
-        input.setPreInstalledSw(PreInstalledSoftware.SQLEnterprise.name());
+        input.setPreInstalledSw(PreInstalledSoftware.SQLEnterprise.getColumnName());
 
         ValidateCommonInputs.validate(input);
 
         assertEquals(Tenancy.Dedicated.name(), input.getTenancy());
-        assertEquals(PreInstalledSoftware.SQLEnterprise.name(), input.getPreInstalledSw());
+        assertEquals(PreInstalledSoftware.SQLEnterprise.getColumnName(), input.getPreInstalledSw());
     }
 
 
