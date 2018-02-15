@@ -37,7 +37,7 @@ public class ValidateInputSheet {
 
     private static boolean isSAPInputSheet(InstanceInput input){
 
-        return ((input.getSaps() != null && input.getSaps().intValue() != 0)
+        return ((input.getSaps() != 0)
             ||  input.getSapInstanceType() != null)
         ;
     }

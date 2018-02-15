@@ -23,7 +23,7 @@ public class StoragePricingCalculator {
     public static final String EBS_IO_REQUESTS = "EBS I/O Requests";
     
     public static double getArchiveLogsLocalBackupMonthlyPrice(InstanceInput input){
-        if (input.getArchiveLogsLocalBackup() == null || input.getArchiveLogsLocalBackup().intValue() == 0) {
+        if (input.getArchiveLogsLocalBackup() == 0 || input.getArchiveLogsLocalBackup() == 0) {
             return 0;
         }
 
@@ -33,7 +33,7 @@ public class StoragePricingCalculator {
     
     //TODO load s3 price from csv
     public static double getS3BackupMonthlyPrice(InstanceInput input){
-        if (input.getS3Backup() == null || input.getS3Backup().intValue() == 0) {
+        if (input.getS3Backup() == 0 || input.getS3Backup() == 0) {
             return 0;
         }
 
@@ -61,7 +61,7 @@ public class StoragePricingCalculator {
 	}
 
     public static double getSnapshotMonthlyPrice(InstanceInput input){
-        if (input.getSnapshot() == null || input.getSnapshot().intValue() == 0){
+        if (input.getSnapshot() == 0 || input.getSnapshot() == 0){
             return 0;
         }
 
@@ -72,7 +72,7 @@ public class StoragePricingCalculator {
 
     public static double getStorageMonthlyPrice(InstanceInput input) {
 
-        if (input.getStorage() == null || input.getStorage().intValue() == 0){
+        if (input.getStorage() == 0 || input.getStorage() == 0){
 
             return 0;
         }

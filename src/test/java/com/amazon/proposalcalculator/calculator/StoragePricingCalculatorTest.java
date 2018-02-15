@@ -33,7 +33,7 @@ public class StoragePricingCalculatorTest {
     public void emptyStorageAmountTest(){
 
         InstanceInput input = new InstanceInput();
-        input.setStorage(null);
+        input.setStorage(0);
 
         double price = StoragePricingCalculator.getStorageMonthlyPrice(input);
 
@@ -145,7 +145,7 @@ public class StoragePricingCalculatorTest {
     @Test
     public void nullOrZeroSnapshotTest() {
         InstanceInput input = new InstanceInput();
-        input.setSnapshot(null);
+        input.setSnapshot(0);
 
         double price = StoragePricingCalculator.getSnapshotMonthlyPrice(input);
 

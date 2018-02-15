@@ -24,22 +24,22 @@ public class InstanceInput {
 				setSaps(((Double) value).intValue());
 				break;
 			case CPU:
-				setCpu((Double)value);
+				setCpu((double)value);
 				break;
 			case CPU_TOLERANCE:
-				setCpuTolerance((Double)value);
+				setCpuTolerance((double)value);
 				break;
 			case MEMORY:
-				setMemory((Double)value);
+				setMemory((double)value);
 				break;
 			case MEMORY_TOLERANCE:
-				setMemoryTolerance((Double)value);
+				setMemoryTolerance((double)value);
 				break;
 			case MONTHLY_UTILIZATION:
-				setMonthlyUtilization((Double)value);
+				setMonthlyUtilization((double)value);
 				break;
 			case STORAGE:
-				setStorage(((Double) value).intValue());//(Integer.parseInt((String)value));
+				setStorage(((Double) value).intValue());//(int.parseInt((String)value));
 				break;
 			case VOLUME_TYPE:
 				setVolumeType((String)value);
@@ -80,19 +80,19 @@ public class InstanceInput {
 				setRegion((String) value);
 				break;
 			case CPU:
-				setCpu((Double)value);
+				setCpu((double)value);
 				break;
 			case CPU_TOLERANCE:
-				setCpuTolerance((Double)value);
+				setCpuTolerance((double)value);
 				break;
 			case MEMORY:
-				setMemory((Double)value);
+				setMemory((double)value);
 				break;
 			case MEMORY_TOLERANCE:
-				setMemoryTolerance((Double)value);
+				setMemoryTolerance((double)value);
 				break;
 			case MONTHLY_UTILIZATION:
-				setMonthlyUtilization((Double)value);
+				setMonthlyUtilization((double)value);
 				break;
 			case STORAGE:
 				setStorage(((Double) value).intValue());
@@ -137,45 +137,45 @@ public class InstanceInput {
 
 	private String sapInstanceType;
 
-	private Double cpu;
+	private double cpu;
 
-	private Double originalCpu;
+	private double originalCpu;
 
-	private Double cpuTolerance;
+	private double cpuTolerance;
 
-	private Integer saps;
+	private int saps;
 
-	private Integer originalSaps;
+	private int originalSaps;
 
 	private String useSAPCertifiedInstances;
 
-	private Double monthlyUtilization;
+	private double monthlyUtilization;
 
-	private Double memory;
+	private double memory;
 
-	private Double originalMemory = 0d;
+	private double originalMemory = 0d;
 
-	private Double memoryTolerance;
+	private double memoryTolerance;
 
-	private Integer storage;
+	private int storage;
 	
-	private Integer originalStorage;
+	private int originalStorage;
 
 	private String volumeType;
 
-	private Integer iops;
+	private int iops;
 
-	private Integer snapshot;
+	private int snapshot;
 	
-	private Integer originalSnapshot;
+	private int originalSnapshot;
 
-	private Integer archiveLogsLocalBackup;
+	private int archiveLogsLocalBackup;
 	
-	private Integer originalArchiveLogsLocalBackup;
+	private int originalArchiveLogsLocalBackup;
 
-	private Integer s3Backup;
+	private int s3Backup;
 	
-	private Integer originalS3Backup;
+	private int originalS3Backup;
 
 	private String termType;
 
@@ -204,19 +204,19 @@ public class InstanceInput {
 	
 	private String billingOption;
 
-	public Double getOriginalCpu() {
+	public double getOriginalCpu() {
 		return originalCpu;
 	}
 
-	public void setOriginalCpu(Double originalCpu) {
+	public void setOriginalCpu(double originalCpu) {
 		this.originalCpu = originalCpu;
 	}
 
-	public Integer getOriginalSaps() {
+	public int getOriginalSaps() {
 		return originalSaps;
 	}
 
-	public void setOriginalSaps(Integer originalSaps) {
+	public void setOriginalSaps(int originalSaps) {
 		this.originalSaps = originalSaps;
 	}
 
@@ -244,27 +244,27 @@ public class InstanceInput {
 		this.description = description;
 	}
 
-	public Double getCpu() {
+	public double getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(Double cpu) {
+	public void setCpu(double cpu) {
 		this.cpu = cpu;
 	}
 
-	public Double getMemory() {
+	public double getMemory() {
 		return memory;
 	}
 
-	public void setMemory(Double memory) {
+	public void setMemory(double memory) {
 		this.memory = memory;
 	}
 
-	public Integer getStorage() {
+	public int getStorage() {
 		return storage;
 	}
 
-	public void setStorage(Integer storage) {
+	public void setStorage(int storage) {
 		this.storage = storage;
 	}
 
@@ -276,11 +276,11 @@ public class InstanceInput {
 		this.volumeType = volumeType;
 	}
 
-	public Integer getSnapshot() {
+	public int getSnapshot() {
 		return snapshot;
 	}
 
-	public void setSnapshot(Integer snapshot) {
+	public void setSnapshot(int snapshot) {
 		this.snapshot = snapshot;
 	}
 
@@ -364,19 +364,19 @@ public class InstanceInput {
 		this.offeringClass = offeringClass;
 	}
 
-	public Integer getIops() {
+	public int getIops() {
 		return iops;
 	}
 
-	public void setIops(Integer iops) {
+	public void setIops(int iops) {
 		this.iops = iops;
 	}
 
-	public Double getMonthlyUtilization() {
+	public double getMonthlyUtilization() {
 		return monthlyUtilization;
 	}
 
-	public void setMonthlyUtilization(Double monthlyUtilization) {
+	public void setMonthlyUtilization(double monthlyUtilization) {
 		this.monthlyUtilization = monthlyUtilization;
 	}
 
@@ -396,11 +396,11 @@ public class InstanceInput {
 		this.useSAPCertifiedInstances = useSAPCertifiedInstances;
 	}
 
-	public Integer getSaps() {
+	public int getSaps() {
 		return saps;
 	}
 
-	public void setSaps(Integer saps) {
+	public void setSaps(int saps) {
 		this.saps = saps;
 	}
 
@@ -428,75 +428,75 @@ public class InstanceInput {
 		this.sapInstanceType = sapInstanceType;
 	}
 
-	public Double getCpuTolerance() {
+	public double getCpuTolerance() {
 		return cpuTolerance;
 	}
 
-	public void setCpuTolerance(Double cpuTolerance) {
+	public void setCpuTolerance(double cpuTolerance) {
 		this.cpuTolerance = cpuTolerance;
 	}
 
-	public Double getMemoryTolerance() {
+	public double getMemoryTolerance() {
 		return memoryTolerance;
 	}
 
-	public void setMemoryTolerance(Double memoryTolerance) {
+	public void setMemoryTolerance(double memoryTolerance) {
 		this.memoryTolerance = memoryTolerance;
 	}
 
-	public Integer getArchiveLogsLocalBackup() {
+	public int getArchiveLogsLocalBackup() {
 		return archiveLogsLocalBackup;
 	}
 
-	public void setArchiveLogsLocalBackup(Integer archiveLogsLocalBackup) {
+	public void setArchiveLogsLocalBackup(int archiveLogsLocalBackup) {
 		this.archiveLogsLocalBackup = archiveLogsLocalBackup;
 	}
 
-	public Integer getS3Backup() {
+	public int getS3Backup() {
 		return s3Backup;
 	}
 
-	public void setS3Backup(Integer s3Backup) {
+	public void setS3Backup(int s3Backup) {
 		this.s3Backup = s3Backup;
 	}
 
-	public Double getOriginalMemory() {
+	public double getOriginalMemory() {
 		return originalMemory;
 	}
 
-	public void setOriginalMemory(Double originalMemory) {
+	public void setOriginalMemory(double originalMemory) {
 		this.originalMemory = originalMemory;
 	}
 
-	public Integer getOriginalStorage() {
+	public int getOriginalStorage() {
 		return originalStorage;
 	}
 
-	public void setOriginalStorage(Integer originalStorage) {
+	public void setOriginalStorage(int originalStorage) {
 		this.originalStorage = originalStorage;
 	}
 
-	public Integer getOriginalSnapshot() {
+	public int getOriginalSnapshot() {
 		return originalSnapshot;
 	}
 
-	public void setOriginalSnapshot(Integer originalSnapshot) {
+	public void setOriginalSnapshot(int originalSnapshot) {
 		this.originalSnapshot = originalSnapshot;
 	}
 
-	public Integer getOriginalArchiveLogsLocalBackup() {
+	public int getOriginalArchiveLogsLocalBackup() {
 		return originalArchiveLogsLocalBackup;
 	}
 
-	public void setOriginalArchiveLogsLocalBackup(Integer originalArchiveLogsLocalBackup) {
+	public void setOriginalArchiveLogsLocalBackup(int originalArchiveLogsLocalBackup) {
 		this.originalArchiveLogsLocalBackup = originalArchiveLogsLocalBackup;
 	}
 
-	public Integer getOriginalS3Backup() {
+	public int getOriginalS3Backup() {
 		return originalS3Backup;
 	}
 
-	public void setOriginalS3Backup(Integer originalS3Backup) {
+	public void setOriginalS3Backup(int originalS3Backup) {
 		this.originalS3Backup = originalS3Backup;
 	}
 

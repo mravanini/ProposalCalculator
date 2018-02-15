@@ -67,14 +67,14 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setCpu(4D);
         ValidateCommonInputs.validate(input);
-        assertEquals(4, input.getCpu().intValue());
+        assertEquals(4, input.getCpu());
     }
 
     @Test
     public void testValidateCPUToleranceNullValue(){
         InstanceInput input = buildInstanceInput();
         ValidateCommonInputs.validate(input);
-        assertEquals(0d, input.getCpuTolerance().doubleValue(), 0);
+        assertEquals(0d, input.getCpuTolerance(), 0);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setCpuTolerance(20d);
         ValidateCommonInputs.validate(input);
-        assertEquals(20d, input.getCpuTolerance().doubleValue(), 0);
+        assertEquals(20d, input.getCpuTolerance(), 0);
     }
 
 
@@ -99,14 +99,14 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setMemoryTolerance(20d);
         ValidateCommonInputs.validate(input);
-        assertEquals(20d, input.getMemoryTolerance().doubleValue(), 0);
+        assertEquals(20d, input.getMemoryTolerance(), 0);
     }
 
     @Test
     public void testValidateMontlyUtilizationNullValue(){
         InstanceInput input = buildInstanceInput();
         ValidateCommonInputs.validate(input);
-        assertEquals(1, input.getMonthlyUtilization().intValue());
+        assertEquals(1, input.getMonthlyUtilization());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setMonthlyUtilization(0.7);
         ValidateCommonInputs.validate(input);
-        assertEquals(Double.valueOf(0.7), input.getMonthlyUtilization());
+        assertEquals(0.7d, input.getMonthlyUtilization());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setStorage(30);
         ValidateCommonInputs.validate(input);
-        assertEquals(30, input.getStorage().intValue());
+        assertEquals(30, input.getStorage());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class ValidateCommonInputsTest {
     public void testValidateIOPsNullValue(){
         InstanceInput input = buildInstanceInput();
         ValidateCommonInputs.validate(input);
-        assertEquals(0, input.getIops().intValue());
+        assertEquals(0, input.getIops());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setIops(100);
         ValidateCommonInputs.validate(input);
-        assertEquals(100, input.getIops().intValue());
+        assertEquals(100, input.getIops());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setSnapshot(20);
         ValidateCommonInputs.validate(input);
-        assertEquals(20, input.getSnapshot().intValue());
+        assertEquals(20, input.getSnapshot());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class ValidateCommonInputsTest {
         InstanceInput input = buildInstanceInput();
         input.setS3Backup(200);
         ValidateCommonInputs.validate(input);
-        assertEquals(200, input.getS3Backup().intValue());
+        assertEquals(200, input.getS3Backup());
     }
 
     @Test

@@ -64,8 +64,8 @@ public class ValidateSAPSpecificInputsTest {
         ValidateSAPSpecificInputs.validate(input);
 
         assertEquals(SAPInstanceType.APPS.name(), input.getSapInstanceType());
-        assertEquals(20, input.getSaps().intValue());
-        assertEquals(50, input.getArchiveLogsLocalBackup().intValue());
+        assertEquals(20, input.getSaps());
+        assertEquals(50, input.getArchiveLogsLocalBackup());
     }
 
 //    @Test (expected = PricingCalculatorException.class)
@@ -95,9 +95,9 @@ public class ValidateSAPSpecificInputsTest {
 
         ValidateSAPSpecificInputs.validate(input);
 
-        assertEquals(new Integer(5), input.getSaps());
-        assertEquals(new Double(2.0), input.getCpu());
-        assertEquals(new Double(4.0), input.getMemory());
+        assertEquals(5, input.getSaps());
+        assertEquals(2d, input.getCpu());
+        assertEquals(4d, input.getMemory());
 
     }
 
@@ -113,9 +113,9 @@ public class ValidateSAPSpecificInputsTest {
 
         ValidateSAPSpecificInputs.validate(input);
 
-        assertEquals(new Integer(0), input.getSaps());
-        assertEquals(new Double(0.0), input.getCpu());
-        assertEquals(new Double(0.0), input.getMemory());
+        assertEquals(0, input.getSaps());
+        assertEquals(0d, input.getCpu());
+        assertEquals(0d, input.getMemory());
 
     }
 }

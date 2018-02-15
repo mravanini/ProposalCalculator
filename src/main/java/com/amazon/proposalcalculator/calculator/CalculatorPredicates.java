@@ -98,7 +98,7 @@ public class CalculatorPredicates {
 	}
 	
     public static Predicate<Price> ec2(InstanceInput server){
-       return p -> !p.getPriceDescription().contains("Dedicated Host") && p.getProductFamily().equals("Compute Instance");
+       return p -> !p.getPriceDescription().contains("Dedicated Host") && p.getProductFamily().startsWith("Compute");
     }
 
     public static Predicate<Price> region(InstanceInput server){
@@ -119,15 +119,15 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> cpu(InstanceInput server){
-        return p -> server.getCpu() == null || p.getvCPU() >= server.getCpu() * ((1 - server.getCpuTolerance()));
+        return p -> server.getCpu() == 0 || p.getvCPU() >= server.getCpu() * ((1 - server.getCpuTolerance()));
     }
     
     public static Predicate<Price> saps(InstanceInput server){
-        return p -> server.getSaps() == null || p.getSaps() >= server.getSaps() * ((1 - server.getCpuTolerance()));
+        return p -> server.getSaps() == 0 || p.getSaps() >= server.getSaps() * ((1 - server.getCpuTolerance()));
     }
 
     public static Predicate<Price> memory(InstanceInput server){
-        return p -> server.getMemory() == null || p.getMemory() >= server.getMemory() * ((1 - server.getMemoryTolerance()));
+        return p -> server.getMemory() == 0 || p.getMemory() >= server.getMemory() * ((1 - server.getMemoryTolerance()));
     }
 
     public static Predicate<Price> preInstalledSw(InstanceInput server){

@@ -331,25 +331,18 @@ public class Calculator {
 			input.setInstances(input.getInstances()+1);
 		}
 		
-		if (input.getOriginalMemory() != null)
 			input.setMemory(SomeMath.roundDouble(input.getOriginalMemory()/input.getInstances(), 2));
 		
-		if (input.getOriginalSaps() != null)
 			input.setSaps(input.getOriginalSaps()/input.getInstances());
 		
-		if (input.getOriginalCpu() != null)
 			input.setCpu(SomeMath.roundDouble(input.getOriginalCpu()/input.getInstances(), 2));
 		
-		if (input.getOriginalStorage() != null)
 			input.setStorage(input.getOriginalStorage()/input.getInstances());
 		
-		if (input.getOriginalSnapshot() != null)
 			input.setSnapshot(input.getOriginalSnapshot()/input.getInstances());
 		
-		if (input.getOriginalArchiveLogsLocalBackup() != null)
 			input.setArchiveLogsLocalBackup(input.getOriginalArchiveLogsLocalBackup()/input.getInstances());
 		
-		if (input.getOriginalS3Backup() != null)
 			input.setS3Backup(input.getOriginalS3Backup()/input.getInstances());
 		
 		
@@ -394,7 +387,7 @@ public class Calculator {
 			MinimalHanaStorage minimalHanaStorage = CalculateHanaMinimalStorage.getInstance()
 					.getMinimalHanaStorage(price.getInstanceType());
 
-			if (input.getArchiveLogsLocalBackup() == null || (input.getArchiveLogsLocalBackup() < minimalHanaStorage.getBackupVolume())) {
+			if (input.getArchiveLogsLocalBackup() == 0 || (input.getArchiveLogsLocalBackup() < minimalHanaStorage.getBackupVolume())) {
 				input.setArchiveLogsLocalBackup(minimalHanaStorage.getBackupVolume());
 				output.setArchiveLogsLocalBackup(minimalHanaStorage.getBackupVolume());
 			}
@@ -404,7 +397,7 @@ public class Calculator {
 			
 			generalVolumeSize = generalVolumeSize + (minimalHanaStorage.getSharedVolume() / input.getInstances());
 			
-			if (input.getStorage() == null || input.getStorage() < generalVolumeSize) {
+			if (input.getStorage() == 0 || input.getStorage() < generalVolumeSize) {
 				input.setStorage(generalVolumeSize);
 				output.setStorage(generalVolumeSize);
 			}
