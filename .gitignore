@@ -53,3 +53,8 @@ out/artifacts/ProposalCalculator_jar/Archive.zip
 indexEC2-columns.csv
 .DS_Store
 ~$input_generic.xlsx
+indexS3.csv
+load_ec2_pricelist_into_dynamodb/index_ec2_prices.json
+load_ec2_pricelist_into_dynamodb/load_into_dynamodb.pyc
+out/artifacts/ProposalCalculator/Archive.zip
+out/artifacts/ProposalCalculator/ProposalCalculator.jar

@@ -17,8 +17,8 @@ import load_into_dynamodb as load
 
 
 level_logging = logging.INFO
-json_file_name = "index_ec2_prices_short_version.json"
-# json_file_name = "index_ec2_prices.json"
+#json_file_name = "index_ec2_prices_short_version.json"
+json_file_name = "index_ec2_prices.json"
 
 
 class Price_Item():
@@ -297,7 +297,7 @@ def create_reserved_records(offers, price_item, records_to_insert):
                                 new_price_item = Price_Item.new_copied_price_item(price_item)
 
             else:
-                logging.warning("Instance rateCode: " + price_item.sku + " has no reserved pricing.")
+                logging.warning("Instance sku: " + price_item.sku + " has no reserved pricing.")
 
 
 def validate_records_to_insert(records_to_insert):
@@ -340,7 +340,7 @@ def validate_records_to_insert(records_to_insert):
             logging.error('OfferingClass not valid. Found: ' + price_item.offeringClass + '. RateCode: '
                           + price_item.rateCode)
 
-        if (price_item.operatingSystem is not None and (price_item.operatingSystem.lower() != 'suse' and
+        if (price_item.operatingSystem is not None and price_item.productFamily == 'Compute Instance' and (price_item.operatingSystem.lower() != 'suse' and
                                                               price_item.operatingSystem.lower() != 'windows' and
                                                                 price_item.operatingSystem.lower() != 'rhel' and
                                                                 price_item.operatingSystem.lower() != 'linux')):
@@ -374,11 +374,13 @@ def validate_records_to_insert(records_to_insert):
                                                          price_item.location.lower() != 'asia pacific (sydney)' and
                                                          price_item.location.lower() != 'asia pacific (tokyo)' and
                                                          price_item.location.lower() != 'aws govcloud (us)' and
+                                                         price_item.location.lower() != 'asia pacific (osaka-local)' and
                                                          price_item.location.lower() != 'canada (central)' and
                                                          price_item.location.lower() != 'china (beijing)' and
                                                          price_item.location.lower() != 'eu (frankfurt)' and
                                                          price_item.location.lower() != 'eu (ireland)' and
                                                          price_item.location.lower() != 'eu (london)' and
+                                                         price_item.location.lower() != 'eu (paris)' and
                                                          price_item.location.lower() != 'south america (sao paulo)')):
             logging.error('location not valid. Found: ' + price_item.location + '. RateCode: '
                           + price_item.rateCode)
@@ -433,16 +435,14 @@ def load_dynamodb_table(dynamodb, ec2_price_list_table_name, records_to_insert):
                 price_item_string
             )
 
+    logging.info('Table: ' + ec2_price_list_table_name + ' created and populated.')
+
 
 with open(json_file_name) as json_file:
 
     enable_logging()
 
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
-
     offers = json.load(json_file)
-
-    ec2_price_list_table_name = load.create_dynamodb_table(dynamodb, offers)
 
     is_load_into_dynamodb_table = is_load_into_dynamodb(sys.argv)
 
@@ -459,9 +459,13 @@ with open(json_file_name) as json_file:
 
             if (is_load_into_dynamodb_table):
 
-                load_dynamodb_table(dynamodb, ec2_price_list_table_name, records_to_insert)
+			    dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 
-                print ("Process finished.")
-                logging.info("Process finished")
+			    ec2_price_list_table_name = load.create_dynamodb_table(dynamodb, offers)
+			    
+			    load_dynamodb_table(dynamodb, ec2_price_list_table_name, records_to_insert)
+
+    print ("Process finished.")
+    logging.info("Process finished")
 
 
