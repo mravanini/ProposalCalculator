@@ -50,3 +50,6 @@ output_sap_old.xlsx
 input_sap_angelo.xlsx
 
 out/artifacts/ProposalCalculator_jar/Archive.zip
+indexEC2-columns.csv
+.DS_Store
+~$input_generic.xlsx
