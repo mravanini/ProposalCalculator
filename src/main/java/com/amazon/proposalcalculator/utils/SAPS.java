@@ -39,6 +39,20 @@ public class SAPS {
 			instance.sapsMap.put("c4.xlarge", 4758);
 			instance.sapsMap.put("c4.large", 2379);
 			
+			instance.sapsMap.put("m5.24xlarge", 135230);
+			instance.sapsMap.put("m5.12xlarge", 67615);
+			instance.sapsMap.put("m5.4xlarge", 22536);
+			instance.sapsMap.put("m5.2xlarge", 11268);
+			instance.sapsMap.put("m5.xlarge", 5634);
+			instance.sapsMap.put("m5.large", 2817);
+			
+			instance.sapsMap.put("c5.18xlarge", 95400);
+			instance.sapsMap.put("c5.9xlarge", 47700);
+			instance.sapsMap.put("c5.4xlarge", 21200);
+			instance.sapsMap.put("c5.2xlarge", 10600);
+			instance.sapsMap.put("c5.xlarge", 5300);
+			instance.sapsMap.put("c5.large", 2650);
+			
 			instance.sapsMap.put("c3.8xlarge", 31830);
 			instance.sapsMap.put("c3.4xlarge", 15915);
 			instance.sapsMap.put("c3.2xlarge", 7957);

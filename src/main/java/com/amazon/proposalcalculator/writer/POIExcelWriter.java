@@ -123,7 +123,7 @@ public class POIExcelWriter {
         XSSFSheet sheet = workbook.createSheet(" Summary");
 
         String[] titles = {
-                "Payment", "1yr Upfront", "3yr Upfront", /*"Monthly Formula",*/ "Monthly", "3 Years Total", "Discount"
+                "Payment", "1yr Upfront", "3yr Upfront", "Monthly", "1yr Upfront Support", "3yr Upfront Support", "Monthly Support",  "3 Years Total", "Discount"
         };
 
         int rowCount = 0;
@@ -159,6 +159,11 @@ public class POIExcelWriter {
             //setCellFormula(row, ++columnCount, quote.getMonthlyFormula(), workbook); //testing
 
             setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthly(), 2), workbook);
+            
+            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfrontSupport(), 2), workbook);
+            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfrontSupport(), 2), workbook);
+            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthlySupport(), 2), workbook);
+            
             setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal(), 2), workbook);
             setCellPercentage(row, ++columnCount, SomeMath.round(quote.getDiscount(), 4), workbook);
 

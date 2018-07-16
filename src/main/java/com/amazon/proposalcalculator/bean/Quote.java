@@ -36,6 +36,10 @@ public class Quote implements Comparable<Quote> {
 	
 	private double oneYrUpfront;
 	private double threeYrsUpfront;
+	
+	private double monthlySupport;
+	private double oneYrUpfrontSupport;
+	private double threeYrsUpfrontSupport;
 
 	private String upfrontFormula;
 	private String monthlyFormula;
@@ -168,5 +172,29 @@ public class Quote implements Comparable<Quote> {
 
 	public void setThreeYrsUpfront(double threeYrsUpfront) {
 		this.threeYrsUpfront = threeYrsUpfront;
+	}
+
+	public double getMonthlySupport() {
+		return monthlySupport;
+	}
+
+	public void setMonthlySupport(double monthlySupport) {
+		this.monthlySupport = monthlySupport;
+	}
+
+	public double getOneYrUpfrontSupport() {
+		return oneYrUpfrontSupport;
+	}
+
+	public void setOneYrUpfrontSupport(double oneYrUpfrontSupport) {
+		this.oneYrUpfrontSupport = oneYrUpfrontSupport;
+	}
+
+	public double getThreeYrsUpfrontSupport() {
+		return threeYrsUpfrontSupport;
+	}
+
+	public void setThreeYrsUpfrontSupport(double threeYrsUpfrontSupport) {
+		this.threeYrsUpfrontSupport = threeYrsUpfrontSupport;
 	}
 }

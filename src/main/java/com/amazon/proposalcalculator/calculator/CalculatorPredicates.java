@@ -23,6 +23,8 @@ public class CalculatorPredicates {
 	public static Predicate<Price> sapProductionCertifiedInstances(InstanceInput server) {
 		return  p -> (p.getInstanceType().toLowerCase().startsWith("m4")
 				|| p.getInstanceType().toLowerCase().startsWith("c4")
+				|| p.getInstanceType().toLowerCase().startsWith("c5")
+				|| p.getInstanceType().toLowerCase().startsWith("m5")
 				|| p.getInstanceType().toLowerCase().startsWith("r4")
 				|| p.getInstanceType().toLowerCase().startsWith("x1")
 				|| p.getInstanceType().toLowerCase().startsWith(Constants.STAND_BY_INSTANCE_TYPE));
@@ -74,6 +76,8 @@ public class CalculatorPredicates {
 			return  p -> (p.getMemory() >= HANA_MIN_MEMORY && 
 			 		(p.getInstanceType().toLowerCase().startsWith("m4")
 					|| p.getInstanceType().toLowerCase().startsWith("c4")
+					|| p.getInstanceType().toLowerCase().startsWith("c5")
+					|| p.getInstanceType().toLowerCase().startsWith("m5")
 					|| p.getInstanceType().toLowerCase().startsWith("r4")
 					|| p.getInstanceType().toLowerCase().startsWith("x1")));
 		}

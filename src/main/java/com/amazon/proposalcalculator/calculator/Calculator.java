@@ -187,7 +187,7 @@ public class Calculator {
 			quote.addOutput(output);
 
 		}
-		quote.setThreeYearTotal(quote.getThreeYearTotal() * 36);
+		
 		
 		
 		LOGGER.info(quote.getName() 
@@ -198,6 +198,13 @@ public class Calculator {
 		
 		
 		//Constants.quotes.add(quote);
+		
+		quote.setMonthlySupport(BusinessSupportCalculator.getInstance().calculateMonthlySupport(quote.getMonthly()));
+		quote.setOneYrUpfrontSupport(BusinessSupportCalculator.getInstance().calculateUpfrontSupport(quote.getOneYrUpfront(), quote.getMonthly()));
+		quote.setThreeYrsUpfrontSupport(BusinessSupportCalculator.getInstance().calculateUpfrontSupport(quote.getThreeYrsUpfront(), quote.getMonthly()));
+		
+		quote.setThreeYearTotal((quote.getThreeYearTotal() * 36) + (quote.getMonthlySupport()*36) + (quote.getOneYrUpfrontSupport()*3) + quote.getThreeYrsUpfrontSupport());
+		
 		return quote;
 	}
 
@@ -234,6 +241,8 @@ public class Calculator {
 			double threeYrsUpfront = quote.getThreeYrsUpfront() + output.getUpfrontFee();
 			quote.setThreeYrsUpfront(threeYrsUpfront);
 		}
+		
+		
 		
 		//quote.setMonthlyFormula(CalculatorUsingFormula.calculateQuoteTotals(quote, output, rowNum));//TODO testing
 
