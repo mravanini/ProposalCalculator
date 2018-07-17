@@ -138,9 +138,9 @@ public class StoragePricingCalculator {
                 p
         ).collect(Collectors.toList());
 
-        if (possibleMatches.size() != 1){
-            throw new PricingCalculatorException("Invalid amount of EBS price found in price list. Expected = 1; Found = " + possibleMatches.size());
-        }
+        //if (possibleMatches.size() != 1){
+        //    throw new PricingCalculatorException("Invalid amount of EBS price found in price list. Expected = 1; Found = " + possibleMatches.size());
+        //}
 
         return possibleMatches.get(0).getPricePerUnit();
 
