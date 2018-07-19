@@ -29,8 +29,8 @@ public class BusinessSupportCalculator {
 	
 	public double calculateMonthlySupport(double monthlyFee) {
 		double total = calculateSupport(monthlyFee);
-		if (total < 100)
-			total = 100;
+		//if (total < 100)
+	//		total = 100;
 		return total;
 	}
 	
@@ -45,6 +45,8 @@ public class BusinessSupportCalculator {
 		} else if (monthlyFee > 250000) {
 			total = (10000 * 0.1) + ((80000 - 10000) * 0.07) +  ((250000 - 80000) * 0.05) +  ((monthlyFee - 250000) * 0.03);
 		}
+		if (total < 100)
+			total = 100;
 		return total;
 	}
 	
