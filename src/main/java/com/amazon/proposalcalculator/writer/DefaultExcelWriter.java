@@ -61,6 +61,7 @@ public class DefaultExcelWriter {
 
 		list1.add("Monthly");
 		list1.add("3 Years Total");
+		list1.add("Montlhy Average");
 		list1.add("Discount");
 		data.add(list1);
 
@@ -87,6 +88,7 @@ public class DefaultExcelWriter {
 
 			list2.add(SomeMath.round(quote.getMonthly(), 2));
 			list2.add(SomeMath.round(quote.getThreeYearTotal(), 2));
+			list2.add(SomeMath.round(quote.getThreeYearTotal()/36, 2));
 			list2.add(SomeMath.round(quote.getDiscount(), 4));
 			data.add(list2);
 		}

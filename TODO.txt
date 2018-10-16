@@ -27,3 +27,11 @@
 1) Integrate beanstalk with CloudWatch Logs to output the server logs
 2) Start Date and End Date
 3) Inicial Capacity, Grow Percentage, Every X Months, Match fields for tolerance (CPU and/or Memory, etc)
+
+---------Naresh requests--------
+Support costs - Business / Enterprise (in progress)
+EC2 costs based on Detailed Monitoring (in progress) - In progress
+EFS
+Add ~200.000 Cloudwatch calls and 2-3GB outgoing Traffic for the dataprovider (adds ~$17 p month per instance) - In progress
+Update the response file to include input file name as prefix
+

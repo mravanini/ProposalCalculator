@@ -20,7 +20,9 @@ public enum LeaseContractLength {
         return columnName;
     }
 
-    public static LeaseContractLength getLeaseContractLength(String columnName){
+    public static LeaseContractLength getLeaseContractLength(String columnName) {
+    	
+    		columnName = columnName.replace(" ", "").toLowerCase();
 
         for(LeaseContractLength leaseContractLength : LeaseContractLength.values()){
             if (leaseContractLength.getColumnName().equalsIgnoreCase(columnName)){

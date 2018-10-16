@@ -8,7 +8,9 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
 public enum Tenancy {
 
     Shared,
-    Dedicated;
+    Dedicated,
+    Host,
+    Reserved;
 
     public static Tenancy getTenancy(String columnName){
 

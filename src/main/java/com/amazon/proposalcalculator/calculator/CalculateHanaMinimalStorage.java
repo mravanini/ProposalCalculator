@@ -26,6 +26,10 @@ public class CalculateHanaMinimalStorage {
 		
 		storageList.add(new MinimalHanaStorage(Constants.STAND_BY_INSTANCE_TYPE, 3072, 50, 50, 1024, 4096));
 		
+		storageList.add(new MinimalHanaStorage("u-6tb1", 3072, 50, 50, 1024, 4096));
+		storageList.add(new MinimalHanaStorage("u-9tb1", 3072, 50, 50, 1024, 4096));
+		storageList.add(new MinimalHanaStorage("u-12tb1", 3072, 50, 50, 1024, 4096));
+		
 		storageList.add(new MinimalHanaStorage("x1.32xlarge", 3072, 50, 50, 1024, 4096));
 		storageList.add(new MinimalHanaStorage("x1.16xlarge", 2100, 50, 50, 1024, 2048));
 		

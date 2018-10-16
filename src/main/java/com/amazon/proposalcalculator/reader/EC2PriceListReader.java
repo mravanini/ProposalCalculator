@@ -51,7 +51,26 @@ public class EC2PriceListReader {
 			if (price.getInstanceType() != null) {
 				Integer saps = SAPS.getInstance().getSAPS(price.getInstanceType());
 				price.setSaps(saps);
+				
+				if (price.getInstanceType().startsWith("u")) {
+					System.out.println(price);
+				}
+				
+		
 			}
+			
+			if ("3 yr".equals(price.getLeaseContractLength())) {
+				price.setLeaseContractLength("3yr");
+			}
+			
+			if ("NoUpfront".equals(price.getPurchaseOption())) {
+				price.setPurchaseOption("No Upfront");
+	     	} else 	if ("AllUpfront".equals(price.getPurchaseOption())) {
+				price.setPurchaseOption("All Upfront");
+	     	} else 	if ("PartialUpfront".equals(price.getPurchaseOption())) {
+				price.setPurchaseOption("Partial Upfront");
+	     	}
+			
 		}
 		
 		Constants.ec2PriceList = beanList;
