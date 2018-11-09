@@ -21,13 +21,14 @@ public class Constants {
 	public static long beginTime;
 	public static long endTime;
 	public static String S3EndRange = "51200";
-	public static long maxMemoryVM = 3904;
+	public static long maxMemoryVM = 4100;
 	
 	//public static String INPUT_FILE_NAME = "/Users/carvaa/Documents/GitHub/ProposalCalculator/input_sap.xlsx";
 	//public static String OUTPUT_FILE_NAME = "/Users/carvaa/Documents/GitHub/ProposalCalculator/output_sap.xlsx";
 	
-	public static String INPUT_FILE_NAME = "/Users/carvaa/Desktop/sap_bonita/input_sap.xlsx";
-	public static String OUTPUT_FILE_NAME = "/Users/carvaa/Desktop/sap_bonita/output_sap.xlsx";
+	public static String INPUT_FILE_NAME =  "/Users/carvaa/Downloads/War_Input.xlsx";
+	//public static String INPUT_FILE_NAME = "/Users/carvaa/Desktop/sap_bonita/input_sap.xlsx";
+	public static String OUTPUT_FILE_NAME = "/Users/carvaa/Downloads/output_master.xlsx";
 	
 	public static String OUTPUT_WITH_ERROR_FILE_NAME = "error_output.txt";
 	public static String METAKEY = "sap";

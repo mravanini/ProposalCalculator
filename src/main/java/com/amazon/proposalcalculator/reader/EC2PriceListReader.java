@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.amazon.proposalcalculator.bean.Price;
@@ -46,6 +47,8 @@ public class EC2PriceListReader {
 
 		//Generate standBy (0 vCPU, 0 GiB) instances
 		beanList = StandByInstances.generate(beanList);
+		
+		List<Price> beanList2 = new ArrayList<Price>();
 
 		for (Price price : beanList) {
 			if (price.getInstanceType() != null) {
@@ -61,6 +64,8 @@ public class EC2PriceListReader {
 			
 			if ("3 yr".equals(price.getLeaseContractLength())) {
 				price.setLeaseContractLength("3yr");
+			} else if ("1 yr".equals(price.getLeaseContractLength())) {
+				price.setLeaseContractLength("1yr");
 			}
 			
 			if ("NoUpfront".equals(price.getPurchaseOption())) {
@@ -71,9 +76,15 @@ public class EC2PriceListReader {
 				price.setPurchaseOption("Partial Upfront");
 	     	}
 			
+			//gambearra
+			if ((price.getTermType() != null && price.getTermType().equals("OnDemand") && price.getPricePerUnit() > 0) || 
+					(price.getTermType() != null && price.getTermType().equals("Reserved"))) {
+				beanList2.add(price);
+			}
+			
 		}
 		
-		Constants.ec2PriceList = beanList;
+		Constants.ec2PriceList = beanList2;
 		
 		LOGGER.info("EC2 Price List size: " + beanList.size() + " records");
 

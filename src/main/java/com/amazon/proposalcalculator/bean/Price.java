@@ -87,6 +87,17 @@ public class Price {
 	@CsvBindByName(column = "From Location")
 	private String fromLocation;
 	
+	@CsvBindByName(column = "CapacityStatus")
+	private String capacityStatus;
+	
+	public String getCapacityStatus() {
+		return capacityStatus;
+	}
+
+	public void setCapacityStatus(String capacityStatus) {
+		this.capacityStatus = capacityStatus;
+	}
+
 	private double upfrontFee;
 	
 	private double efectivePrice;

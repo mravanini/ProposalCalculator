@@ -39,7 +39,7 @@ public class Calculator {
 	
 	private static boolean containsBareMetal(Collection<InstanceInput> servers) {
 		for (InstanceInput instanceInput : servers) {
-			if (instanceInput.getMemory() > Constants.maxMemoryVM)
+			if ((instanceInput.getMemory() > Constants.maxMemoryVM))
 				return true;
 		}
 		return false;
@@ -47,7 +47,7 @@ public class Calculator {
 
 	public static void calculate(Collection<InstanceInput> servers, String outputFileName) throws IOException {
 		
-		boolean containsBareMetal = containsBareMetal(servers);
+		boolean containsBareMetal = false;
 
 		List quotes = new ArrayList<Quote>();
 
@@ -55,77 +55,98 @@ public class Calculator {
 
 		LOGGER.info("Calculating prices...");
 
+		LOGGER.info("Your input...");
 		Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
 		quotes.add(calculatePrice(servers, q1));
 		
-		Quote q3 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.ONE_YEAR.getColumnName(), 
-				PurchaseOption.NO_UPFRONT.getColumnName(),
-				OfferingClass.Standard.name());
-		quotes.add(calculatePrice(servers, q3));
-		
-		
-		/*
-		if (!containsBareMetal) {
-
-			Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
-			quotes.add(calculatePrice(servers, q2));
-	
+			
+			LOGGER.info("1YNU...");
 			Quote q3 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(), 
 					PurchaseOption.NO_UPFRONT.getColumnName(),
 					OfferingClass.Standard.name());
-			quotes.add(calculatePrice(servers, q3));
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q3));
+
+			Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q2));
 	
 			Quote q4 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(), 
 					PurchaseOption.PARTIAL_UPFRONT.getColumnName(),
 					OfferingClass.Standard.name());
-			quotes.add(calculatePrice(servers, q4));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q4));
 	
 			Quote q5 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(), 
 					PurchaseOption.ALL_UPFRONT.getColumnName(),
 					OfferingClass.Standard.name());
-			quotes.add(calculatePrice(servers, q5));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q5));
 			
 			Quote q9 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(), 
 					PurchaseOption.NO_UPFRONT.getColumnName(),
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q9));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q9));
 	
 			Quote q10 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(),
 					PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q10));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q10));
 	
 			Quote q11 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.ONE_YEAR.getColumnName(), 
 					PurchaseOption.ALL_UPFRONT.getColumnName(),
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q11));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q11));
 	
 			Quote q12 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.THREE_YEARS.getColumnName(), 
 					PurchaseOption.NO_UPFRONT.getColumnName(),
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q12));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q12));
 	
 			Quote q13 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.THREE_YEARS.getColumnName(),
 					PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q13));
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q13));
 	
 			Quote q14 = new Quote(TermType.Reserved.name(), 
 					LeaseContractLength.THREE_YEARS.getColumnName(), 
 					PurchaseOption.ALL_UPFRONT.getColumnName(),
 					OfferingClass.Convertible.name());
-			quotes.add(calculatePrice(servers, q14));
-		}
-		
+			
+			containsBareMetal = containsBareMetal(servers);
+			if (!containsBareMetal) 
+				quotes.add(calculatePrice(servers, q14));
+			
+			
 		Quote q6 = new Quote(TermType.Reserved.name(), 
 				LeaseContractLength.THREE_YEARS.getColumnName(),
 				PurchaseOption.NO_UPFRONT.getColumnName(), 
@@ -143,8 +164,6 @@ public class Calculator {
 				PurchaseOption.ALL_UPFRONT.getColumnName(),
 				OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q8));
-		
-		*/
 		
 		calculateDiscount(quotes);
 
@@ -299,13 +318,13 @@ public class Calculator {
 		
 		List<Price> possibleMatches = null;
 
-		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
+		Predicate<Price> predicate = region(input).and(ec2(input))./*and(tenancy(input)).*/and(licenceModel(input))
 				.and(operatingSystem(input)).and(preInstalledSw(input)).and(termType(input))
 				.and(offeringClass(input)).and(leaseContractLength(input)).and(purchaseOption(input))
 				.and(memory(input)).and(newGeneration(input).and(burstable(input)) );
 		
-		possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
-				.collect(Collectors.toList());
+		//possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
+		//		.collect(Collectors.toList());
 		
 		//f CPU and SAPS are both provided. CPU is ignored.
 		if (input.getSaps() > 0)
@@ -313,8 +332,8 @@ public class Calculator {
 		else	
 			predicate = predicate.and(cpu(input));
 		
-		possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
-				.collect(Collectors.toList());
+		//possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
+		//		.collect(Collectors.toList());
 		
 		// only sap certified...
 		if (input.getSapInstanceType() != null
@@ -323,8 +342,8 @@ public class Calculator {
 			predicate = predicate.and(sapProductionCertifiedInstances(input));
 		}
 		
-		possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
-				.collect(Collectors.toList());
+		//possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
+		//		.collect(Collectors.toList());
 		
 		// only hana certified instances
 		if (input.getSapInstanceType() != null
@@ -341,13 +360,11 @@ public class Calculator {
 		possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
 				.collect(Collectors.toList());
 
-
 		if (!forceBreakInstances && possibleMatches.size() > 0) {
 			return possibleMatches;
 		} else if (SAPInstanceType.HANA_OLAP.name().equals(input.getSapInstanceType())) {
 			breakInManyInstances(input, output);
 			//output.setInstances(input.getInstances());
-			
 			List<Price> findPossibleMatches = findPossibleMatches(input, output, false, quote);
 			return findPossibleMatches;
 		} else  {
