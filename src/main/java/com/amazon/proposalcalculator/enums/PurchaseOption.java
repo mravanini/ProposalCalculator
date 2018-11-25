@@ -22,6 +22,14 @@ public enum PurchaseOption {
     }
 
     public static PurchaseOption getPurchaseOption(String columnName){
+    	
+     	if (columnName.equals("NoUpfront")) {
+     		columnName = "No Upfront";
+     	} else 	if (columnName.equals("PartialUpfront")) {
+     		columnName = "Partial Upfront";
+     	} else 	if (columnName.equals("AllUpfront")) {
+     		columnName = "All Upfront";
+     	}
 
         for(PurchaseOption purchaseOption : PurchaseOption.values()){
             if (purchaseOption.getColumnName().equalsIgnoreCase(columnName)){

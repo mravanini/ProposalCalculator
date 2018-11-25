@@ -7,6 +7,18 @@ package com.amazon.proposalcalculator.calculator;
 //3% of monthly AWS usage over $1M
 public class EnterpriseSupportCalculator {
 	
+	private static EnterpriseSupportCalculator instance;
+	
+	private EnterpriseSupportCalculator() {
+		
+	}
+	
+	public static EnterpriseSupportCalculator getInstance() {
+		if (instance == null)
+			instance = new EnterpriseSupportCalculator();
+		return instance;
+	}
+	
 	public double calculateUpfrontSupport(double upfrontFee, double monthlyFee) {
 		double totalSupport = calculateSupport(upfrontFee + monthlyFee);
 		double monthlySupport = calculateMonthlySupport(monthlyFee);
@@ -16,8 +28,6 @@ public class EnterpriseSupportCalculator {
 	
 	public double calculateMonthlySupport(double monthlyFee) {
 		double total = calculateSupport(monthlyFee);
-		if (total < 15000)
-			total = 15000;
 		return total;
 	}
 	
@@ -32,6 +42,8 @@ public class EnterpriseSupportCalculator {
 		} else if (monthlyFee > 1000000) {
 			total = (150000 * 0.1) + ((500000 - 150000) * 0.07) +  ((1000000 - 500000) * 0.05) +  ((monthlyFee - 1000000) * 0.03);
 		}
+		if (total < 15000)
+			total = 15000;
 		return total;
 	}
 	

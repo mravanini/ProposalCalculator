@@ -29,8 +29,6 @@ public class BusinessSupportCalculator {
 	
 	public double calculateMonthlySupport(double monthlyFee) {
 		double total = calculateSupport(monthlyFee);
-		//if (total < 100)
-	//		total = 100;
 		return total;
 	}
 	

@@ -138,6 +138,7 @@ public class RunOnServer {
 				Collection<InstanceInput> instanceInputs = POIExcelReader.read(inputFileName);
 				ConfigReader.read(inputFileName);
 				DataTransferReader.read(inputFileName);
+				ParametersReader.read(inputFileName);
 
 				// calculate and delete message from SQS
 				//String outputFileName = getCurrentTime() + "_" + Constants.OUTPUT_FILE_NAME;

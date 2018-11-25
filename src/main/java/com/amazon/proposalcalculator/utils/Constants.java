@@ -2,6 +2,7 @@ package com.amazon.proposalcalculator.utils;
 
 import com.amazon.proposalcalculator.bean.ConfigInput;
 import com.amazon.proposalcalculator.bean.DataTransferInput;
+import com.amazon.proposalcalculator.bean.Parameter;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.S3Price;
 
@@ -15,12 +16,20 @@ public class Constants {
 	public static double HOURS_IN_A_MONTH = 730.4375f;
 	public static double GIB_TO_GB = 1.073741824f;//TODO EQUALIZE GB TO GiB
 	public static ConfigInput config;
+	public static Parameter parameters;
 	public static DataTransferInput dataTransfer;
 	public static long beginTime;
 	public static long endTime;
 	public static String S3EndRange = "51200";
-	public static String INPUT_FILE_NAME = "input_generic.xlsx";
-	public static String OUTPUT_FILE_NAME = "output_sap.xlsx";
+	public static long maxMemoryVM = 4100;
+	
+	//public static String INPUT_FILE_NAME = "/Users/carvaa/Documents/GitHub/ProposalCalculator/input_sap.xlsx";
+	//public static String OUTPUT_FILE_NAME = "/Users/carvaa/Documents/GitHub/ProposalCalculator/output_sap.xlsx";
+	
+	public static String INPUT_FILE_NAME =  "/Users/carvaa/Downloads/War_Input.xlsx";
+	//public static String INPUT_FILE_NAME = "/Users/carvaa/Desktop/sap_bonita/input_sap.xlsx";
+	public static String OUTPUT_FILE_NAME = "/Users/carvaa/Downloads/output_master.xlsx";
+	
 	public static String OUTPUT_WITH_ERROR_FILE_NAME = "error_output.txt";
 	public static String METAKEY = "sap";
 

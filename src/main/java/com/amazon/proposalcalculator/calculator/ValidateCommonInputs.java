@@ -3,6 +3,7 @@ package com.amazon.proposalcalculator.calculator;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.enums.*;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
+import com.amazon.proposalcalculator.utils.Constants;
 
 /**
  * Created by ravanini on 18/02/17.
@@ -56,7 +57,7 @@ public class ValidateCommonInputs {
 
         input.setOfferingClass(fillOfferingClass(input.getOfferingClass(), input.getTermType()));
 
-        input.setTenancy(fillTenancy(input.getTenancy()));
+        input.setTenancy(fillTenancy(input.getTenancy(), input.getMemory()));
 
         input.setOnlyCurrentGenerationInstances(fillOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances()));
 
@@ -82,10 +83,16 @@ public class ValidateCommonInputs {
                 : PreInstalledSoftware.getPreInstalledSoftware(preInstalledSw).getColumnName();
     }
     
-    private static String fillTenancy(String tenancy) {
+    private static String fillTenancy(String tenancy, double memory) {
+    		if (tenancy != null)
+    			return tenancy;
+    		else
+    			if (memory > Constants.maxMemoryVM) 
+    				return Tenancy.Reserved.name();
+    			else
+    				return Tenancy.Shared.name();
+    			
 
-        return (tenancy == null) ? Tenancy.Shared.name()
-                : Tenancy.getTenancy(tenancy).name();
     }
 
     private static String fillOperatingSystem(String operatingSystem) {

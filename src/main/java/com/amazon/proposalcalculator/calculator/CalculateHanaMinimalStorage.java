@@ -24,31 +24,42 @@ public class CalculateHanaMinimalStorage {
 	
 	static {
 		
-		storageList.add(new MinimalHanaStorage(Constants.STAND_BY_INSTANCE_TYPE, 3072, 50, 50, 1024, 4096));
+		// instanceSize, dataAndLogsVolume, rootVolume, sapBinariesVolume, sharedVolume, backupVolume
 		
-		storageList.add(new MinimalHanaStorage("x1.32xlarge", 3072, 50, 50, 1024, 4096));
-		storageList.add(new MinimalHanaStorage("x1.16xlarge", 2100, 50, 50, 1024, 2048));
+		storageList.add(new MinimalHanaStorage(Constants.STAND_BY_INSTANCE_TYPE, 3000, 50, 50, 1024, 4096));
 		
-		storageList.add(new MinimalHanaStorage("x1e.32xlarge", 6144, 50, 50, 1024, 8192));
-		storageList.add(new MinimalHanaStorage("x1e.16xlarge", 3072, 50, 50, 1024, 4096));
-		storageList.add(new MinimalHanaStorage("x1e.8xlarge", 2100, 50, 50, 1024, 2048));
-		storageList.add(new MinimalHanaStorage("x1e.4xlarge", 1200, 50, 50, 512, 1024));
-		storageList.add(new MinimalHanaStorage("x1e.2xlarge", 900, 50, 50, 300, 1024));
+		storageList.add(new MinimalHanaStorage("u-12tb1", 15000, 50, 50, 1024, 16384));
+		storageList.add(new MinimalHanaStorage("u-9tb1", 11400, 50, 50, 1024, 16384));
+		storageList.add(new MinimalHanaStorage("u-6tb1", 7800, 50, 50, 1024, 12288));
 		
-		storageList.add(new MinimalHanaStorage("r4.16xlarge", 1200, 50, 50, 512, 1024));
-		storageList.add(new MinimalHanaStorage("r4.8xlarge", 900, 50, 50, 300, 1024));
-		storageList.add(new MinimalHanaStorage("r4.4xlarge", 900, 50, 50, 300, 512));
-		storageList.add(new MinimalHanaStorage("r4.2xlarge", 900, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("x1e.32xlarge", 5400, 50, 50, 1024, 8192));
+		storageList.add(new MinimalHanaStorage("x1.32xlarge", 3000, 50, 50, 1024, 4096));
+		storageList.add(new MinimalHanaStorage("x1.16xlarge", 1800, 50, 50, 1024, 2048));
 		
-		storageList.add(new MinimalHanaStorage("r3.8xlarge", 900, 50, 50, 300, 1024));
-		storageList.add(new MinimalHanaStorage("r3.4xlarge", 900, 50, 50, 300, 512));
-		storageList.add(new MinimalHanaStorage("r3.2xlarge", 900, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("r4.16xlarge", 1275, 50, 50, 512, 1024));
+		storageList.add(new MinimalHanaStorage("r4.8xlarge", 1275, 50, 50, 300, 1024));
+		storageList.add(new MinimalHanaStorage("r3.8xlarge", 1275, 50, 50, 300, 1024));
 		
-		storageList.add(new MinimalHanaStorage("m4.16xlarge", 900, 50, 50, 300, 1024));
-		storageList.add(new MinimalHanaStorage("m4.10xlarge", 900, 50, 50, 300, 512));
-		storageList.add(new MinimalHanaStorage("m4.4xlarge", 900, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("x1e.4xlarge", 1025, 50, 50, 512, 1024));
+		storageList.add(new MinimalHanaStorage("x1e.2xlarge", 1025, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("x1e.xlarge", 1025, 50, 50, 300, 512));
 		
-		storageList.add(new MinimalHanaStorage("c4.8xlarge", 900, 50, 50, 300, 512));
+		
+		storageList.add(new MinimalHanaStorage("r4.4xlarge", 1025, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("r3.4xlarge", 1025, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("r4.2xlarge", 1025, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("r3.2xlarge", 1025, 50, 50, 300, 512));
+		
+		//non certified...
+		
+		storageList.add(new MinimalHanaStorage("m4.16xlarge", 1025, 50, 50, 300, 1024));
+		storageList.add(new MinimalHanaStorage("m4.10xlarge", 1025, 50, 50, 300, 512));
+		storageList.add(new MinimalHanaStorage("m4.4xlarge", 1025, 50, 50, 300, 512));
+		
+		storageList.add(new MinimalHanaStorage("c4.8xlarge", 1025, 50, 50, 300, 512));
+		
+		storageList.add(new MinimalHanaStorage("x1e.16xlarge", 3000, 50, 50, 1024, 4096));
+		storageList.add(new MinimalHanaStorage("x1e.8xlarge", 1800, 50, 50, 1024, 2048));
 		
 		//C4
 		//M4

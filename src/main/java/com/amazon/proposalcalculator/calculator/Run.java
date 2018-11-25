@@ -55,6 +55,7 @@ public class Run {
         //Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
         Collection<InstanceInput> servers = POIExcelReader.read(Constants.INPUT_FILE_NAME);
         ConfigReader.read(Constants.INPUT_FILE_NAME);
+        ParametersReader.read(Constants.INPUT_FILE_NAME);
         DataTransferReader.read(Constants.INPUT_FILE_NAME);
 
         return servers;

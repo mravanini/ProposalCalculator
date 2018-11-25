@@ -66,6 +66,13 @@ public class SAPS {
 			instance.sapsMap.put("r4.xlarge", 4775);
 			instance.sapsMap.put("r4.large", 2387);
 			
+			instance.sapsMap.put("r5.24xlarge", 135230);
+			instance.sapsMap.put("r5.12xlarge", 67615);
+			instance.sapsMap.put("r5.4xlarge", 22538);
+			instance.sapsMap.put("r5.2xlarge", 11269);
+			instance.sapsMap.put("r5.xlarge", 5535);
+			instance.sapsMap.put("r5.large", 2817);
+			
 			instance.sapsMap.put("r3.8xlarge", 31920);
 			instance.sapsMap.put("r3.4xlarge", 15960);
 			instance.sapsMap.put("r3.2xlarge", 7980);
@@ -81,6 +88,10 @@ public class SAPS {
 			instance.sapsMap.put("x1e.4xlarge", 16437);
 			instance.sapsMap.put("x1e.2xlarge", 8219);
 			instance.sapsMap.put("x1e.xlarge", 4109);
+			
+			instance.sapsMap.put("u-9tb1", 480600);
+			instance.sapsMap.put("u-6tb1", 480600);
+			instance.sapsMap.put("u-12tb1", 480600);
 			
 			//Previous generation instances
 			instance.sapsMap.put("cc2.8xlarge", 30430); //90330 as a database server for 3-tier config
