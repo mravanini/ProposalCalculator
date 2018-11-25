@@ -9,7 +9,7 @@ public class InstanceInput {
 	public void setCellSAP(InstanceInputColumn column, Object value){
 		switch (column){
 			case DESCRIPTION:
-				setDescription((String) value);
+				setDescription(String.valueOf(value));
 				break;
 			case ENVIRONMENT:
 				setEnvironment((String) value);
