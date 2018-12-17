@@ -123,11 +123,11 @@ public class CalculatorPredicates {
     
 	public static Predicate<S3Price> s3(InstanceInput input) {
 		return p -> p.getLocation() != null
-				&& p.getLocation().toLowerCase().startsWith(input.getRegion().toLowerCase())
-				&& p.getProductFamily().equals(ProductFamily.Storage.toString())
-				&& p.getServiceCode().equals(ProductName.AmazonS3.toString())
-				&& p.getStorageClass().equals(S3StorageClass.General_Purpose.getColumnName())
-				&& p.getEndingRange().equals(Constants.S3EndRange);
+				&& input.getRegion().toLowerCase().startsWith(p.getLocation().toLowerCase())
+				&& ProductFamily.Storage.toString().equals(p.getProductFamily())
+				&& ProductName.AmazonS3.toString().equals(p.getServiceCode())
+				&& S3StorageClass.General_Purpose.getColumnName().equals(p.getStorageClass())
+				&& Constants.S3EndRange.equals(p.getEndingRange());
 	}
     
     public static Predicate<Price> region(DataTransferInput dataTransfer){
