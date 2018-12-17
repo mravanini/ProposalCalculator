@@ -33,7 +33,6 @@ public class InstanceOutputAssembly {
 		output.setLeaseContractLength(input.getLeaseContractLength());
 		output.setPurchaseOption(input.getPurchaseOption());
 
-		output.setTenancy(input.getTenancy());
 		output.setOperatingSystem(input.getOperatingSystem());
 
 		output.setBeginning(input.getBeginning());

@@ -61,7 +61,7 @@ public class DefaultExcelWriter {
 
 		list1.add("Monthly");
 		list1.add("3 Years Total");
-		list1.add("Montlhy Average");
+		list1.add("Monthly Average");
 		list1.add("Discount");
 		data.add(list1);
 

@@ -262,7 +262,6 @@ public class ValidateCommonInputsTest {
     public void testNullTenancyAndNullPreInstalledSwValues(){
         InstanceInput input = buildInstanceInput();
         ValidateCommonInputs.validate(input);
-        assertEquals(Tenancy.Shared.name(), input.getTenancy());
         assertEquals(PreInstalledSoftware.NA.name(), input.getPreInstalledSw());
     }
 
@@ -270,12 +269,10 @@ public class ValidateCommonInputsTest {
     public void testNotNullTenancyAndPreInstalledSwValues(){
         InstanceInput input = buildInstanceInput();
 
-        input.setTenancy(Tenancy.Dedicated.name());
         input.setPreInstalledSw(PreInstalledSoftware.SQLEnterprise.name());
 
         ValidateCommonInputs.validate(input);
 
-        assertEquals(Tenancy.Dedicated.name(), input.getTenancy());
         assertEquals(PreInstalledSoftware.SQLEnterprise.name(), input.getPreInstalledSw());
     }
 

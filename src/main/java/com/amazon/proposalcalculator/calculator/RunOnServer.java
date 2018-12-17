@@ -136,7 +136,6 @@ public class RunOnServer {
 				// read spreadsheets
 				//Collection<InstanceInput> instanceInputs = DefaultExcelReader.read(inputFileName);
 				Collection<InstanceInput> instanceInputs = POIExcelReader.read(inputFileName);
-				ConfigReader.read(inputFileName);
 				DataTransferReader.read(inputFileName);
 				ParametersReader.read(inputFileName);
 

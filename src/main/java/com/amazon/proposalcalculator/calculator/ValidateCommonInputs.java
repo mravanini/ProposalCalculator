@@ -57,8 +57,6 @@ public class ValidateCommonInputs {
 
         input.setOfferingClass(fillOfferingClass(input.getOfferingClass(), input.getTermType()));
 
-        input.setTenancy(fillTenancy(input.getTenancy(), input.getMemory()));
-
         input.setOnlyCurrentGenerationInstances(fillOnlyCurrentGenerationInstances(input.getOnlyCurrentGenerationInstances()));
 
         input.setPreInstalledSw(fillPreInstalledSoftware(input.getPreInstalledSw()));
@@ -81,18 +79,6 @@ public class ValidateCommonInputs {
     private static String fillPreInstalledSoftware(String preInstalledSw) {
         return (preInstalledSw == null) ? PreInstalledSoftware.NA.getColumnName()
                 : PreInstalledSoftware.getPreInstalledSoftware(preInstalledSw).getColumnName();
-    }
-    
-    private static String fillTenancy(String tenancy, double memory) {
-    		if (tenancy != null)
-    			return tenancy;
-    		else
-    			if (memory > Constants.maxMemoryVM) 
-    				return Tenancy.Reserved.name();
-    			else
-    				return Tenancy.Shared.name();
-    			
-
     }
 
     private static String fillOperatingSystem(String operatingSystem) {

@@ -4,11 +4,7 @@ import com.amazon.proposalcalculator.bean.DataTransferInput;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.Price;
 import com.amazon.proposalcalculator.bean.S3Price;
-import com.amazon.proposalcalculator.enums.ProductFamily;
-import com.amazon.proposalcalculator.enums.ProductName;
-import com.amazon.proposalcalculator.enums.S3StorageClass;
-import com.amazon.proposalcalculator.enums.SAPInstanceType;
-import com.amazon.proposalcalculator.enums.VolumeType;
+import com.amazon.proposalcalculator.enums.*;
 import com.amazon.proposalcalculator.utils.Constants;
 
 import java.util.function.Predicate;
@@ -112,8 +108,12 @@ public class CalculatorPredicates {
     public static Predicate<Price> ec2(InstanceInput server) {
        return p -> /*!p.getPriceDescription().contains("Dedicated Host") &&*/ p.getProductFamily().startsWith("Compute") || p.getProductFamily().startsWith("Dedicated");
     }
-    
-    public static Predicate<Price> region(InstanceInput server){
+
+	public static Predicate<Price> ec2NotAMD(InstanceInput server) {
+		return p -> !p.getInstanceType().contains("a.") ;
+	}
+
+	public static Predicate<Price> region(InstanceInput server){
         return p -> p.getLocation() != null && p.getLocation().equals(server.getRegion());
     }
     
@@ -183,7 +183,7 @@ public class CalculatorPredicates {
     }
 
     public static Predicate<Price> tenancy(InstanceInput server) {
-        return p -> p.getTenancy() != null && p.getTenancy().equals(server.getTenancy());
+        return p -> (Tenancy.Shared.toString().equals(p.getTenancy()) || Tenancy.Reserved.toString().equals(p.getTenancy()));
     }
 
     public static Predicate<Price> volumeType(InstanceInput input){

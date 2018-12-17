@@ -3,7 +3,6 @@ package com.amazon.proposalcalculator.reader;
 import java.io.File;
 import java.util.Collection;
 
-import com.amazon.proposalcalculator.bean.ConfigInput;
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.ebay.xcelite.Xcelite;

@@ -318,10 +318,12 @@ public class Calculator {
 		
 		List<Price> possibleMatches = null;
 
-		Predicate<Price> predicate = region(input).and(ec2(input))./*and(tenancy(input)).*/and(licenceModel(input))
+		Predicate<Price> predicate = region(input).and(ec2(input)).and(tenancy(input)).and(licenceModel(input))
 				.and(operatingSystem(input)).and(preInstalledSw(input)).and(termType(input))
 				.and(offeringClass(input)).and(leaseContractLength(input)).and(purchaseOption(input))
-				.and(memory(input)).and(newGeneration(input).and(burstable(input)) );
+				.and(memory(input)).and(newGeneration(input).and(burstable(input)) )
+				//.and(ec2NotAMD(input))
+                ;
 		
 		//possibleMatches = Constants.ec2PriceList.stream().filter(predicate)
 		//		.collect(Collectors.toList());
@@ -509,6 +511,8 @@ public class Calculator {
 
 		//DataTransferPricingCalculator dataCalculator = new DataTransferPricingCalculator();
 		//double dataTransferOutMonthlyPrice = dataCalculator.getDataTransferOutMonthlyPrice(Constants.dataTransfer);
+
+        output.setTenancy(price.getTenancy());
 	}
 
 	private static void setEffectivePrice(List<Price> priceList) {
