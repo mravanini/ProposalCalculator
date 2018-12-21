@@ -17,8 +17,8 @@ public class PriceListDownloader {
 
     private final static Logger LOGGER = LogManager.getLogger();
     
-    private static final String URL_PRICE_LIST = "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/%s/current/index.csv";
-    //private static final String URL_PRICE_LIST = "https://s3-us-west-2.amazonaws.com/proposal-calculator-local/%s";
+    //private static final String URL_PRICE_LIST = "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/%s/current/index.csv";
+    private static final String URL_PRICE_LIST = "https://s3-us-west-2.amazonaws.com/proposal-calculator-local/%s";
     
     private static final int READ_TIMEOUT = 5 * 60 * 1000;
     private static final int CONNECTION_TIMEOUT = 1 * 60 * 1000;
