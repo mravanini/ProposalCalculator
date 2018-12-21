@@ -29,8 +29,8 @@ public class PriceListDownloader {
     public static FileReader download(String fileName, ProductName productName) throws IOException {
         LOGGER.info(String.format("Downloading price list for %s. This might take a while...", productName));
         
-        URL website = new URL(String.format(URL_PRICE_LIST, productName));
-        //URL website = new URL(String.format(URL_PRICE_LIST, fileName));
+        //URL website = new URL(String.format(URL_PRICE_LIST, productName));
+        URL website = new URL(String.format(URL_PRICE_LIST, fileName));
         
         File file = new File(fileName);
         FileUtils.copyURLToFile(website, file, CONNECTION_TIMEOUT, READ_TIMEOUT);
