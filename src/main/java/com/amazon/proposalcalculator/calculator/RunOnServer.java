@@ -41,47 +41,50 @@ public class RunOnServer {
 	private static final String INPUT_QUEUE = "sapqin";
 	private static final int TIME_BETWEEN_READS = 2000;
 	private final static Logger LOGGER = LogManager.getLogger();
+	private static int exponentialBackoffTime = 2000;
 
 
 	public static void main(String[] args) throws Exception {
+		while (true) {
+			try {
+				AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
+				AmazonSQS sqsClient = AmazonSQSClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
 
-		try {
-			AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
-			AmazonSQS sqsClient = AmazonSQSClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
+				// initialize
+				readPriceLists(args);
 
-			// initialize
-			readPriceLists(args);
+				// get queue
+				String myQueueUrl = sqsClient.getQueueUrl(INPUT_QUEUE).getQueueUrl();
+				LOGGER.info("Receiving messages from " + INPUT_QUEUE);
+				while (true) {
+					Thread.sleep(TIME_BETWEEN_READS);
 
-			// get queue
-			String myQueueUrl = sqsClient.getQueueUrl(INPUT_QUEUE).getQueueUrl();
-			LOGGER.info("Receiving messages from " + INPUT_QUEUE);
-			while (true) {
-				Thread.sleep(TIME_BETWEEN_READS);
+					ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
+					List<Message> messages = sqsClient.receiveMessage(receiveMessageRequest).getMessages();
+					for (Message message : messages) {
+						logMessage(message);
+						processRecords(sqsClient, s3Client, myQueueUrl, message);
+						// TODO shouldn't we delete sqs message here??
 
-				ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueUrl);
-				List<Message> messages = sqsClient.receiveMessage(receiveMessageRequest).getMessages();
-				for (Message message : messages) {
-					logMessage(message);
-					processRecords(sqsClient, s3Client, myQueueUrl, message);
-					//TODO shouldn't we delete sqs message here??
+						// todo for testing purposes only
+						Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
+						// LOGGER.warn("Exception location environment = " + exceptionLocation);
+						if (exceptionLocation.intValue() == 1) {
+							throw new Exception("test exception handling");
+						}
+						// end: todo for testing purposes only
 
-					//todo for testing purposes only
-					Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
-					//LOGGER.warn("Exception location environment = " + exceptionLocation);
-					if(exceptionLocation.intValue() == 1){
-						throw new Exception("test exception handling");
 					}
-					//end: todo for testing purposes only
-
 				}
+
+			} catch (Exception e) {
+				LOGGER.error(
+						"Error trying to read price list. Trying again in " + exponentialBackoffTime/1000 + " second(s).");
+				LOGGER.error("Error Message: " + e.getMessage(), e);
+				Thread.sleep(exponentialBackoffTime);
+				exponentialBackoffTime = exponentialBackoffTime * 2;
+				SendSNSMessage.send(e);
 			}
-
-		} catch (Exception e) {
-
-			LOGGER.error("Error Message: " + e.getMessage(), e);
-
-			SendSNSMessage.send(e);
-
 		}
 	}
 
