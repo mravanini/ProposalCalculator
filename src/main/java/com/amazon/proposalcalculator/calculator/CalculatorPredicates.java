@@ -17,10 +17,11 @@ public class CalculatorPredicates {
 	private static final int HANA_MIN_MEMORY = 61;
 
 	public static Predicate<Price> sapProductionCertifiedInstances(InstanceInput server) {
-		return  p -> (p.getInstanceType().toLowerCase().startsWith("m4.")
+		return  p -> 
+		          (p.getInstanceType().toLowerCase().startsWith("m4.")
+		        || p.getInstanceType().toLowerCase().startsWith("m5.")
 				|| p.getInstanceType().toLowerCase().startsWith("c4.")
 				|| p.getInstanceType().toLowerCase().startsWith("c5.")
-				|| p.getInstanceType().toLowerCase().startsWith("m5.")
 				|| p.getInstanceType().toLowerCase().startsWith("r4.")
 				|| p.getInstanceType().toLowerCase().startsWith("r5.")
 				|| p.getInstanceType().toLowerCase().startsWith("x1.")
@@ -32,9 +33,13 @@ public class CalculatorPredicates {
 	public static Predicate<Price> hanaProductionCertifiedInstances(InstanceInput server) {
 		boolean isCluster = server.getInstances() > 1;
 		if (!isCluster && SAPInstanceType.HANA_OLTP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
-			return p -> (p.getMemory() >= HANA_MIN_MEMORY && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= HANA_MIN_MEMORY && 
+					  (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.12xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.24xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.metal")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")
@@ -43,6 +48,9 @@ public class CalculatorPredicates {
 			return p -> (p.getMemory() >= HANA_MIN_MEMORY && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.12xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.24xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.metal")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")
@@ -52,13 +60,20 @@ public class CalculatorPredicates {
 					|| p.getInstanceType().toLowerCase().startsWith("m4.10xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("m4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.2xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.4xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.12xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.24xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")));
 		} else if (isCluster && SAPInstanceType.HANA_OLAP.equals(SAPInstanceType.getSAPInstanceType(server.getSapInstanceType()))) {
 			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
-					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")));
+					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")
+					));
 		} else {
-			return p -> (p.getMemory() >= HANA_MIN_MEMORY && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
+			return p -> (p.getMemory() >= HANA_MIN_MEMORY && 
+					  (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
@@ -74,14 +89,16 @@ public class CalculatorPredicates {
 			return p -> (p.getMemory() >= 61 && (p.getInstanceType().toLowerCase().startsWith("r3.8xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.16xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.32xlarge")
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.32xlarge")
 					|| p.getInstanceType().toLowerCase().startsWith("u-")));
 		} else {
 			return  p -> (p.getMemory() >= HANA_MIN_MEMORY && 
-			 		(p.getInstanceType().toLowerCase().startsWith("m4.")
+			 		(  p.getInstanceType().toLowerCase().startsWith("m4.")
+			 		|| p.getInstanceType().toLowerCase().startsWith("m5.")
 					|| p.getInstanceType().toLowerCase().startsWith("c4.")
 					|| p.getInstanceType().toLowerCase().startsWith("c5.")
-					|| p.getInstanceType().toLowerCase().startsWith("m5.")
 					|| p.getInstanceType().toLowerCase().startsWith("r4.")
+					|| p.getInstanceType().toLowerCase().startsWith("r5.")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.")
 					|| p.getInstanceType().toLowerCase().startsWith("x1e.")));
 		}
