@@ -123,7 +123,9 @@ public class CalculatorPredicates {
 	}
 	
     public static Predicate<Price> ec2(InstanceInput server) {
-       return p -> /*!p.getPriceDescription().contains("Dedicated Host") &&*/ p.getProductFamily().startsWith("Compute") || p.getProductFamily().startsWith("Dedicated");
+       return p -> /*!p.getPriceDescription().contains("Dedicated Host") &&*/ 
+       (p.getInstanceType() != null && !p.getInstanceType().toLowerCase().startsWith("a1")) &&
+       p.getProductFamily().startsWith("Compute") || p.getProductFamily().startsWith("Dedicated");
     }
 
 	public static Predicate<Price> ec2NotAMD(InstanceInput server) {
