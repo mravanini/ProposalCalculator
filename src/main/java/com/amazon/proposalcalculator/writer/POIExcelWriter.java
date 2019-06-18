@@ -25,7 +25,7 @@ public class POIExcelWriter {
     private final static Logger LOGGER = LogManager.getLogger();
     public static final String ERRORS_FOUND = "Errors were found during the processing of this spreadsheet. Check the other sheets for " +
             "more details.";
-    public static final int ERROR_MESSAGE_LINE = 14;
+    public static final int ERROR_MESSAGE_LINE = 15;
 
     private static List<Integer> percentageColumns;
     private static List<Integer> currencyColumns;
