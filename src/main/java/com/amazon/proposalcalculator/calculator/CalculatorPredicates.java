@@ -100,7 +100,8 @@ public class CalculatorPredicates {
 					|| p.getInstanceType().toLowerCase().startsWith("r4.")
 					|| p.getInstanceType().toLowerCase().startsWith("r5.")
 					|| p.getInstanceType().toLowerCase().startsWith("x1.")
-					|| p.getInstanceType().toLowerCase().startsWith("x1e.")));
+					|| p.getInstanceType().toLowerCase().startsWith("x1e.")
+					|| p.getInstanceType().toLowerCase().startsWith("u-")));
 		}
 	}
 
@@ -176,7 +177,7 @@ public class CalculatorPredicates {
 	public static Predicate<Price> leaseContractLength(InstanceInput server) {
 		return p -> server.getTermType().equals("OnDemand")
 				|| (server.getTermType().equals("Reserved") && p.getLeaseContractLength() != null
-						&& p.getLeaseContractLength().equalsIgnoreCase(server.getLeaseContractLength()));
+						&& p.getLeaseContractLength().trim().equalsIgnoreCase(server.getLeaseContractLength().trim()));
 	}
 
     public static Predicate<Price> purchaseOption(InstanceInput server){
