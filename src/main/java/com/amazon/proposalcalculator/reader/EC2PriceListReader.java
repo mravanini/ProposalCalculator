@@ -55,9 +55,9 @@ public class EC2PriceListReader {
 				Integer saps = SAPS.getInstance().getSAPS(price.getInstanceType());
 				price.setSaps(saps);
 				
-				if (price.getInstanceType().startsWith("u")) {
-					System.out.println(price);
-				}
+				//if (price.getInstanceType().startsWith("u")) {
+				//	System.out.println(price);
+				//}
 				
 		
 			}
@@ -76,13 +76,29 @@ public class EC2PriceListReader {
 				price.setPurchaseOption("Partial Upfront");
 	     	}
 			
-			//gambearra
+			//adicionando somente instancias...
 			if ((price.getTermType() != null && price.getTermType().equals("OnDemand") && price.getPricePerUnit() > 0) || 
 					(price.getTermType() != null && price.getTermType().equals("Reserved"))) {
 				beanList2.add(price);
+				
+				if (false
+						&& price.getPricePerUnit() > 0 
+						&& price.getInstanceType() != null 
+						&& price.getLocation().startsWith("US West") 
+						&& (price.getInstanceType().startsWith("u-6tb1") || price.getInstanceType().startsWith("x1e.32"))
+						) {
+					LOGGER.info("Price tabajara: " + price.toString());
+				}
+				
 			}
 			
+			
+			
+			
+			
 		}
+		
+		//System.exit(0);
 		
 		Constants.ec2PriceList = beanList2;
 		

@@ -106,16 +106,20 @@ public class Price {
 	
 	private int saps;
 
+	
+
 	@Override
 	public String toString() {
-		return "Price [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
+		return "Price ToString [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
 				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
 				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
 				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption
 				+ ", tenancy=" + tenancy + ", leaseContractLength=" + leaseContractLength + ", volumeType=" + volumeType
 				+ ", group=" + group + ", priceDescription=" + priceDescription + ", sku=" + sku + ", preInstalledSw="
-				+ preInstalledSw + ", upfrontFee=" + upfrontFee + ", efectivePrice=" + efectivePrice
-				+ ", instanceHourPrice=" + instanceHourPrice + "]";
+				+ preInstalledSw + ", licenseModel=" + licenseModel + ", transferType=" + transferType
+				+ ", startingRange=" + startingRange + ", endingRange=" + endingRange + ", fromLocation=" + fromLocation
+				+ ", capacityStatus=" + capacityStatus + ", upfrontFee=" + upfrontFee + ", efectivePrice="
+				+ efectivePrice + ", instanceHourPrice=" + instanceHourPrice + ", saps=" + saps + "]";
 	}
 
 	public String getTenancy() {

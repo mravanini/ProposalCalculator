@@ -15,9 +15,12 @@ import java.util.Collection;
 /**
  * Created by ravanini on 02/12/16.
  */
+
+
 public class Run {
 
     private final static Logger LOGGER = LogManager.getLogger();
+    private static int exponentialBackoffTime = 1000;
 
     public static void main(String[] args) {
     	//while(true)
@@ -49,9 +52,11 @@ public class Run {
         }
     }
 
-    private static Collection<InstanceInput> init(Boolean forceDownload) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        EC2PriceListReader.read(forceDownload);
-        S3PriceListReader.read(forceDownload);
+    private static Collection<InstanceInput> init(Boolean forceDownload) throws Exception, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        
+		EC2PriceListReader.read(forceDownload);
+		S3PriceListReader.read(forceDownload);
+        
         //Collection<InstanceInput> servers = DefaultExcelReader.read(Constants.INPUT_FILE_NAME);
         Collection<InstanceInput> servers = POIExcelReader.read(Constants.INPUT_FILE_NAME);
         ParametersReader.read(Constants.INPUT_FILE_NAME);

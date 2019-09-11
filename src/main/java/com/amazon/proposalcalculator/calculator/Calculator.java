@@ -46,10 +46,10 @@ public class Calculator {
 	}
 
 	public static void calculate(Collection<InstanceInput> servers, String outputFileName) throws IOException {
-		
+
 		boolean containsBareMetal = false;
 
-		List quotes = new ArrayList<Quote>();
+		List<Quote> quotes = new ArrayList<Quote>();
 
 		ValidateInputSheet.validate(servers);
 
@@ -58,116 +58,94 @@ public class Calculator {
 		LOGGER.info("Your input...");
 		Quote q1 = new Quote(QuoteName.YOUR_INPUT.getName());
 		quotes.add(calculatePrice(servers, q1));
-		
-			
-			LOGGER.info("1YNU...");
-			Quote q3 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(), 
-					PurchaseOption.NO_UPFRONT.getColumnName(),
-					OfferingClass.Standard.name());
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q3));
 
-			Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q2));
-	
-			Quote q4 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(), 
-					PurchaseOption.PARTIAL_UPFRONT.getColumnName(),
-					OfferingClass.Standard.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q4));
-	
-			Quote q5 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(), 
-					PurchaseOption.ALL_UPFRONT.getColumnName(),
-					OfferingClass.Standard.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q5));
-			
-			Quote q9 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(), 
-					PurchaseOption.NO_UPFRONT.getColumnName(),
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q9));
-	
-			Quote q10 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(),
-					PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q10));
-	
-			Quote q11 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.ONE_YEAR.getColumnName(), 
-					PurchaseOption.ALL_UPFRONT.getColumnName(),
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q11));
-	
-			Quote q12 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.THREE_YEARS.getColumnName(), 
-					PurchaseOption.NO_UPFRONT.getColumnName(),
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q12));
-	
-			Quote q13 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.THREE_YEARS.getColumnName(),
-					PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q13));
-	
-			Quote q14 = new Quote(TermType.Reserved.name(), 
-					LeaseContractLength.THREE_YEARS.getColumnName(), 
-					PurchaseOption.ALL_UPFRONT.getColumnName(),
-					OfferingClass.Convertible.name());
-			
-			containsBareMetal = containsBareMetal(servers);
-			if (!containsBareMetal) 
-				quotes.add(calculatePrice(servers, q14));
-			
-			
-		Quote q6 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(),
-				PurchaseOption.NO_UPFRONT.getColumnName(), 
-				OfferingClass.Standard.name());
+		LOGGER.info("1YNU...");
+		Quote q3 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Standard.name());
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q3));
+
+		Quote q2 = new Quote(TermType.OnDemand.name(), null, null, null);
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q2));
+
+		Quote q4 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Standard.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q4));
+
+		Quote q5 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Standard.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q5));
+
+		Quote q9 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q9));
+
+		Quote q10 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q10));
+
+		Quote q11 = new Quote(TermType.Reserved.name(), LeaseContractLength.ONE_YEAR.getColumnName(),
+				PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q11));
+
+		Quote q12 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q12));
+
+		Quote q13 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q13));
+
+		Quote q14 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Convertible.name());
+
+		containsBareMetal = containsBareMetal(servers);
+		if (!containsBareMetal)
+			quotes.add(calculatePrice(servers, q14));
+		
+		//testar large instances aqui...
+
+		System.out.println("breakpoint here...");
+		
+		Quote q6 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.NO_UPFRONT.getColumnName(), OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q6));
 
-		Quote q7 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(),
-				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), 
-				OfferingClass.Standard.name());
+		Quote q7 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.PARTIAL_UPFRONT.getColumnName(), OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q7));
 
-		Quote q8 = new Quote(TermType.Reserved.name(), 
-				LeaseContractLength.THREE_YEARS.getColumnName(), 
-				PurchaseOption.ALL_UPFRONT.getColumnName(),
-				OfferingClass.Standard.name());
+		Quote q8 = new Quote(TermType.Reserved.name(), LeaseContractLength.THREE_YEARS.getColumnName(),
+				PurchaseOption.ALL_UPFRONT.getColumnName(), OfferingClass.Standard.name());
 		quotes.add(calculatePrice(servers, q8));
-		
+
 		calculateDiscount(quotes);
 
-		//new DefaultExcelWriter().write(outputFileName, quotes);
+		// new DefaultExcelWriter().write(outputFileName, quotes);
 		POIExcelWriter.write(outputFileName, quotes);
 	}
 
@@ -300,6 +278,7 @@ public class Calculator {
 			InstanceOutput output, boolean forceBreakInstances) {
 		LOGGER.debug("findMatches:" + input.getDescription() + "::" + input.getEnvironment());
 		List<Price> possibleMatches = findPossibleMatches(input, output, forceBreakInstances, quote);
+		
 		if (possibleMatches != null) {
 			findBestMatch(quote, input, output, possibleMatches);
 			if (SAPInstanceType.HANA_OLAP.equals(input.getSapInstanceType()) && input.getOriginalMemory() > 0) {
