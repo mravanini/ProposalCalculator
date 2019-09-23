@@ -2,67 +2,86 @@ package com.amazon.proposalcalculator.bean;
 
 import com.amazon.proposalcalculator.enums.InstanceInputColumn;
 import com.amazon.proposalcalculator.exception.PricingCalculatorException;
-import com.ebay.xcelite.annotations.Column;
 
 public class InstanceInput {
 
-	public void setCellSAP(InstanceInputColumn column, Object value){
-		switch (column){
-			case DESCRIPTION:
-				setDescription(String.valueOf(value));
-				break;
-			case ENVIRONMENT:
-				setEnvironment((String) value);
-				break;
-			case SAP_INSTANCE_TYPE:
-				setSapInstanceType((String) value);
-				break;
-			case REGION:
-				setRegion((String) value);
-				break;
-			case SAPS:
-				setSaps(((Double) value).intValue());
-				break;
-			case CPU:
-				setCpu((double)value);
-				break;
-			case CPU_TOLERANCE:
-				setCpuTolerance((double)value);
-				break;
-			case MEMORY:
-				setMemory((double)value);
-				break;
-			case MEMORY_TOLERANCE:
-				setMemoryTolerance((double)value);
-				break;
-			case MONTHLY_UTILIZATION:
-				setMonthlyUtilization((double)value);
-				break;
-			case STORAGE:
-				setStorage(((Double) value).intValue());//(int.parseInt((String)value));
-				break;
-			case VOLUME_TYPE:
-				setVolumeType((String)value);
-				break;
-			case IOPS:
-				setIops(((Double) value).intValue());
-				break;
-			case SNAPSHOT:
-				setSnapshot(((Double) value).intValue());
-				break;
-			case ARCHIVE_LOGS_LOCAL_BACKUP:
-				setArchiveLogsLocalBackup(((Double) value).intValue());
-				break;
-			case S3_BACKUP:
-				setS3Backup(((Double) value).intValue());
-				break;
-			case OPERATING_SYSTEM:
-				setOperatingSystem((String)value);
-				break;
-			case BILLING_OPTION:
-				setBillingOption((String)value);
-				break;
+	public void setCellSAP(InstanceInputColumn column, Object value, int rowNum) {
+		try {
+			switch (column) {
+				case DESCRIPTION:
+					setDescription(String.valueOf(value));
+					break;
+				case ENVIRONMENT:
+					setEnvironment((String) value);
+					break;
+				case SAP_INSTANCE_TYPE:
+					setSapInstanceType((String) value);
+					break;
+				case REGION:
+					setRegion((String) value);
+					break;
+				case SAPS:
+					setSaps(((Double) value).intValue());
+					break;
+				case CPU:
+					setCpu((double) value);
+					break;
+				case CPU_TOLERANCE:
+					setCpuTolerance((double) value);
+					break;
+				case MEMORY:
+					setMemory((double) value);
+					break;
+				case MEMORY_TOLERANCE:
+					setMemoryTolerance((double) value);
+					break;
+				case MONTHLY_UTILIZATION:
+					setMonthlyUtilization((double) value);
+					break;
+				case STORAGE:
+					setStorage(((Double) value).intValue());//(int.parseInt((String)value));
+					break;
+				case VOLUME_TYPE:
+					setVolumeType((String) value);
+					break;
+				case IOPS:
+					setIops(((Double) value).intValue());
+					break;
+				case SNAPSHOT:
+					setSnapshot(((Double) value).intValue());
+					break;
+				case ARCHIVE_LOGS_LOCAL_BACKUP:
+					setArchiveLogsLocalBackup(((Double) value).intValue());
+					break;
+				case S3_BACKUP:
+					setS3Backup(((Double) value).intValue());
+					break;
+				case OPERATING_SYSTEM:
+					setOperatingSystem((String) value);
+					break;
+				case BILLING_OPTION:
+					setBillingOption((String) value);
+					break;
+
+			}
+		}catch (Exception e) {
+			throw new PricingCalculatorException(String.format(
+					"Invalid value on line %d, column %s. %s", rowNum, column.getColumnName(),
+					createCustomMessage(column)), e);
 		}
+	}
+
+	private String createCustomMessage(InstanceInputColumn column) {
+		if (InstanceInputColumn.SAPS.equals(column) || InstanceInputColumn.CPU.equals(column) ||
+				InstanceInputColumn.MEMORY.equals(column) || InstanceInputColumn.STORAGE.equals(column) ||
+				InstanceInputColumn.IOPS.equals(column) || InstanceInputColumn.SNAPSHOT.equals(column) ||
+				InstanceInputColumn.ARCHIVE_LOGS_LOCAL_BACKUP.equals(column) ||
+				InstanceInputColumn.S3_BACKUP.equals(column)
+				){
+			return String.format("%s must be a NUMBER", column.getColumnName());
+		}
+
+		return "";
 	}
 
 	public void setCellGeneric(InstanceInputColumn column, Object value){

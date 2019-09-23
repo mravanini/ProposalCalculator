@@ -25,7 +25,6 @@ public class POIExcelWriter {
     private final static Logger LOGGER = LogManager.getLogger();
     public static final String ERRORS_FOUND = "Errors were found during the processing of this spreadsheet. Check the other sheets for " +
             "more details.";
-    public static final int ERROR_MESSAGE_LINE = 15;
 
     private static List<Integer> percentageColumns;
     private static List<Integer> currencyColumns;
@@ -174,7 +173,7 @@ public class POIExcelWriter {
         }
 
         if (hasErrors){
-            printErrorMessage(workbook, sheet);
+            printErrorMessage(workbook, sheet, ++rowCount);
         }
 
         autoSizeColumns(sheet);
@@ -182,12 +181,12 @@ public class POIExcelWriter {
         return workbook;
     }
 
-    private static void printErrorMessage(XSSFWorkbook workbook, XSSFSheet sheet) {
+    private static void printErrorMessage(XSSFWorkbook workbook, XSSFSheet sheet, int rowCount) {
 
         XSSFFont bold = createFontBoldRed(workbook);
 
-        Row row = sheet.createRow(ERROR_MESSAGE_LINE);
-        sheet.addMergedRegion(new CellRangeAddress(ERROR_MESSAGE_LINE,ERROR_MESSAGE_LINE,0,6));
+        Row row = sheet.createRow(rowCount);
+        sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,0,6));
 
         Cell cell = row.createCell(0);
 

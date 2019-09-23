@@ -8,4 +8,8 @@ public class PricingCalculatorException extends RuntimeException {
     public PricingCalculatorException(String msg){
         super(msg);
     }
+    public PricingCalculatorException(String msg, Throwable t){
+        super(msg, t);
+    }
+
 }

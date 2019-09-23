@@ -2,7 +2,6 @@ package com.amazon.proposalcalculator.reader;
 
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.enums.InstanceInputColumn;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
@@ -58,7 +57,7 @@ public class POIExcelReader {
 							case XSSFCell.CELL_TYPE_STRING:
 								if (isSAPWorkbook) {
 									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getStringCellValue());
+											.getStringCellValue(), currentRow.getRowNum());
 								} else {
 									instanceInput.setCellGeneric(instanceInputColumn, cell
 											.getStringCellValue());
@@ -67,7 +66,7 @@ public class POIExcelReader {
 							case XSSFCell.CELL_TYPE_NUMERIC:
 								if (isSAPWorkbook) {
 									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getNumericCellValue());
+											.getNumericCellValue(), currentRow.getRowNum());
 								} else {
 									instanceInput.setCellGeneric(instanceInputColumn, cell.getNumericCellValue());
 								}
@@ -75,7 +74,7 @@ public class POIExcelReader {
 							case XSSFCell.CELL_TYPE_BOOLEAN:
 								if (isSAPWorkbook) {
 									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getBooleanCellValue());
+											.getBooleanCellValue(), currentRow.getRowNum());
 								} else {
 									instanceInput.setCellGeneric(instanceInputColumn, cell.getBooleanCellValue());
 								}
