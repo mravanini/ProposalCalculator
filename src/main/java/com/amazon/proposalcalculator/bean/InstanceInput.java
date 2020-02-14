@@ -8,116 +8,41 @@ public class InstanceInput {
 	public void setCellSAP(InstanceInputColumn column, Object value, int rowNum) {
 		try {
 			switch (column) {
-				case DESCRIPTION:
-					setDescription(String.valueOf(value));
-					break;
-				case ENVIRONMENT:
-					setEnvironment((String) value);
-					break;
-				case SAP_INSTANCE_TYPE:
-					setSapInstanceType((String) value);
-					break;
-				case REGION:
-					setRegion((String) value);
-					break;
-				case SAPS:
-					setSaps(((Double) value).intValue());
-					break;
-				case CPU:
-					setCpu((double) value);
-					break;
-				case CPU_TOLERANCE:
-					setCpuTolerance((double) value);
-					break;
-				case MEMORY:
-					setMemory((double) value);
-					break;
-				case MEMORY_TOLERANCE:
-					setMemoryTolerance((double) value);
-					break;
-				case MONTHLY_UTILIZATION:
-					setMonthlyUtilization((double) value);
-					break;
-				case STORAGE:
-					setStorage(((Double) value).intValue());//(int.parseInt((String)value));
-					break;
-				case VOLUME_TYPE:
-					setVolumeType((String) value);
-					break;
-				case IOPS:
-					setIops(((Double) value).intValue());
-					break;
-				case SNAPSHOT:
-					setSnapshot(((Double) value).intValue());
-					break;
-				case ARCHIVE_LOGS_LOCAL_BACKUP:
-					setArchiveLogsLocalBackup(((Double) value).intValue());
-					break;
-				case S3_BACKUP:
-					setS3Backup(((Double) value).intValue());
-					break;
-				case OPERATING_SYSTEM:
-					setOperatingSystem((String) value);
-					break;
-				case BILLING_OPTION:
-					setBillingOption((String) value);
-					break;
-
-			}
-		}catch (Exception e) {
-			throw new PricingCalculatorException(String.format(
-					"Invalid value on line %d, column %s. %s", rowNum, column.getColumnName(),
-					createCustomMessage(column)), e);
-		}
-	}
-
-	private String createCustomMessage(InstanceInputColumn column) {
-		if (InstanceInputColumn.SAPS.equals(column) || InstanceInputColumn.CPU.equals(column) ||
-				InstanceInputColumn.MEMORY.equals(column) || InstanceInputColumn.STORAGE.equals(column) ||
-				InstanceInputColumn.IOPS.equals(column) || InstanceInputColumn.SNAPSHOT.equals(column) ||
-				InstanceInputColumn.ARCHIVE_LOGS_LOCAL_BACKUP.equals(column) ||
-				InstanceInputColumn.S3_BACKUP.equals(column)
-				){
-			return String.format("%s must be a NUMBER", column.getColumnName());
-		}
-
-		return "";
-	}
-
-	public void setCellGeneric(InstanceInputColumn column, Object value){
-		switch (column){
 			case DESCRIPTION:
-				setDescription((String) value);
-				break;
-			case INSTANCES:
-				setInstances(((Double)value).intValue());
+				setDescription(String.valueOf(value));
 				break;
 			case ENVIRONMENT:
 				setEnvironment((String) value);
 				break;
+			case SAP_INSTANCE_TYPE:
+				setSapInstanceType((String) value);
+				break;
 			case REGION:
 				setRegion((String) value);
 				break;
+			case SAPS:
+				setSaps(((Double) value).intValue());
+				break;
 			case CPU:
-				setCpu((double)value);
+				setCpu((double) value);
 				break;
 			case CPU_TOLERANCE:
-				setCpuTolerance((double)value);
+				setCpuTolerance((double) value);
 				break;
 			case MEMORY:
-				setMemory((double)value);
+				setMemory((double) value);
 				break;
 			case MEMORY_TOLERANCE:
-				setMemoryTolerance((double)value);
+				setMemoryTolerance((double) value);
 				break;
 			case MONTHLY_UTILIZATION:
-				setMonthlyUtilization((double)value);
+				setMonthlyUtilization((double) value);
 				break;
 			case STORAGE:
-				setStorage(((Double) value).intValue());
+				setStorage(((Double) value).intValue());// (int.parseInt((String)value));
 				break;
 			case VOLUME_TYPE:
-				setVolumeType((String)value);
+				setVolumeType((String) value);
 				break;
 			case IOPS:
 				setIops(((Double) value).intValue());
@@ -125,24 +50,97 @@ public class InstanceInput {
 			case SNAPSHOT:
 				setSnapshot(((Double) value).intValue());
 				break;
+			case ARCHIVE_LOGS_LOCAL_BACKUP:
+				setArchiveLogsLocalBackup(((Double) value).intValue());
+				break;
 			case S3_BACKUP:
 				setS3Backup(((Double) value).intValue());
 				break;
 			case OPERATING_SYSTEM:
-				setOperatingSystem((String)value);
-				break;
-			case ONLY_CURRENT_GENERATION_INSTANCES:
-				setOnlyCurrentGenerationInstances((String)value);
-				break;
-			case USE_BURSTABLE_PERFORMANCE:
-				setUseBurstablePerformance((String)value);
-				break;
-			case PRE_INSTALLED_SOFTWARE:
-				setPreInstalledSw((String)value);
+				setOperatingSystem((String) value);
 				break;
 			case BILLING_OPTION:
-				setBillingOption((String)value);
+				setBillingOption((String) value);
 				break;
+
+			}
+		} catch (Exception e) {
+			throw new PricingCalculatorException(String.format("Invalid value on line %d, column %s. %s", rowNum,
+					column.getColumnName(), createCustomMessage(column)), e);
+		}
+	}
+
+	private String createCustomMessage(InstanceInputColumn column) {
+		if (InstanceInputColumn.SAPS.equals(column) || InstanceInputColumn.CPU.equals(column)
+				|| InstanceInputColumn.MEMORY.equals(column) || InstanceInputColumn.STORAGE.equals(column)
+				|| InstanceInputColumn.IOPS.equals(column) || InstanceInputColumn.SNAPSHOT.equals(column)
+				|| InstanceInputColumn.ARCHIVE_LOGS_LOCAL_BACKUP.equals(column)
+				|| InstanceInputColumn.S3_BACKUP.equals(column)) {
+			return String.format("%s must be a NUMBER", column.getColumnName());
+		}
+
+		return "";
+	}
+
+	public void setCellGeneric(InstanceInputColumn column, Object value) {
+		switch (column) {
+		case DESCRIPTION:
+			setDescription((String) value);
+			break;
+		case INSTANCES:
+			setInstances(((Double) value).intValue());
+			break;
+		case ENVIRONMENT:
+			setEnvironment((String) value);
+			break;
+		case REGION:
+			setRegion((String) value);
+			break;
+		case CPU:
+			setCpu((double) value);
+			break;
+		case CPU_TOLERANCE:
+			setCpuTolerance((double) value);
+			break;
+		case MEMORY:
+			setMemory((double) value);
+			break;
+		case MEMORY_TOLERANCE:
+			setMemoryTolerance((double) value);
+			break;
+		case MONTHLY_UTILIZATION:
+			setMonthlyUtilization((double) value);
+			break;
+		case STORAGE:
+			setStorage(((Double) value).intValue());
+			break;
+		case VOLUME_TYPE:
+			setVolumeType((String) value);
+			break;
+		case IOPS:
+			setIops(((Double) value).intValue());
+			break;
+		case SNAPSHOT:
+			setSnapshot(((Double) value).intValue());
+			break;
+		case S3_BACKUP:
+			setS3Backup(((Double) value).intValue());
+			break;
+		case OPERATING_SYSTEM:
+			setOperatingSystem((String) value);
+			break;
+		case ONLY_CURRENT_GENERATION_INSTANCES:
+			setOnlyCurrentGenerationInstances((String) value);
+			break;
+		case USE_BURSTABLE_PERFORMANCE:
+			setUseBurstablePerformance((String) value);
+			break;
+		case PRE_INSTALLED_SOFTWARE:
+			setPreInstalledSw((String) value);
+			break;
+		case BILLING_OPTION:
+			setBillingOption((String) value);
+			break;
 		}
 	}
 
@@ -177,7 +175,7 @@ public class InstanceInput {
 	private double memoryTolerance;
 
 	private int storage;
-	
+
 	private int originalStorage;
 
 	private String volumeType;
@@ -185,15 +183,15 @@ public class InstanceInput {
 	private int iops;
 
 	private int snapshot;
-	
+
 	private int originalSnapshot;
 
 	private int archiveLogsLocalBackup;
-	
+
 	private int originalArchiveLogsLocalBackup;
 
 	private int s3Backup;
-	
+
 	private int originalS3Backup;
 
 	private String termType;
@@ -216,11 +214,11 @@ public class InstanceInput {
 	private String preInstalledSw;
 
 	private String onlyCurrentGenerationInstances;
-	
+
 	private String useBurstablePerformance;
 
 	private String errorMessageInput;
-	
+
 	private String billingOption;
 
 	public double getOriginalCpu() {
@@ -534,7 +532,5 @@ public class InstanceInput {
 	public void setUseBurstablePerformance(String useBurstablePerformance) {
 		this.useBurstablePerformance = useBurstablePerformance;
 	}
-	
-	
 
 }

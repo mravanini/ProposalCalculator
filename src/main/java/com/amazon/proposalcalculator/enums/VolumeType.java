@@ -7,30 +7,27 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum VolumeType {
 
-    Magnetic("Magnetic"),
-    General_Purpose("General Purpose"),
-    Provisioned_IOPS("Provisioned IOPS"),
-    Throughput_Optimized_HDD("Throughput Optimized HDD"),
-    Cold_HDD("Cold HDD");
+	Magnetic("Magnetic"), General_Purpose("General Purpose"), Provisioned_IOPS("Provisioned IOPS"),
+	Throughput_Optimized_HDD("Throughput Optimized HDD"), Cold_HDD("Cold HDD");
 
-    private String columnName;
+	private String columnName;
 
-    VolumeType(String columnName){
-        this.columnName = columnName;
-    }
+	VolumeType(String columnName) {
+		this.columnName = columnName;
+	}
 
-    public String getColumnName() {
-        return columnName;
-    }
+	public String getColumnName() {
+		return columnName;
+	}
 
-    public static VolumeType getVolumeType(String columnName){
+	public static VolumeType getVolumeType(String columnName) {
 
-        for(VolumeType type : VolumeType.values()){
-            if (type.getColumnName().equalsIgnoreCase(columnName)){
-                return type;
-            }
-        }
+		for (VolumeType type : VolumeType.values()) {
+			if (type.getColumnName().equalsIgnoreCase(columnName)) {
+				return type;
+			}
+		}
 
-        throw new PricingCalculatorException("Invalid type of EBS. Found = " + columnName);
-    }
+		throw new PricingCalculatorException("Invalid type of EBS. Found = " + columnName);
+	}
 }

@@ -10,11 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestJson {
 	public static void main(String[] args) {
-    	try {
+		try {
 			// general method, same as with data binding
 			ObjectMapper mapper = new ObjectMapper();
 			// (note: can also use more specific type, like ArrayNode or ObjectNode!)
-			JsonNode rootNode = mapper.readValue(new File("test.json"), JsonNode.class); // src can be a File, URL, InputStream etc
+			JsonNode rootNode = mapper.readValue(new File("test.json"), JsonNode.class); // src can be a File, URL,
+																							// InputStream etc
 			System.out.println(rootNode.get("Records").get("s3").get("object").get("key"));
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
@@ -27,5 +28,5 @@ public class TestJson {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

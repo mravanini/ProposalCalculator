@@ -1,357 +1,334 @@
 package com.amazon.proposalcalculator.writer;
 
-import com.amazon.proposalcalculator.bean.InstanceOutput;
-import com.amazon.proposalcalculator.bean.Quote;
-import com.amazon.proposalcalculator.enums.LeaseContractLength;
-import com.amazon.proposalcalculator.utils.SomeMath;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.*;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.amazon.proposalcalculator.bean.InstanceOutput;
+import com.amazon.proposalcalculator.bean.Quote;
+import com.amazon.proposalcalculator.utils.SomeMath;
 
 /**
  * Created by ravanini on 22/03/17.
  */
 public class POIExcelWriter {
 
-    private final static Logger LOGGER = LogManager.getLogger();
-    public static final String ERRORS_FOUND = "Errors were found during the processing of this spreadsheet. Check the other sheets for " +
-            "more details.";
+	private final static Logger LOGGER = LogManager.getLogger();
+	public static final String ERRORS_FOUND = "Errors were found during the processing of this spreadsheet. Check the other sheets for "
+			+ "more details.";
 
-    private static List<Integer> percentageColumns;
-    private static List<Integer> currencyColumns;
+	private static List<Integer> percentageColumns;
+	private static List<Integer> currencyColumns;
 
-    private static CellStyle cellCurrencyStyle;
+	private static CellStyle cellCurrencyStyle;
 
-    private static XSSFCellStyle cellAlignCenterStyle;
+	private static XSSFCellStyle cellAlignCenterStyle;
 
-    private static CellStyle percentageCellStyle;
+	private static CellStyle percentageCellStyle;
 
-    private static CellStyle cellDoubleStyle;
+	private static CellStyle cellDoubleStyle;
 
-    static {
-        percentageColumns = new ArrayList<>();
-        percentageColumns.add(InstanceOutput.CPU_TOLERANCE);
-        percentageColumns.add(InstanceOutput.MEMORY_TOLERANCE);
+	static {
+		percentageColumns = new ArrayList<>();
+		percentageColumns.add(InstanceOutput.CPU_TOLERANCE);
+		percentageColumns.add(InstanceOutput.MEMORY_TOLERANCE);
 
-        currencyColumns = new ArrayList<>();
-        currencyColumns.add(InstanceOutput.UPFRONT_FEE);
-        currencyColumns.add(InstanceOutput.COMPUTE_UNIT_PRICE);
-        currencyColumns.add(InstanceOutput.COMPUTE_MONTHLY_PRICE);
-        currencyColumns.add(InstanceOutput.STORAGE_MONTHLY_PRICE);
-        currencyColumns.add(InstanceOutput.SNAPSHOT_MONTHLY_PRICE);
-        currencyColumns.add(InstanceOutput.ARCHIVE_LOGS_MONTHLY_PRICE);
-        currencyColumns.add(InstanceOutput.S3_BACKUP_MONTHLY_PRICE);
-    }
+		currencyColumns = new ArrayList<>();
+		currencyColumns.add(InstanceOutput.UPFRONT_FEE);
+		currencyColumns.add(InstanceOutput.COMPUTE_UNIT_PRICE);
+		currencyColumns.add(InstanceOutput.COMPUTE_MONTHLY_PRICE);
+		currencyColumns.add(InstanceOutput.STORAGE_MONTHLY_PRICE);
+		currencyColumns.add(InstanceOutput.SNAPSHOT_MONTHLY_PRICE);
+		currencyColumns.add(InstanceOutput.ARCHIVE_LOGS_MONTHLY_PRICE);
+		currencyColumns.add(InstanceOutput.S3_BACKUP_MONTHLY_PRICE);
+	}
 
+	public static void write(String outputFileName, List<Quote> quotes) throws IOException {
+		LOGGER.info("Writing output spreadsheet...");
 
-    public static void write(String outputFileName, List<Quote> quotes) throws IOException {
-        LOGGER.info("Writing output spreadsheet...");
+		setCellCurrencyStyle(null);
+		setCellAlignCenterStyle(null);
+		setPercentageCellStyle(null);
+		setCellDoubleStyle(null);
 
-        setCellCurrencyStyle(null);
-        setCellAlignCenterStyle(null);
-        setPercentageCellStyle(null);
-        setCellDoubleStyle(null);
+		XSSFWorkbook workbook = new XSSFWorkbook();
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
+		workbook = generateSummaryTab(quotes, workbook);
 
-        workbook = generateSummaryTab(quotes, workbook);
+		workbook = generateQuoteTabs(quotes, workbook);
 
-        workbook = generateQuoteTabs(quotes, workbook);
-        
-        try (FileOutputStream outputStream = new FileOutputStream(outputFileName)) {
-            workbook.write(outputStream);
-            workbook.close();
-        }
+		try (FileOutputStream outputStream = new FileOutputStream(outputFileName)) {
+			workbook.write(outputStream);
+			workbook.close();
+		}
 
-    }
+	}
 
-    private static XSSFWorkbook generateQuoteTabs(List<Quote> quotes, XSSFWorkbook workbook) {
-        for (Quote quote : quotes) {
-            XSSFSheet sheet = workbook.createSheet(quote.getName());
+	private static XSSFWorkbook generateQuoteTabs(List<Quote> quotes, XSSFWorkbook workbook) {
+		for (Quote quote : quotes) {
+			XSSFSheet sheet = workbook.createSheet(quote.getName());
 
-            int rowCount = 0;
-            createTitleRow(workbook, sheet, rowCount, InstanceOutput.titles);
+			int rowCount = 0;
+			createTitleRow(workbook, sheet, rowCount, InstanceOutput.titles);
 
-            Row row;
-            for (InstanceOutput output : quote.getOutput()) {
-                row = sheet.createRow(++rowCount);
+			Row row;
+			for (InstanceOutput output : quote.getOutput()) {
+				row = sheet.createRow(++rowCount);
 
-                for (int columnCount = 0; columnCount < InstanceOutput.getColumnCount(); columnCount++) {
+				for (int columnCount = 0; columnCount < InstanceOutput.getColumnCount(); columnCount++) {
 
-                    Object cellValue = output.getCell(columnCount);
+					Object cellValue = output.getCell(columnCount);
 
-                    if (cellValue instanceof String) {
+					if (cellValue instanceof String) {
 
-                        setCell(row, columnCount, (String) cellValue);
+						setCell(row, columnCount, (String) cellValue);
 
-                    }else if(cellValue instanceof Double){
+					} else if (cellValue instanceof Double) {
 
-                        if (isPercentageColumn(columnCount)){
-                            setCellPercentage(row, columnCount, (Double) cellValue, workbook);
-                        }else if (isCurrencyColumn(columnCount)){
-                            setCellCurrency(row, columnCount, (Double) cellValue, workbook);
-                        }else{
-                            setCell(row,columnCount, (Double) cellValue);
-                        }
+						if (isPercentageColumn(columnCount)) {
+							setCellPercentage(row, columnCount, (Double) cellValue, workbook);
+						} else if (isCurrencyColumn(columnCount)) {
+							setCellCurrency(row, columnCount, (Double) cellValue, workbook);
+						} else {
+							setCell(row, columnCount, (Double) cellValue);
+						}
 
-                    }else if (cellValue instanceof Integer){
+					} else if (cellValue instanceof Integer) {
 
-                        setCell(row, columnCount, (Integer) cellValue);//TODO ELE ESTÁ USANDO O SET CELL DE DOUBLE. VER O QUE DARÁ ISTO AQUI
+						setCell(row, columnCount, (Integer) cellValue);// TODO ELE ESTÁ USANDO O SET CELL DE DOUBLE. VER
+																		// O QUE DARÁ ISTO AQUI
 
-                    }
-                }
-            }
+					}
+				}
+			}
 
-            autoSizeColumns(sheet);
+			autoSizeColumns(sheet);
 
-        }
-        return workbook;
-    }
+		}
+		return workbook;
+	}
 
-    private static XSSFWorkbook generateSummaryTab(List<Quote> quotes, XSSFWorkbook workbook) {
+	private static XSSFWorkbook generateSummaryTab(List<Quote> quotes, XSSFWorkbook workbook) {
 
-        XSSFSheet sheet = workbook.createSheet(" Summary");
+		XSSFSheet sheet = workbook.createSheet(" Summary");
 
-        String[] titles = {
-                "Payment", "1yr Upfront", "3yr Upfront", "Monthly", "1yr Upfront Support", "3yr Upfront Support", "Monthly Support",  "3 Years Total", "Montlhy Average",  "Discount"
-        };
+		String[] titles = { "Payment", "1yr Upfront", "3yr Upfront", "Monthly", "1yr Upfront Support",
+				"3yr Upfront Support", "Monthly Support", "3 Years Total", "Montlhy Average", "Discount" };
 
-        int rowCount = 0;
+		int rowCount = 0;
 
-        createTitleRow(workbook, sheet, rowCount, titles);
+		createTitleRow(workbook, sheet, rowCount, titles);
 
-        Row row;
-        boolean hasErrors = Boolean.FALSE;
+		Row row;
+		boolean hasErrors = Boolean.FALSE;
 
-        for (Quote quote : quotes) {
-            row = sheet.createRow(++rowCount);
-            int columnCount = -1;
+		for (Quote quote : quotes) {
+			row = sheet.createRow(++rowCount);
+			int columnCount = -1;
 
-            setCell(row, ++columnCount, quote.getName());
+			setCell(row, ++columnCount, quote.getName());
 
-            /*if (LeaseContractLength.ONE_YEAR.getColumnName().equals(quote.getLeaseContractLength())) {
-                setCellCurrency(row, ++columnCount, SomeMath.round(quote.getUpfront(), 2), workbook);
-                setCellCurrency(row, ++columnCount, 0, workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfront(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfront(), 2), workbook);
 
-            } else if (LeaseContractLength.THREE_YEARS.getColumnName().equals(quote.getLeaseContractLength())) {
-                setCellCurrency(row, ++columnCount, 0, workbook);
-                setCellCurrency(row, ++columnCount, SomeMath.round(quote.getUpfront(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthly(), 2), workbook);
 
-            } else {
-                setCellCurrency(row, ++columnCount, 0, workbook);
-                setCellCurrency(row, ++columnCount, 0, workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfrontSupport(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfrontSupport(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthlySupport(), 2), workbook);
 
-            }*/
-            
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfront(), 2), workbook);
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfront(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal(), 2), workbook);
+			setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal() / 36, 2), workbook);
+			setCellPercentage(row, ++columnCount, SomeMath.round(quote.getDiscount(), 4), workbook);
 
-            //setCellFormula(row, ++columnCount, quote.getMonthlyFormula(), workbook); //testing
+			if (quote.hasErrors()) {
+				hasErrors = Boolean.TRUE;
+			}
+		}
 
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthly(), 2), workbook);
-            
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getOneYrUpfrontSupport(), 2), workbook);
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYrsUpfrontSupport(), 2), workbook);
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getMonthlySupport(), 2), workbook);
-            
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal(), 2), workbook);
-            setCellCurrency(row, ++columnCount, SomeMath.round(quote.getThreeYearTotal()/36, 2), workbook);
-            setCellPercentage(row, ++columnCount, SomeMath.round(quote.getDiscount(), 4), workbook);
+		if (hasErrors) {
+			printErrorMessage(workbook, sheet, ++rowCount);
+		}
 
-            if(quote.hasErrors()){
-                hasErrors = Boolean.TRUE;
-            }
-        }
+		autoSizeColumns(sheet);
 
-        if (hasErrors){
-            printErrorMessage(workbook, sheet, ++rowCount);
-        }
+		return workbook;
+	}
 
-        autoSizeColumns(sheet);
+	private static void printErrorMessage(XSSFWorkbook workbook, XSSFSheet sheet, int rowCount) {
 
-        return workbook;
-    }
+		XSSFFont bold = createFontBoldRed(workbook);
 
-    private static void printErrorMessage(XSSFWorkbook workbook, XSSFSheet sheet, int rowCount) {
+		Row row = sheet.createRow(rowCount);
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 6));
 
-        XSSFFont bold = createFontBoldRed(workbook);
+		Cell cell = row.createCell(0);
 
-        Row row = sheet.createRow(rowCount);
-        sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,0,6));
+		cell.setCellValue(setFont(bold, ERRORS_FOUND));
+	}
 
-        Cell cell = row.createCell(0);
+	private static boolean isCurrencyColumn(int columnCount) {
+		if (currencyColumns.contains(columnCount)) {
+			return Boolean.TRUE;
+		}
 
-        cell.setCellValue(setFont(bold, ERRORS_FOUND));
-    }
+		return Boolean.FALSE;
+	}
 
+	private static boolean isPercentageColumn(int columnCount) {
 
-    private static boolean isCurrencyColumn(int columnCount) {
-        if (currencyColumns.contains(columnCount)){
-            return Boolean.TRUE;
-        }
+		if (percentageColumns.contains(columnCount)) {
+			return Boolean.TRUE;
+		}
 
-        return Boolean.FALSE;
-    }
+		return Boolean.FALSE;
+	}
 
-    private static boolean isPercentageColumn(int columnCount) {
+	private static void autoSizeColumns(XSSFSheet sheet) {
+		for (int x = 0; x < sheet.getRow(0).getPhysicalNumberOfCells(); x++) {
+			sheet.autoSizeColumn(x);
+		}
+	}
 
-        if (percentageColumns.contains(columnCount)){
-            return Boolean.TRUE;
-        }
+	private static Row createTitleRow(XSSFWorkbook workbook, XSSFSheet sheet, int rowCount, String[] titles) {
 
-        return Boolean.FALSE;
-    }
+		XSSFFont bold = createFontBold(workbook);
 
-    private static void autoSizeColumns(XSSFSheet sheet) {
-        for (int x = 0; x < sheet.getRow(0).getPhysicalNumberOfCells(); x++) {
-            sheet.autoSizeColumn(x);
-        }
-    }
+		Row row = sheet.createRow(rowCount);
 
-    private static Row createTitleRow(XSSFWorkbook workbook, XSSFSheet sheet, int rowCount, String[] titles) {
+		for (int i = 0; i < titles.length; i++) {
+			Cell cell = row.createCell(i);
+			cell.setCellStyle(alignCenter(workbook));
+			cell.setCellValue(setFont(bold, titles[i]));
+		}
+		return row;
+	}
 
-        XSSFFont bold = createFontBold(workbook);
+	private static CellStyle alignCenter(XSSFWorkbook workbook) {
+		if (cellAlignCenterStyle == null) {
+			cellAlignCenterStyle = workbook.createCellStyle();
+			cellAlignCenterStyle.setAlignment(HorizontalAlignment.CENTER);
+		}
+		return cellAlignCenterStyle;
+	}
 
-        Row row = sheet.createRow(rowCount);
+	private static void setCellPercentage(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
 
-        for (int i = 0; i < titles.length; i++) {
-            Cell cell = row.createCell(i);
-            cell.setCellStyle(alignCenter(workbook));
-            cell.setCellValue(setFont(bold, titles[i]));
-        }
-        return row;
-    }
+		Cell cell = setCell(row, columnCount, rowValue);
 
-    private static CellStyle alignCenter(XSSFWorkbook workbook) {
-        if(cellAlignCenterStyle == null) {
-            cellAlignCenterStyle = workbook.createCellStyle();
-            cellAlignCenterStyle.setAlignment(HorizontalAlignment.CENTER);
-        }
-        return cellAlignCenterStyle;
-    }
+		setCellPercentageStyle(cell, workbook);
+	}
 
-    private static void setCellPercentage(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
+	private static void setCellPercentageStyle(Cell cell, XSSFWorkbook workbook) {
 
-        Cell cell = setCell(row, columnCount, rowValue);
+		if (percentageCellStyle == null) {
+			percentageCellStyle = workbook.createCellStyle();
+			percentageCellStyle.setDataFormat(workbook.createDataFormat().getFormat("#0%"));
+		}
+		cell.setCellStyle(percentageCellStyle);
+	}
 
-        setCellPercentageStyle(cell, workbook);
-    }
+	private static XSSFFont createFontBold(XSSFWorkbook workbook) {
+		XSSFFont bold = workbook.createFont();
+		bold.setBold(Boolean.TRUE);
+		return bold;
+	}
 
-    private static void setCellPercentageStyle(Cell cell, XSSFWorkbook workbook) {
+	private static XSSFFont createFontBoldRed(XSSFWorkbook workbook) {
+		XSSFFont boldRed = workbook.createFont();
+		boldRed.setColor(HSSFColor.RED.index);
+		boldRed.setBold(Boolean.TRUE);
+		return boldRed;
+	}
 
-        if(percentageCellStyle == null) {
-            percentageCellStyle = workbook.createCellStyle();
-            percentageCellStyle.setDataFormat(workbook.createDataFormat().getFormat("#0%"));
-        }
-        cell.setCellStyle(percentageCellStyle);
-    }
+	private static XSSFRichTextString setFont(XSSFFont font, String text) {
+		XSSFRichTextString richTextString = new XSSFRichTextString(text);
+		richTextString.applyFont(font);
+		return richTextString;
+	}
 
-    private static XSSFFont createFontBold(XSSFWorkbook workbook) {
-        XSSFFont bold = workbook.createFont();
-        bold.setBold(Boolean.TRUE);
-        return bold;
-    }
+	private static Cell setCell(Row row, int columnCount, String rowValue) {
+		Cell cell = row.createCell(columnCount);
 
-    private static XSSFFont createFontBoldRed(XSSFWorkbook workbook) {
-        XSSFFont boldRed = workbook.createFont();
-        boldRed.setColor(HSSFColor.RED.index);
-        boldRed.setBold(Boolean.TRUE);
-        return boldRed;
-    }
+		cell.setCellValue(rowValue);
 
+		return cell;
+	}
 
+	private static Cell setCell(Row row, int columnCount, double rowValue) {
+		Cell cell = row.createCell(columnCount);
 
-    private static XSSFRichTextString setFont(XSSFFont font, String text) {
-        XSSFRichTextString richTextString = new XSSFRichTextString(text);
-        richTextString.applyFont(font);
-        return richTextString;
-    }
+		cell.setCellValue(rowValue);
 
-    private static Cell setCell(Row row, int columnCount, String rowValue) {
-        Cell cell = row.createCell(columnCount);
+		return cell;
+	}
 
-        cell.setCellValue(rowValue);
+	private static void setCellCurrency(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
 
-        return cell;
-    }
+		Cell cell = setCell(row, columnCount, rowValue);
 
-    private static Cell setCell(Row row, int columnCount, double rowValue) {
-        Cell cell = row.createCell(columnCount);
+		cell.setCellStyle(getCurrencyCellStyle(workbook));
+	}
 
-        cell.setCellValue(rowValue);
+	private static CellStyle getCurrencyCellStyle(Workbook workbook) {
 
-        return cell;
-    }
+		if (cellCurrencyStyle == null) {
+			cellCurrencyStyle = workbook.createCellStyle();
 
-    private static void setCellCurrency(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
+			CreationHelper ch = workbook.getCreationHelper();
+			cellCurrencyStyle.setDataFormat(ch.createDataFormat().getFormat("$#,#0.00"));
+		}
+		return cellCurrencyStyle;
+	}
 
-        Cell cell = setCell(row, columnCount, rowValue);
+	private static void setCellFormula(Row row, int columnCount, String rowValue, XSSFWorkbook workbook) {
+		Cell cell = row.createCell(columnCount);
 
-        cell.setCellStyle(getCurrencyCellStyle(workbook));
-    }
+		CellStyle cellDoubleStyle = getCellDecimalFormatStyle(workbook);
 
-    private static CellStyle getCurrencyCellStyle(Workbook workbook){
+		cell.setCellFormula(rowValue);
+		cell.setCellStyle(cellDoubleStyle);
+	}
 
-        if(cellCurrencyStyle == null) {
-            cellCurrencyStyle = workbook.createCellStyle();
+	private static CellStyle getCellDecimalFormatStyle(XSSFWorkbook workbook) {
+		if (cellDoubleStyle == null) {
+			cellDoubleStyle = workbook.createCellStyle();
+			cellDoubleStyle
+					.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("#############0.00"));
+		}
+		return cellDoubleStyle;
+	}
 
-            CreationHelper ch = workbook.getCreationHelper();
-            cellCurrencyStyle.setDataFormat(ch.createDataFormat().getFormat("$#,#0.00"));
-        }
-        return cellCurrencyStyle;
-    }
+	public static void setCellAlignCenterStyle(XSSFCellStyle cellAlignCenterStyle) {
+		POIExcelWriter.cellAlignCenterStyle = cellAlignCenterStyle;
+	}
 
+	public static void setCellCurrencyStyle(CellStyle cellCurrencyStyle) {
+		POIExcelWriter.cellCurrencyStyle = cellCurrencyStyle;
+	}
 
-//    private void setCellDecimalFormat(Row row, int columnCount, double rowValue, XSSFWorkbook workbook) {
-//
-//        Cell cell = row.createCell(columnCount);
-//
-//        CellStyle cellDoubleStyle = getCellDecimalFormatStyle(workbook);
-//
-//        cell.setCellValue(rowValue);
-//        cell.setCellStyle(cellDoubleStyle);
-//    }
+	public static void setCellDoubleStyle(CellStyle cellDoubleStyle) {
+		POIExcelWriter.cellDoubleStyle = cellDoubleStyle;
+	}
 
-    private static void setCellFormula(Row row, int columnCount, String rowValue, XSSFWorkbook workbook) {
-        Cell cell = row.createCell(columnCount);
-
-        CellStyle cellDoubleStyle = getCellDecimalFormatStyle(workbook);
-
-        cell.setCellFormula(rowValue);
-        cell.setCellStyle(cellDoubleStyle);
-    }
-
-    private static CellStyle getCellDecimalFormatStyle(XSSFWorkbook workbook) {
-        if(cellDoubleStyle == null){
-            cellDoubleStyle = workbook.createCellStyle();
-            cellDoubleStyle.setDataFormat(
-                    workbook.getCreationHelper().createDataFormat().getFormat("#############0.00"));
-        }
-        return cellDoubleStyle;
-    }
-
-    public static void setCellAlignCenterStyle(XSSFCellStyle cellAlignCenterStyle) {
-        POIExcelWriter.cellAlignCenterStyle = cellAlignCenterStyle;
-    }
-
-    public static void setCellCurrencyStyle(CellStyle cellCurrencyStyle) {
-        POIExcelWriter.cellCurrencyStyle = cellCurrencyStyle;
-    }
-
-    public static void setCellDoubleStyle(CellStyle cellDoubleStyle) {
-        POIExcelWriter.cellDoubleStyle = cellDoubleStyle;
-    }
-
-    public static void setPercentageCellStyle(CellStyle percentageCellStyle) {
-        POIExcelWriter.percentageCellStyle = percentageCellStyle;
-    }
+	public static void setPercentageCellStyle(CellStyle percentageCellStyle) {
+		POIExcelWriter.percentageCellStyle = percentageCellStyle;
+	}
 }

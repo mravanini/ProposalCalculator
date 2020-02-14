@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  * This program demonstrates evaluating a formula cell using the
  * FormulaEvaluator.evaluateInCell(Cell) method.
+ * 
  * @author www.codejava.net
  *
  */
@@ -23,30 +24,29 @@ public class ExcelFormulaEvaluatorDemo2 {
 	public static void main(String[] args) throws IOException {
 		String excelFilePath = "JavaBooks4Beginner.xlsx";
 		FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
-		
+
 		Workbook workbook = new XSSFWorkbook(inputStream);
 		Sheet sheet = workbook.getSheetAt(0);
-		
+
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
 		CellReference cellReference = new CellReference("C9");
 		Row row = sheet.getRow(cellReference.getRow());
-		
+
 		Cell cell = row.getCell(cellReference.getCol());
-		
+
 		switch (evaluator.evaluateInCell(cell).getCellType()) {
-			case Cell.CELL_TYPE_STRING:
-				System.out.print(cell.getStringCellValue());
-				break;
-			case Cell.CELL_TYPE_BOOLEAN:
-				System.out.print(cell.getBooleanCellValue());
-				break;
-			case Cell.CELL_TYPE_NUMERIC:
-				System.out.print(cell.getNumericCellValue());
-				break;
-		}		
-		
-		
+		case Cell.CELL_TYPE_STRING:
+			System.out.print(cell.getStringCellValue());
+			break;
+		case Cell.CELL_TYPE_BOOLEAN:
+			System.out.print(cell.getBooleanCellValue());
+			break;
+		case Cell.CELL_TYPE_NUMERIC:
+			System.out.print(cell.getNumericCellValue());
+			break;
+		}
+
 		workbook.close();
 		inputStream.close();
 	}

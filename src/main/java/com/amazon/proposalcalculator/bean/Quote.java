@@ -7,22 +7,24 @@ import com.amazon.proposalcalculator.enums.OfferingClass;
 
 public class Quote implements Comparable<Quote> {
 
-
 	public Quote(String name) {
 		this.name = name;
 	}
-	
+
 	public Quote(String termType, String leaseContractLength, String purchaseOption, String offeringClass) {
 		this.termType = termType;
 		this.leaseContractLength = leaseContractLength;
 		this.purchaseOption = purchaseOption;
 		this.offeringClass = offeringClass;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(termType);
-		if (leaseContractLength != null) sb.append("_").append(leaseContractLength.substring(0,2).toUpperCase());
-		if (purchaseOption != null) sb.append(justFirstLetters(purchaseOption));
-		if (OfferingClass.Convertible.name().equalsIgnoreCase(offeringClass)) sb.append("_").append(justFirstLetters(offeringClass));
+		if (leaseContractLength != null)
+			sb.append("_").append(leaseContractLength.substring(0, 2).toUpperCase());
+		if (purchaseOption != null)
+			sb.append(justFirstLetters(purchaseOption));
+		if (OfferingClass.Convertible.name().equalsIgnoreCase(offeringClass))
+			sb.append("_").append(justFirstLetters(offeringClass));
 		this.setName(sb.toString());
 	}
 
@@ -33,10 +35,10 @@ public class Quote implements Comparable<Quote> {
 	private String offeringClass;
 	private double monthly;
 	private double upfront;
-	
+
 	private double oneYrUpfront;
 	private double threeYrsUpfront;
-	
+
 	private double monthlySupport;
 	private double oneYrUpfrontSupport;
 	private double threeYrsUpfrontSupport;
@@ -48,7 +50,7 @@ public class Quote implements Comparable<Quote> {
 	private double discount;
 	private boolean hasErrors;
 	private Collection<InstanceOutput> output = new ArrayList<InstanceOutput>();
-	
+
 	private String justFirstLetters(String words) {
 		StringBuilder result = new StringBuilder();
 		String[] splitWords = words.split(" ");
@@ -57,43 +59,55 @@ public class Quote implements Comparable<Quote> {
 		}
 		return result.toString();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Collection<InstanceOutput> getOutput() {
 		return output;
 	}
+
 	public void setOutput(Collection<InstanceOutput> output) {
 		this.output = output;
 	}
+
 	public void addOutput(InstanceOutput output) {
 		this.output.add(output);
 	}
+
 	public String getTermType() {
 		return termType;
 	}
+
 	public void setTermType(String termType) {
 		this.termType = termType;
 	}
+
 	public String getLeaseContractLength() {
 		return leaseContractLength;
 	}
+
 	public void setLeaseContractLength(String leaseContractLength) {
 		this.leaseContractLength = leaseContractLength;
 	}
+
 	public String getPurchaseOption() {
 		return purchaseOption;
 	}
+
 	public void setPurchaseOption(String purchaseOption) {
 		this.purchaseOption = purchaseOption;
 	}
+
 	public String getOfferingClass() {
 		return offeringClass;
 	}
+
 	public void setOfferingClass(String offeringClass) {
 		this.offeringClass = offeringClass;
 	}
@@ -101,6 +115,7 @@ public class Quote implements Comparable<Quote> {
 	public boolean hasErrors() {
 		return hasErrors;
 	}
+
 	public void setHasErrors(boolean hasErrors) {
 		this.hasErrors = hasErrors;
 	}

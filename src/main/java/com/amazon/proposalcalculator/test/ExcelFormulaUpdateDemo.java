@@ -10,8 +10,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * This program demonstrates reading an Excel document, add a formula
- * to the first sheet, and then save the file. 
+ * This program demonstrates reading an Excel document, add a formula to the
+ * first sheet, and then save the file.
+ * 
  * @author www.codejava.net
  *
  */
@@ -25,9 +26,9 @@ public class ExcelFormulaUpdateDemo {
 		Sheet sheet = workbook.getSheetAt(0);
 
 		sheet.getRow(8).getCell(2).setCellFormula("SUM(C5:C7) + SUM(C5:C7) * 0.1");
-		
+
 		inputStream.close();
-		
+
 		FileOutputStream outputStream = new FileOutputStream(excelFilePath);
 		workbook.write(outputStream);
 		workbook.close();

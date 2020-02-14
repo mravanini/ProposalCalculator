@@ -7,30 +7,29 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum LeaseContractLength {
 
-    ONE_YEAR("1yr"),
-    THREE_YEARS("3yr");
+	ONE_YEAR("1yr"), THREE_YEARS("3yr");
 
-    private String columnName;
+	private String columnName;
 
-    LeaseContractLength(String columnName){
-        this.columnName = columnName;
-    }
+	LeaseContractLength(String columnName) {
+		this.columnName = columnName;
+	}
 
-    public String getColumnName() {
-        return columnName;
-    }
+	public String getColumnName() {
+		return columnName;
+	}
 
-    public static LeaseContractLength getLeaseContractLength(String columnName) {
-    	
-    		columnName = columnName.replace(" ", "").toLowerCase();
+	public static LeaseContractLength getLeaseContractLength(String columnName) {
 
-        for(LeaseContractLength leaseContractLength : LeaseContractLength.values()){
-            if (leaseContractLength.getColumnName().equalsIgnoreCase(columnName)){
-                return leaseContractLength;
-            }
-        }
+		columnName = columnName.replace(" ", "").toLowerCase();
 
-        throw new PricingCalculatorException("Invalid type of Lease Contract Length. Found = " + columnName);
-    }
+		for (LeaseContractLength leaseContractLength : LeaseContractLength.values()) {
+			if (leaseContractLength.getColumnName().equalsIgnoreCase(columnName)) {
+				return leaseContractLength;
+			}
+		}
+
+		throw new PricingCalculatorException("Invalid type of Lease Contract Length. Found = " + columnName);
+	}
 
 }

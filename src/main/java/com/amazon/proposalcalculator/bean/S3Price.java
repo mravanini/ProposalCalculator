@@ -3,29 +3,29 @@ package com.amazon.proposalcalculator.bean;
 import com.opencsv.bean.CsvBindByName;
 
 public class S3Price {
-	
-	@CsvBindByName(column="Product Family")
+
+	@CsvBindByName(column = "Product Family")
 	private String productFamily;
-	
-	//AmazonS3
-	@CsvBindByName(column="serviceCode")
+
+	// AmazonS3
+	@CsvBindByName(column = "serviceCode")
 	private String serviceCode;
-	
-	//US East (N. Virginia)
-	@CsvBindByName(column="Location")
+
+	// US East (N. Virginia)
+	@CsvBindByName(column = "Location")
 	private String location;
-	
-	//General Purpose
-	@CsvBindByName(column="Storage Class")
+
+	// General Purpose
+	@CsvBindByName(column = "Storage Class")
 	private String storageClass;
-	
-	@CsvBindByName(column="StartingRange")
+
+	@CsvBindByName(column = "StartingRange")
 	private String startingRange;
-	
-	@CsvBindByName(column="EndingRange")
+
+	@CsvBindByName(column = "EndingRange")
 	private String endingRange;
-	
-	@CsvBindByName(column="PricePerUnit")
+
+	@CsvBindByName(column = "PricePerUnit")
 	private Double pricePerUnit;
 
 	public String getProductFamily() {
@@ -83,7 +83,5 @@ public class S3Price {
 	public void setPricePerUnit(Double pricePerUnit) {
 		this.pricePerUnit = pricePerUnit;
 	}
-	
-	
-	
+
 }

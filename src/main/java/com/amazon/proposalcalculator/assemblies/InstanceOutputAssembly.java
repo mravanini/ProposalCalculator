@@ -2,8 +2,6 @@ package com.amazon.proposalcalculator.assemblies;
 
 import com.amazon.proposalcalculator.bean.InstanceInput;
 import com.amazon.proposalcalculator.bean.InstanceOutput;
-import com.amazon.proposalcalculator.bean.Price;
-import com.amazon.proposalcalculator.utils.Constants;
 
 /**
  * Created by ravanini on 20/01/17.
@@ -47,8 +45,8 @@ public class InstanceOutputAssembly {
 		output.setEnvironment(input.getEnvironment());
 		output.setSapInstanceType(input.getSapInstanceType());
 		output.setCpuTolerance(input.getCpuTolerance());
-		output.setMemoryTolerance(input.getMemoryTolerance() );
-		output.setArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup() );
+		output.setMemoryTolerance(input.getMemoryTolerance());
+		output.setArchiveLogsLocalBackup(input.getArchiveLogsLocalBackup());
 		output.setS3Backup(input.getS3Backup());
 
 		return output;

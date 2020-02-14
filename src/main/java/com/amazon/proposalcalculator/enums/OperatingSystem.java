@@ -7,20 +7,16 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum OperatingSystem {
 
-    SUSE,
-    Windows,
-    RHEL,
-    Linux,
-    BYOL;
+	SUSE, Windows, RHEL, Linux, BYOL;
 
-    public static OperatingSystem getOperatingSystem(String columnName){
+	public static OperatingSystem getOperatingSystem(String columnName) {
 
-        for(OperatingSystem operatingSystem : OperatingSystem.values()){
-            if (operatingSystem.name().equalsIgnoreCase(columnName)){
-                return operatingSystem;
+		for (OperatingSystem operatingSystem : OperatingSystem.values()) {
+			if (operatingSystem.name().equalsIgnoreCase(columnName)) {
+				return operatingSystem;
 
-            }
-        }
-        throw new PricingCalculatorException("Invalid Operating System. Found = " + columnName);
-    }
+			}
+		}
+		throw new PricingCalculatorException("Invalid Operating System. Found = " + columnName);
+	}
 }

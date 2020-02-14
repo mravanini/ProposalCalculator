@@ -14,7 +14,6 @@ public class OnlyNumbersConverter implements ColumnValueConverter<String, Double
 
 	@Override
 	public Double deserialize(String value) {
-		//return value + "%";
 		return null;
 	}
 

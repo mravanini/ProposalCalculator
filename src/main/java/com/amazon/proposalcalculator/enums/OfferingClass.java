@@ -7,17 +7,16 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum OfferingClass {
 
-    Convertible,
-    Standard;
+	Convertible, Standard;
 
-    public static OfferingClass getOfferingClass(String columnName){
+	public static OfferingClass getOfferingClass(String columnName) {
 
-        for(OfferingClass offeringClass : OfferingClass.values()){
-            if (offeringClass.name().equalsIgnoreCase(columnName)){
-                return offeringClass;
+		for (OfferingClass offeringClass : OfferingClass.values()) {
+			if (offeringClass.name().equalsIgnoreCase(columnName)) {
+				return offeringClass;
 
-            }
-        }
-        throw new PricingCalculatorException("Invalid Offering Class. Found = " + columnName);
-    }
+			}
+		}
+		throw new PricingCalculatorException("Invalid Offering Class. Found = " + columnName);
+	}
 }

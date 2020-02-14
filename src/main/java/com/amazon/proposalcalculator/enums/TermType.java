@@ -7,18 +7,17 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum TermType {
 
-    OnDemand,
-    Reserved;
+	OnDemand, Reserved;
 
-    public static TermType getTermType(String columnName){
+	public static TermType getTermType(String columnName) {
 
-        for(TermType type : TermType.values()){
-            if (type.name().equalsIgnoreCase(columnName)){
-                return type;
+		for (TermType type : TermType.values()) {
+			if (type.name().equalsIgnoreCase(columnName)) {
+				return type;
 
-            }
-        }
-        throw new PricingCalculatorException("Invalid TermType. Found = " + columnName);
-    }
+			}
+		}
+		throw new PricingCalculatorException("Invalid TermType. Found = " + columnName);
+	}
 
 }

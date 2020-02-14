@@ -1,5 +1,13 @@
 package com.amazon.proposalcalculator.writer;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazon.proposalcalculator.bean.InstanceOutput;
 import com.amazon.proposalcalculator.bean.Quote;
 import com.amazon.proposalcalculator.enums.LeaseContractLength;
@@ -8,18 +16,10 @@ import com.amazon.proposalcalculator.utils.SomeMath;
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class DefaultExcelWriter {
 
 	private final static Logger LOGGER = LogManager.getLogger();
-
 
 	public void write(String outputFileName, List<Quote> quotes) {
 		LOGGER.info("Writing output spreadsheet...");
@@ -38,7 +38,8 @@ public class DefaultExcelWriter {
 					}
 				}
 			}
-			LOGGER.info(quote.getName() + "-> Value: " + quote.getThreeYearTotal() + "-> Discount: " + quote.getDiscount());
+			LOGGER.info(
+					quote.getName() + "-> Value: " + quote.getThreeYearTotal() + "-> Discount: " + quote.getDiscount());
 		}
 		xcelite.write(new File(outputFileName));
 	}
@@ -57,7 +58,6 @@ public class DefaultExcelWriter {
 		list1.add("3yr Upfront");
 
 		list1.add("Monthly Formula");
-
 
 		list1.add("Monthly");
 		list1.add("3 Years Total");
@@ -85,10 +85,9 @@ public class DefaultExcelWriter {
 
 			list2.add(quote.getMonthlyFormula());
 
-
 			list2.add(SomeMath.round(quote.getMonthly(), 2));
 			list2.add(SomeMath.round(quote.getThreeYearTotal(), 2));
-			list2.add(SomeMath.round(quote.getThreeYearTotal()/36, 2));
+			list2.add(SomeMath.round(quote.getThreeYearTotal() / 36, 2));
 			list2.add(SomeMath.round(quote.getDiscount(), 4));
 			data.add(list2);
 		}

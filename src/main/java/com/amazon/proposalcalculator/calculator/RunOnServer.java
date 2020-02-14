@@ -1,7 +1,28 @@
 package com.amazon.proposalcalculator.calculator;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazon.proposalcalculator.bean.InstanceInput;
-import com.amazon.proposalcalculator.reader.*;
+import com.amazon.proposalcalculator.reader.DataTransferReader;
+import com.amazon.proposalcalculator.reader.EC2PriceListReader;
+import com.amazon.proposalcalculator.reader.POIExcelReader;
+import com.amazon.proposalcalculator.reader.ParametersReader;
+import com.amazon.proposalcalculator.reader.S3PriceListReader;
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -17,20 +38,6 @@ import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Created by ravanini on 02/12/16.
@@ -43,8 +50,8 @@ public class RunOnServer {
 	private final static Logger LOGGER = LogManager.getLogger();
 	private static int exponentialBackoffTime = 2000;
 
-
 	public static void main(String[] args) throws Exception {
+		Thread.currentThread().setName(RunOnServer.class.getName());
 		while (true) {
 			try {
 				AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
@@ -64,7 +71,6 @@ public class RunOnServer {
 					for (Message message : messages) {
 						logMessage(message);
 						processRecords(sqsClient, s3Client, myQueueUrl, message);
-						// TODO shouldn't we delete sqs message here??
 
 						// todo for testing purposes only
 						Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
@@ -78,8 +84,8 @@ public class RunOnServer {
 				}
 
 			} catch (Exception e) {
-				LOGGER.error(
-						"Error trying to read price list. Trying again in " + exponentialBackoffTime/1000 + " second(s).");
+				LOGGER.error("Error trying to read price list. Trying again in " + exponentialBackoffTime / 1000
+						+ " second(s).");
 				LOGGER.error("Error Message: " + e.getMessage(), e);
 				Thread.sleep(exponentialBackoffTime);
 				exponentialBackoffTime = exponentialBackoffTime * 2;
@@ -88,12 +94,13 @@ public class RunOnServer {
 		}
 	}
 
-	private static void readPriceLists(String[] args) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+	private static void readPriceLists(String[] args) throws IOException, NoSuchMethodException, InstantiationException,
+			IllegalAccessException, InvocationTargetException {
 		Constants.beginTime = System.currentTimeMillis();
 
-		//TODO remove forceDownload or will this be treated later?
+		// TODO remove forceDownload or will this be treated later?
 		Boolean forceDownload;
-		//forceDownload = ParseMainArguments.isForceDownload(args);
+		// forceDownload = ParseMainArguments.isForceDownload(args);
 		forceDownload = false;
 
 		EC2PriceListReader.read(forceDownload);
@@ -120,13 +127,13 @@ public class RunOnServer {
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, inputFileS3Key));
 
 			try {
-				//todo for testing purposes only
+				// todo for testing purposes only
 				Integer exceptionLocation = Integer.valueOf(System.getenv("WHERE_IS_EXCEPTION"));
-				//LOGGER.warn("Exception location environment = " + exceptionLocation);
-				if(exceptionLocation.intValue() == 3){
+				// LOGGER.warn("Exception location environment = " + exceptionLocation);
+				if (exceptionLocation.intValue() == 3) {
 					throw new Exception("test deleting message");
 				}
-				//end: todo for testing purposes only
+				// end: todo for testing purposes only
 
 				InputStream objectData = s3Object.getObjectContent();
 
@@ -136,33 +143,30 @@ public class RunOnServer {
 				Files.copy(objectData, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				IOUtils.closeQuietly(objectData);
 
-				// read spreadsheets
-				//Collection<InstanceInput> instanceInputs = DefaultExcelReader.read(inputFileName);
 				Collection<InstanceInput> instanceInputs = POIExcelReader.read(inputFileName);
 				DataTransferReader.read(inputFileName);
 				ParametersReader.read(inputFileName);
 
 				// calculate and delete message from SQS
-				//String outputFileName = getCurrentTime() + "_" + Constants.OUTPUT_FILE_NAME;
-				String outputFileName = inputFileName.replace(".xlsx", "") + "output_"+ getCurrentTime() + ".xlsx";
-				
+				String outputFileName = inputFileName.replace(".xlsx", "") + "output_" + getCurrentTime() + ".xlsx";
+
 				Calculator.calculate(instanceInputs, outputFileName);
 				sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
-
 
 				// put file back to S3
 				putFileBackToS3(s3Client, bucketName, s3Object, outputFileName);
 
-				//todo for testing purposes only
-				//LOGGER.warn("Exception location environment = " + exceptionLocation);
-				if(exceptionLocation.intValue() == 2){
+				// todo for testing purposes only
+				// LOGGER.warn("Exception location environment = " + exceptionLocation);
+				if (exceptionLocation.intValue() == 2) {
 					throw new Exception("test exception handling");
 				}
-				//end: todo for testing purposes only
+				// end: todo for testing purposes only
 
-			}catch (Exception e){
+			} catch (Exception e) {
 
-				LOGGER.warn("Deleting message from the queue: " + myQueueUrl + ", receiptHandle: " + messageReceiptHandle);
+				LOGGER.warn(
+						"Deleting message from the queue: " + myQueueUrl + ", receiptHandle: " + messageReceiptHandle);
 
 				sqsClient.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageReceiptHandle));
 
@@ -176,12 +180,11 @@ public class RunOnServer {
 				putFileBackToS3(s3Client, bucketName, s3Object, outputFileNameWithError);
 
 			}
-//			ObjectMetadata metadata = new ObjectMetadata();
-//			metadata.addUserMetadata(METAKEY, meta);
 		}
 	}
 
-	private static void putFileBackToS3(AmazonS3 s3Client, String bucketName, S3Object s3Object, String outputFileName) {
+	private static void putFileBackToS3(AmazonS3 s3Client, String bucketName, S3Object s3Object,
+			String outputFileName) {
 		PutObjectRequest putObjectRequest = getPutObjectRequest(bucketName, outputFileName);
 		putObjectRequest.setMetadata(getObjectMetadata(s3Object.getObjectMetadata()));
 		s3Client.putObject(putObjectRequest);
@@ -217,8 +220,8 @@ public class RunOnServer {
 		ObjectMetadata metadata = new ObjectMetadata();
 		String meta = getEmailFromMetadata(objectMetadata);
 		if (meta == null) {
-            meta = "no email configured in the input object";//TODO throw exception?
-        }
+			meta = "no email configured in the input object";// TODO throw exception?
+		}
 		metadata.addUserMetadata(Constants.METAKEY, meta);
 		return metadata;
 	}

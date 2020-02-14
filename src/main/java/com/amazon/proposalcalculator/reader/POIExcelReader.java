@@ -1,17 +1,26 @@
 package com.amazon.proposalcalculator.reader;
 
-import com.amazon.proposalcalculator.bean.InstanceInput;
-import com.amazon.proposalcalculator.enums.InstanceInputColumn;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.amazon.proposalcalculator.bean.InstanceInput;
+import com.amazon.proposalcalculator.enums.InstanceInputColumn;
 
 public class POIExcelReader {
 
@@ -34,7 +43,7 @@ public class POIExcelReader {
 
 		while (iterator.hasNext()) {
 
-			if (isSAPWorkbook == null) {//first row
+			if (isSAPWorkbook == null) {// first row
 				Row firstRow = iterator.next();
 				isSAPWorkbook = isSAPWorkbook(firstRow);
 				columnsThatMatter = getColumnsThatMatter(firstRow);
@@ -53,37 +62,36 @@ public class POIExcelReader {
 						InstanceInputColumn instanceInputColumn = columnsThatMatter.get(cell.getColumnIndex());
 
 						switch (evaluator.evaluateInCell(cell).getCellType()) {
-							//XSSFCell is for xlsx files
-							case XSSFCell.CELL_TYPE_STRING:
-								if (isSAPWorkbook) {
-									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getStringCellValue(), currentRow.getRowNum());
-								} else {
-									instanceInput.setCellGeneric(instanceInputColumn, cell
-											.getStringCellValue());
-								}
-								break;
-							case XSSFCell.CELL_TYPE_NUMERIC:
-								if (isSAPWorkbook) {
-									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getNumericCellValue(), currentRow.getRowNum());
-								} else {
-									instanceInput.setCellGeneric(instanceInputColumn, cell.getNumericCellValue());
-								}
-								break;
-							case XSSFCell.CELL_TYPE_BOOLEAN:
-								if (isSAPWorkbook) {
-									instanceInput.setCellSAP(instanceInputColumn, cell
-											.getBooleanCellValue(), currentRow.getRowNum());
-								} else {
-									instanceInput.setCellGeneric(instanceInputColumn, cell.getBooleanCellValue());
-								}
-								break;
-							case XSSFCell.CELL_TYPE_BLANK:
-								break;
-							//should never happen
-							case XSSFCell.CELL_TYPE_FORMULA:
-								throw new RuntimeException("cell formula should never happen");
+						// XSSFCell is for xlsx files
+						case XSSFCell.CELL_TYPE_STRING:
+							if (isSAPWorkbook) {
+								instanceInput.setCellSAP(instanceInputColumn, cell.getStringCellValue(),
+										currentRow.getRowNum());
+							} else {
+								instanceInput.setCellGeneric(instanceInputColumn, cell.getStringCellValue());
+							}
+							break;
+						case XSSFCell.CELL_TYPE_NUMERIC:
+							if (isSAPWorkbook) {
+								instanceInput.setCellSAP(instanceInputColumn, cell.getNumericCellValue(),
+										currentRow.getRowNum());
+							} else {
+								instanceInput.setCellGeneric(instanceInputColumn, cell.getNumericCellValue());
+							}
+							break;
+						case XSSFCell.CELL_TYPE_BOOLEAN:
+							if (isSAPWorkbook) {
+								instanceInput.setCellSAP(instanceInputColumn, cell.getBooleanCellValue(),
+										currentRow.getRowNum());
+							} else {
+								instanceInput.setCellGeneric(instanceInputColumn, cell.getBooleanCellValue());
+							}
+							break;
+						case XSSFCell.CELL_TYPE_BLANK:
+							break;
+						// should never happen
+						case XSSFCell.CELL_TYPE_FORMULA:
+							throw new RuntimeException("cell formula should never happen");
 						}
 					}
 				}
@@ -93,23 +101,22 @@ public class POIExcelReader {
 		return instanceInputs;
 	}
 
-	private static boolean isSAPWorkbook(Row firstRow){
+	private static boolean isSAPWorkbook(Row firstRow) {
 
 		Iterator<Cell> cellIterator = firstRow.iterator();
 
 		while (cellIterator.hasNext()) {
 			Cell cell = cellIterator.next();
 
-			if(cell.getStringCellValue().equalsIgnoreCase(InstanceInputColumn.SAPS.getColumnName())||
-					cell.getStringCellValue().equalsIgnoreCase(InstanceInputColumn.SAP_INSTANCE_TYPE.getColumnName())){
+			if (cell.getStringCellValue().equalsIgnoreCase(InstanceInputColumn.SAPS.getColumnName()) || cell
+					.getStringCellValue().equalsIgnoreCase(InstanceInputColumn.SAP_INSTANCE_TYPE.getColumnName())) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-
-	private static Map<Integer, InstanceInputColumn> getColumnsThatMatter(Row firstRow){
+	private static Map<Integer, InstanceInputColumn> getColumnsThatMatter(Row firstRow) {
 
 		Iterator<Cell> cellIterator = firstRow.iterator();
 		Map<Integer, InstanceInputColumn> columnsThatMatter = new HashMap<>();
@@ -117,7 +124,7 @@ public class POIExcelReader {
 		while (cellIterator.hasNext()) {
 			Cell cell = cellIterator.next();
 			InstanceInputColumn instanceInputColumn = InstanceInputColumn.getColumnEnum(cell.getStringCellValue());
-			if(instanceInputColumn != null){
+			if (instanceInputColumn != null) {
 				columnsThatMatter.put(cell.getColumnIndex(), instanceInputColumn);
 			}
 		}

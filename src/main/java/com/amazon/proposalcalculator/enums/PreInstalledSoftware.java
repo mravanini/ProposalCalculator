@@ -7,28 +7,26 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum PreInstalledSoftware {
 
-    NA("NA"),
-    SQLStandard("SQL Std"),
-    SQLWeb("SQL Web"),
-    SQLEnterprise("SQL Ent");
+	NA("NA"), SQLStandard("SQL Std"), SQLWeb("SQL Web"), SQLEnterprise("SQL Ent");
 
-    private String columnName;
-    PreInstalledSoftware(String columnName){
-        this.columnName = columnName;
-    }
-    public String getColumnName() {
-        return columnName;
-    }
+	private String columnName;
 
+	PreInstalledSoftware(String columnName) {
+		this.columnName = columnName;
+	}
 
-    public static PreInstalledSoftware getPreInstalledSoftware(String columnName){
+	public String getColumnName() {
+		return columnName;
+	}
 
-        for(PreInstalledSoftware preInstalledSoftware : PreInstalledSoftware.values()){
-            if (preInstalledSoftware.getColumnName().equalsIgnoreCase(columnName)){
-                return preInstalledSoftware;
+	public static PreInstalledSoftware getPreInstalledSoftware(String columnName) {
 
-            }
-        }
-        throw new PricingCalculatorException("Invalid Pre Installed Software. Found = " + columnName);
-    }
+		for (PreInstalledSoftware preInstalledSoftware : PreInstalledSoftware.values()) {
+			if (preInstalledSoftware.getColumnName().equalsIgnoreCase(columnName)) {
+				return preInstalledSoftware;
+
+			}
+		}
+		throw new PricingCalculatorException("Invalid Pre Installed Software. Found = " + columnName);
+	}
 }

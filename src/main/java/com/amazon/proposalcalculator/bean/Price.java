@@ -2,58 +2,51 @@ package com.amazon.proposalcalculator.bean;
 
 import com.amazon.proposalcalculator.utils.Constants;
 import com.amazon.proposalcalculator.utils.MemoryConverter;
-import com.ebay.xcelite.annotations.Column;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
 
 public class Price {
-	
-	//Compute Instance
-	
-	@CsvBindByName(column="Product Family")
+
+	@CsvBindByName(column = "To Location")
+	private String toLocation;
+
+	@CsvBindByName(column = "Product Family")
 	private String productFamily;
-	
-	@CsvBindByName(column="Instance Type")
+
+	@CsvBindByName(column = "Instance Type")
 	private String instanceType;
-	
-	@CsvBindByName(column="vCPU")
+
+	@CsvBindByName(column = "vCPU")
 	private int vCPU;
-	
-	//2 GiB
-	@CsvCustomBindByName(column="Memory", converter=MemoryConverter.class)
+
+	@CsvCustomBindByName(column = "Memory", converter = MemoryConverter.class)
 	private double memory;
-	
-	@CsvBindByName(column="PricePerUnit")
+
+	@CsvBindByName(column = "PricePerUnit")
 	private double pricePerUnit;
-	
-	// South America (Sao Paulo) / US East (N. Virginia)
-	@CsvBindByName(column="Location")
+
+	@CsvBindByName(column = "Location")
 	private String location;
-	
-	//Yes / No
-	@CsvBindByName(column="Current Generation")
+
+	@CsvBindByName(column = "Current Generation")
 	private String currentGeneration;
-	
-	//Reserve OnDemand
-	@CsvBindByName(column="TermType")
+
+	@CsvBindByName(column = "TermType")
 	private String termType;
-	
-	//RHEL Windows SUSE Linux
-	@CsvBindByName(column="Operating System")
+
+	@CsvBindByName(column = "Operating System")
 	private String operatingSystem;
-	
-	//standard convertible
-	@CsvBindByName(column="OfferingClass")
+
+	@CsvBindByName(column = "OfferingClass")
 	private String offeringClass;
-	
-	//All Upfront / Partial Upfront / No Upfront
-	@CsvBindByName(column="PurchaseOption")
+
+	@CsvBindByName(column = "PurchaseOption")
 	private String purchaseOption;
-	
-	//Shared
-	@CsvBindByName(column="Tenancy")
+
+	// Shared
+	@CsvBindByName(column = "Tenancy")
 	private String tenancy;
-	
+
 	@CsvBindByName(column = "LeaseContractLength")
 	private String leaseContractLength;
 
@@ -62,34 +55,34 @@ public class Price {
 
 	@CsvBindByName(column = "Group")
 	private String group;
-	
+
 	@CsvBindByName(column = "PriceDescription")
 	private String priceDescription;
-	
+
 	@CsvBindByName(column = "SKU")
 	private String sku;
-	
+
 	@CsvBindByName(column = "Pre Installed S/W")
 	private String preInstalledSw;
-	
+
 	@CsvBindByName(column = "License Model")
 	private String licenseModel;
-	
+
 	@CsvBindByName(column = "Transfer Type")
 	private String transferType;
-	
+
 	@CsvBindByName(column = "StartingRange")
 	private String startingRange;
-	
+
 	@CsvBindByName(column = "EndingRange")
 	private String endingRange;
-	
+
 	@CsvBindByName(column = "From Location")
 	private String fromLocation;
-	
+
 	@CsvBindByName(column = "CapacityStatus")
 	private String capacityStatus;
-	
+
 	public String getCapacityStatus() {
 		return capacityStatus;
 	}
@@ -99,28 +92,12 @@ public class Price {
 	}
 
 	private double upfrontFee;
-	
+
 	private double efectivePrice;
-	
+
 	private double instanceHourPrice;
-	
+
 	private int saps;
-
-	
-
-	@Override
-	public String toString() {
-		return "Price ToString [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
-				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
-				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
-				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption
-				+ ", tenancy=" + tenancy + ", leaseContractLength=" + leaseContractLength + ", volumeType=" + volumeType
-				+ ", group=" + group + ", priceDescription=" + priceDescription + ", sku=" + sku + ", preInstalledSw="
-				+ preInstalledSw + ", licenseModel=" + licenseModel + ", transferType=" + transferType
-				+ ", startingRange=" + startingRange + ", endingRange=" + endingRange + ", fromLocation=" + fromLocation
-				+ ", capacityStatus=" + capacityStatus + ", upfrontFee=" + upfrontFee + ", efectivePrice="
-				+ efectivePrice + ", instanceHourPrice=" + instanceHourPrice + ", saps=" + saps + "]";
-	}
 
 	public String getTenancy() {
 		return tenancy;
@@ -309,7 +286,7 @@ public class Price {
 	public String getStartingRange() {
 		return startingRange;
 	}
-	
+
 	public long getStartingRangeAsLong() {
 		try {
 			return Long.valueOf(startingRange);
@@ -325,7 +302,7 @@ public class Price {
 	public String getEndingRange() {
 		return endingRange;
 	}
-	
+
 	public long getEndingRangeAsLong() {
 		try {
 			return Long.valueOf(endingRange);
@@ -353,4 +330,27 @@ public class Price {
 	public void setSaps(int saps) {
 		this.saps = saps;
 	}
+
+	public String getToLocation() {
+		return toLocation;
+	}
+
+	public void setToLocation(String toLocation) {
+		this.toLocation = toLocation;
+	}
+
+	@Override
+	public String toString() {
+		return "Price ToString [productFamily=" + productFamily + ", instanceType=" + instanceType + ", vCPU=" + vCPU
+				+ ", memory=" + memory + ", pricePerUnit=" + pricePerUnit + ", location=" + location
+				+ ", currentGeneration=" + currentGeneration + ", termType=" + termType + ", operatingSystem="
+				+ operatingSystem + ", offeringClass=" + offeringClass + ", purchaseOption=" + purchaseOption
+				+ ", tenancy=" + tenancy + ", leaseContractLength=" + leaseContractLength + ", volumeType=" + volumeType
+				+ ", group=" + group + ", priceDescription=" + priceDescription + ", sku=" + sku + ", preInstalledSw="
+				+ preInstalledSw + ", licenseModel=" + licenseModel + ", transferType=" + transferType
+				+ ", startingRange=" + startingRange + ", endingRange=" + endingRange + ", fromLocation=" + fromLocation
+				+ ", capacityStatus=" + capacityStatus + ", upfrontFee=" + upfrontFee + ", efectivePrice="
+				+ efectivePrice + ", instanceHourPrice=" + instanceHourPrice + ", saps=" + saps + "]";
+	}
+
 }

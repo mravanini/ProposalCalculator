@@ -5,7 +5,5 @@ package com.amazon.proposalcalculator.enums;
  */
 public enum ProductName {
 
-    AmazonEC2,
-    AmazonS3,
-    AmazonRDS;
+	AmazonEC2, AmazonS3, AmazonRDS;
 }

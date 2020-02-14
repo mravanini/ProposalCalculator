@@ -15,7 +15,7 @@ public class User {
 	@Column
 	private long id;
 
-	@Column(dataFormat="ddd mmm dd hh:mm:ss yyy")
+	@Column(dataFormat = "ddd mmm dd hh:mm:ss yyy")
 	private Date birthDate;
 
 	public String getFirstName() {

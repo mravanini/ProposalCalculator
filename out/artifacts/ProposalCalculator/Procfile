@@ -1,1 +1,0 @@
-web: java -jar -Xms3000m -Xmx3000m ProposalCalculator.jar

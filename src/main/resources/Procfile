@@ -1,1 +1,1 @@
-web: java -jar -Xms7000m -Xmx7000m ProposalCalculator.jar
+web: java -jar -Xms7000m -Xmx7000m sap-sizer.jar

@@ -5,11 +5,12 @@ package com.amazon.proposalcalculator.exception;
  */
 public class PricingCalculatorException extends RuntimeException {
 
-    public PricingCalculatorException(String msg){
-        super(msg);
-    }
-    public PricingCalculatorException(String msg, Throwable t){
-        super(msg, t);
-    }
+	public PricingCalculatorException(String msg) {
+		super(msg);
+	}
+
+	public PricingCalculatorException(String msg, Throwable t) {
+		super(msg, t);
+	}
 
 }

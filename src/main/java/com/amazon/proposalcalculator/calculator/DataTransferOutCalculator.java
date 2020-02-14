@@ -1,22 +1,49 @@
 package com.amazon.proposalcalculator.calculator;
 
+import static com.amazon.proposalcalculator.calculator.CalculatorPredicates.dataTransferOutPrice;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import com.amazon.proposalcalculator.bean.Price;
+import com.amazon.proposalcalculator.utils.Constants;
+
 //Enterprise
 //10% of monthly AWS usage for the first $0–$150K
 //7% of monthly AWS usage from $150K–$500K
 //5% of monthly AWS usage from $500K–$1M
 //3% of monthly AWS usage over $1M
-public class EnterpriseSupportCalculator {
+public class DataTransferOutCalculator {
 
-	private static EnterpriseSupportCalculator instance;
+	private static DataTransferOutCalculator instance;
 
-	private EnterpriseSupportCalculator() {
+	private DataTransferOutCalculator() {
 
 	}
 
-	public static EnterpriseSupportCalculator getInstance() {
+	public static DataTransferOutCalculator getInstance() {
 		if (instance == null)
-			instance = new EnterpriseSupportCalculator();
+			instance = new DataTransferOutCalculator();
 		return instance;
+	}
+
+	public double calculateDataTransferOut(String Region, Long dataTransferOut) {
+		return 0;
+	}
+
+	public static double getDTOPrice(String fromLocation) {
+		List<Price> listPrice = Price(dataTransferOutPrice("South America (Sao Paulo)"));
+
+		if (listPrice.size() > 0) {
+			return listPrice.get(0).getPricePerUnit();
+		} else {
+			return 0;
+		}
+	}
+
+	private static List<Price> Price(Predicate<Price> p) {
+		return Constants.ec2PriceList.stream().filter(p).collect(Collectors.toList());
 	}
 
 	public double calculateUpfrontSupport(double upfrontFee, double monthlyFee) {
@@ -49,7 +76,7 @@ public class EnterpriseSupportCalculator {
 	}
 
 	public static void main(String[] args) {
-		EnterpriseSupportCalculator sc = new EnterpriseSupportCalculator();
+		DataTransferOutCalculator sc = new DataTransferOutCalculator();
 		double mensal = 12529.00;
 		double calculateMonthlySupport = sc.calculateMonthlySupport(mensal);
 		System.out.println("Mensal: " + calculateMonthlySupport);

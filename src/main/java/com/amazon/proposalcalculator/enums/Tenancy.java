@@ -7,19 +7,16 @@ import com.amazon.proposalcalculator.exception.PricingCalculatorException;
  */
 public enum Tenancy {
 
-    Shared,
-    Dedicated,
-    Host,
-    Reserved;
+	Shared, Dedicated, Host, Reserved;
 
-    public static Tenancy getTenancy(String columnName){
+	public static Tenancy getTenancy(String columnName) {
 
-        for(Tenancy tenancy : Tenancy.values()){
-            if (tenancy.name().equalsIgnoreCase(columnName)){
-                return tenancy;
+		for (Tenancy tenancy : Tenancy.values()) {
+			if (tenancy.name().equalsIgnoreCase(columnName)) {
+				return tenancy;
 
-            }
-        }
-        throw new PricingCalculatorException("Invalid Tenancy. Found = " + columnName);
-    }
+			}
+		}
+		throw new PricingCalculatorException("Invalid Tenancy. Found = " + columnName);
+	}
 }
